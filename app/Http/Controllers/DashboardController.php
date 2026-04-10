@@ -19,13 +19,19 @@ class DashboardController extends Controller
             return redirect()->route('admin.super.index');
         }
 
+        // 4/5/2026 Edit Bayu - Admin Layer 1 langsung diarahkan ke halaman Admin E-Learning
+        if ($user->hasRole('admin_layer1')) {
+            return redirect()->route('admin.learning.index');
+        }
+
         if ($user->hasPermissionTo('manage programs')) {
             return redirect()->route('admin.programs.index');
         }
 
-        if ($user->hasPermissionTo('publish articles')) {
-            return redirect()->route('admin.publications.index');
-        }
+        // 4/5/2026 Edit Bayu - Bypass redirect Narasumber karena fitur Publication belum jadi
+        // if ($user->hasPermissionTo('publish articles')) {
+        //     return redirect()->route('admin.publications.index');
+        // }
 
         // 2. Data Logic untuk User Biasa (Layer 1 - 4)
         // Kita kirimkan status layer untuk kontrol UI di Blade

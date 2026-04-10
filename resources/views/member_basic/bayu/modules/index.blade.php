@@ -18,12 +18,16 @@
 
         {{-- Cover Modul --}}
         <div class="relative h-48 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
-            @if($module->thumbnail)
-                <img src="{{ asset('storage/' . $module->thumbnail) }}" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="{{ $module->title }}">
+            @if($module->poster_path)
+                <img src="{{ asset('storage/' . $module->poster_path) }}" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="{{ $module->title }}">
+            @else
+                <div class="w-full h-full flex items-center justify-center opacity-40">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
             @endif
             <div class="absolute inset-0 flex flex-col justify-end p-5">
                 <span class="px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900 self-start mb-2">
-                    {{ $module->category }}
+                    {{ $module->type }}
                 </span>
                 <h4 class="font-bold text-white text-lg leading-tight">{{ $module->title }}</h4>
             </div>
@@ -37,10 +41,10 @@
             <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
                 <span class="flex items-center gap-1">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    {{ $module->materials->count() }} Materi
+                    Modul Terpadu
                 </span>
                 <span class="flex items-center gap-1 font-bold text-lime-600">
-                    +{{ $module->total_xp }} XP
+                    +100 XP
                 </span>
             </div>
 

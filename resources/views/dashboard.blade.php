@@ -33,12 +33,12 @@
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         @php
-            $stats = [
-                ['label' => 'Total XP', 'value' => '1,250', 'icon' => '⚡', 'color' => 'lime'],
-                ['label' => 'Quests Selesai', 'value' => '12', 'icon' => '🏆', 'color' => 'orange'],
-                ['label' => 'Yota Coins', 'value' => '450', 'icon' => '🪙', 'color' => 'yellow'],
-                ['label' => 'Ranking', 'value' => '#42', 'icon' => '📈', 'color' => 'blue'],
-            ];
+        $stats = [
+        ['label' => 'Total XP', 'value' => '1,250', 'icon' => '⚡', 'color' => 'lime'],
+        ['label' => 'Quests Selesai', 'value' => '12', 'icon' => '🏆', 'color' => 'orange'],
+        ['label' => 'Yota Coins', 'value' => '450', 'icon' => '🪙', 'color' => 'yellow'],
+        ['label' => 'Ranking', 'value' => '#42', 'icon' => '📈', 'color' => 'blue'],
+        ];
         @endphp
 
         @foreach($stats as $stat)

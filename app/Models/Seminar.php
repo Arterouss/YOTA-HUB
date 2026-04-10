@@ -33,6 +33,7 @@ class Seminar extends Model
         'attachment_link',
         'evaluation_link',
         'recording_link',
+        'grading_type',
         'quota',
         'poster_path',
         'is_active',
@@ -68,14 +69,12 @@ class Seminar extends Model
     {
         return $query->where('is_active', true);
     }
-    // app/Models/Seminar.php
 
 public function users()
 {
-    // Menghubungkan ke User melalui tabel pivot seminar_user
-    // Kita sertakan kolom pivot agar bisa diakses untuk poin dan presensi
+    // 4/5/2026 Edit Bayu - Tambah kolom pivot baru: submission, certificate
     return $this->belongsToMany(User::class, 'seminar_user')
-                ->withPivot('is_attended', 'quiz_score', 'total_points')
+                ->withPivot('is_attended', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at')
                 ->withTimestamps();
 }
 
