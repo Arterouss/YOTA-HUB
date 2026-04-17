@@ -24,11 +24,15 @@
                         <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900">
                             {{ $seminar->type }} Event
                         </span>
-                        @if($seminar->quota > 0)
-                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white">
-                            Sisa Kuota: {{ $seminar->quota }}
+                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $seminar->status === 'Open' ? 'bg-emerald-400 text-emerald-900' : ($seminar->status === 'Full' ? 'bg-red-500 text-white' : 'bg-slate-500 text-white') }}">
+                            Status: {{ $seminar->status }}
                         </span>
-                        @endif
+                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-400 text-blue-900">
+                            {{ $seminar->payment_type == 'free' ? 'Gratis' : 'Rp' . number_format($seminar->price, 0, ',', '.') }}
+                        </span>
+                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white">
+                            Sisa Kuota: {{ $seminar->quota_remaining }} / {{ $seminar->quota }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -56,9 +60,14 @@
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <div>
-                                <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest">Waktu Misi</p>
-                                <p class="text-sm font-bold text-slate-900 dark:text-white">{{ $seminar->event_date->format('l, d F Y') }}</p>
-                                <p class="text-xs text-slate-500 font-bold">{{ $seminar->event_date->format('H:i') }} WIB</p>
+                                <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest">Waktu Misi & Pembicara</p>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">{{ $seminar->event_date->format('l, d F Y') }} <span class="text-slate-400 text-xs font-normal">({{ $seminar->event_date->format('H:i') }} WIB)</span></p>
+                                @if($seminar->speaker)
+                                <p class="text-xs text-lime-600 dark:text-lime-400 font-black mt-1 uppercase tracking-widest flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    {{ $seminar->speaker }}
+                                </p>
+                                @endif
                             </div>
                         </div>
 
@@ -93,16 +102,31 @@
 
 {{-- STATUS POIN & XP (Hanya muncul jika sudah daftar) --}}
 @if($isRegistered)
-<div class="mt-8 p-4 bg-lime-50 dark:bg-lime-900/10 border-2 border-dashed border-lime-400 rounded-3xl flex justify-between items-center">
+<div class="mt-8 p-4 bg-lime-50 dark:bg-lime-900/10 border-2 border-dashed border-lime-400 rounded-3xl flex justify-between items-center flex-wrap gap-4">
     <div>
         <p class="text-[9px] font-black uppercase text-lime-600 tracking-[0.2em]">Kesiapan Peserta</p>
         <p class="text-lg font-black text-slate-900 dark:text-white uppercase">Misi Aktif</p>
+        <div class="flex gap-2 mt-2">
+            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 text-slate-600 border border-slate-200">Terdaftar ✅</span>
+            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 border {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->payment_type === 'free' ? 'border-lime-200 text-lime-600' : 'border-orange-200 text-orange-500' }}">Lunas {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->payment_type === 'free' ? '✅' : '⏳' }}</span>
+        </div>
     </div>
     <div class="text-right">
-        <p class="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Poin Kamu</p>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Poin Gamifikasi</p>
         <!-- 3/31/2026 Edit Bayu - Mengganti query berulang di blade dengan $userPivot dari controller (Optimization) -->
-        <p class="text-2xl font-black text-lime-600">{{ $userPivot->pivot->total_points ?? 0 }} <span class="text-xs">XP</span></p>
+        <p class="text-2xl font-black text-lime-600">{{ $userPivot->pivot->point_earned ?? 0 }} <span class="text-xs">PTS</span></p>
     </div>
+    
+    @if($isFinished)
+    <div class="w-full mt-2 pt-4 border-t border-dashed border-lime-200">
+        <p class="text-[10px] text-slate-500 font-bold uppercase mb-2">Checklist Pencapaian Akhir:</p>
+        <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
+            <span>Kehadiran: {!! ($userPivot->pivot->is_attended ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
+            <span>Feedback: {!! ($userPivot->pivot->is_feedback_filled ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
+            <span>Kuis: {!! ($userPivot->pivot->quiz_score ?? 0) > 0 ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-40)</span>' !!}</span>
+        </div>
+    </div>
+    @endif
 </div>
 @endif
 
@@ -185,9 +209,9 @@
             {{-- Tombol Daftar Jika Belum Terdaftar & Event Belum Selesai --}}
             <form action="{{ route('member.seminars.register', $seminar->id) }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full bg-lime-400 text-slate-900 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-lime-500 transition-all active:scale-95 shadow-xl shadow-lime-400/20">
+                <button type="submit" class="w-full {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-lime-400 text-slate-900 hover:bg-lime-500 active:scale-95 shadow-xl shadow-lime-400/20' }} py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 transition-all" {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'disabled' : '' }}>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    SAYA SETUJU & AMBIL MISI
+                    {{ $seminar->status === 'Full' ? 'KUOTA HABIS' : ($seminar->status === 'Closed' ? 'PENDAFTARAN DITUTUP' : 'SAYA SETUJU & AMBIL MISI') }}
                 </button>
             </form>
         @elseif($isRegistered && !$isFinished)

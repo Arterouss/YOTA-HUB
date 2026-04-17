@@ -42,13 +42,43 @@ class SeminarController extends Controller
         return view('member_basic.bayu.seminar.show', compact('seminar', 'isRegistered', 'isFinished', 'hasFullAccess', 'userPivot'));
     }
 
-    // Logic untuk Pendaftaran (Simpan data pendaftaran)
+    // Logic untuk Pendaftaran dengan Kuota & Tipe Pembayaran (Ecosystem Refinement)
     public function register(Request $request, $id)
     {
-        $seminar = Seminar::findOrFail($id);
+        // Gunakan lockForUpdate untuk mencegah race condition (berebut kuota di detik yang sama)
+        $seminar = Seminar::lockForUpdate()->findOrFail($id);
 
-        // Daftarkan user ke seminar (attach)
-        $seminar->users()->syncWithoutDetaching([auth()->id()]);
+        if ($seminar->status === 'Closed') {
+            return back()->with('error', 'Mohon maaf, sesi pendaftaran seminar ini sudah ditutup.');
+        }
+
+        if ($seminar->quota_remaining <= 0) {
+            return back()->with('error', 'Mohon maaf, kuota pendaftaran sudah penuh.');
+        }
+
+        $paymentStatus = $seminar->payment_type === 'paid' ? 'pending' : null;
+
+        // Daftarkan user ke seminar dengan data ecosystem awal
+        $seminar->users()->syncWithoutDetaching([
+            auth()->id() => [
+                'payment_status' => $paymentStatus,
+                'is_attended' => false,
+                'is_feedback_filled' => false,
+                'point_earned' => 0
+            ]
+        ]);
+
+        // Kurangi kuota secara aman
+        $seminar->decrement('quota_remaining');
+        
+        // Auto-close jika kuota abis
+        if ($seminar->quota_remaining <= 0) {
+            $seminar->update(['status' => 'Full']);
+        }
+
+        if ($paymentStatus === 'pending') {
+            return back()->with('success', 'Berhasil mendaftar! Segera selesaikan pembayaran untuk mendapatkan akses.');
+        }
 
         return back()->with('success', 'Selamat! Anda berhasil terdaftar. Akses fitur seminar kini terbuka.');
     }
@@ -56,8 +86,8 @@ class SeminarController extends Controller
     public function claimPoint(Request $request, $id)
     {
         $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'answers' => 'required|array', // Jawaban dari form kuis
+            'rating' => 'nullable|integer|min:1|max:5',
+            'answers' => 'nullable|array', 
         ]);
 
         $seminar = Seminar::findOrFail($id);
@@ -69,37 +99,53 @@ class SeminarController extends Controller
             return back()->with('error', 'Akses ditolak. Anda belum terdaftar di misi ini.');
         }
         if ($pivot->pivot->is_attended) {
-            return back()->with('error', 'Kecurangan terdeteksi! Anda sudah mengklaim poin untuk misi ini.');
+            return back()->with('error', 'Kecurangan terdeteksi! Anda sudah mengklaim aktivitas ini.');
         }
 
-        $totalQuizPoints = 0;
+        // Logic Gamifikasi: Poin maksimal 100
+        $pointEarned = 100;
+        
+        // 1. Presensi (Asumsi karena klik fungsi klaim ini, berarti hadir)
+        $isAttended = true;
+        // Jika skenario tidak hadir, maka pointEarned -= 30; tapi endpoint ini di trigger oleh yang hadir.
 
-        // 1. Simpan Feedback
-        SeminarFeedback::create([
-            'seminar_id' => $seminar->id,
-            'user_id' => $user->id,
-            'rating' => $request->rating,
-            'message' => $request->message ?? '-',
-        ]);
+        // 2. Feedback Form logic
+        $hasFeedback = $request->filled('rating');
+        if (!$hasFeedback) {
+            $pointEarned -= 30; // Penalti tidak isi feedback
+        } else {
+            SeminarFeedback::create([
+                'seminar_id' => $seminar->id,
+                'user_id' => $user->id,
+                'rating' => $request->rating,
+                'message' => $request->message ?? '-',
+            ]);
+        }
 
-        // 2. Cek Jawaban Kuis & Hitung Skor
-        $questions = SeminarQuiz::where('seminar_id', $seminar->id)->get();
-        foreach ($questions as $q) {
-            if (isset($request->answers[$q->id]) && $request->answers[$q->id] == $q->correct_answer) {
-                $totalQuizPoints += $q->points;
+        // 3. Quiz logic
+        $hasQuiz = $request->filled('answers');
+        $quizScore = 0;
+        
+        if (!$hasQuiz) {
+            $pointEarned -= 40; // Penalti tidak ikut quiz
+        } else {
+            $questions = SeminarQuiz::where('seminar_id', $seminar->id)->get();
+            foreach ($questions as $q) {
+                if (isset($request->answers[$q->id]) && $request->answers[$q->id] == $q->correct_answer) {
+                    $quizScore += $q->points;
+                }
             }
         }
 
-        // 3. Update Poin di Tabel Pivot (Presensi Berhasil)
-        // Bonus 20 poin cuma buat yang ngisi feedback (insentif)
-        $finalPoints = $totalQuizPoints + 20;
-
+        // 4. Update data gamifikasi ke Pivot
         $seminar->users()->updateExistingPivot($user->id, [
-            'is_attended' => true,
-            'quiz_score' => $totalQuizPoints,
-            'total_points' => $finalPoints,
+            'is_attended' => $isAttended,
+            'is_feedback_filled' => $hasFeedback,
+            'quiz_score' => $quizScore,
+            'point_earned' => $pointEarned,
+            'total_points' => $pointEarned, // Simpan total poin
         ]);
 
-        return back()->with('success', "Misi Selesai! Kamu dapat $finalPoints Poin Kompetensi.");
+        return back()->with('success', "Claim Berhasil! Kamu mendapatkan $pointEarned Poin Gamifikasi.");
     }
 }

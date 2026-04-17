@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ModuleProgress extends Model
+{
+    use HasFactory, HasUuids;
+
+    protected $table = 'module_progress';
+
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'completed_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function module()
+    {
+        return $this->belongsTo(CourseModule::class, 'module_id');
+    }
+}

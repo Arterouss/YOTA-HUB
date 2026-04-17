@@ -40,7 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Workspace Admin Program (manage programs)
     Route::middleware(['permission:manage programs'])->prefix('admin/programs')->group(function () {
-        Route::get('/', [ProgramController::class, 'index'])->name('admin.programs.index');
+        Route::get('/', [App\Http\Controllers\Admin\ProgramController::class, 'index'])->name('admin.programs.index');
     });
 
     // Workspace Admin Publikasi (publish articles)
@@ -80,6 +80,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Fungsi: Menampilkan open module tugas fitur baru dari Bayu
         Route::get('/bayu-module', [BayuModuleController::class, 'index'])->name('member.bayu.index');
 
+        // --- FITUR SHORT COURSE MULTI-MODULE ---
+        Route::get('/short-course', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'index'])->name('member.shortcourse.index');
+        Route::get('/short-course/{id}', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'show'])->name('member.shortcourse.show');
+        Route::post('/short-course/{id}/enroll', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'enroll'])->name('member.shortcourse.enroll');
+        Route::get('/short-course/{course_id}/learn/{module_id?}', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'learn'])->name('member.shortcourse.learn');
+        Route::post('/short-course/{course_id}/learn/{module_id}/done', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'completeModule'])->name('member.shortcourse.completeModule');
+        Route::post('/short-course/{course_id}/certificate', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'generateCertificate'])->name('member.shortcourse.generateCertificate');
+
+        // --- FITUR OPEN MODULE (KNOWLEDGE HUB) ---
+        Route::get('/knowledge', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'index'])->name('member.knowledge.index');
+        Route::get('/knowledge/{slug}', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'show'])->name('member.knowledge.show');
+        Route::post('/knowledge/{id}/claim-point', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'claimReadingPoint'])->name('member.knowledge.claimPoint');
+        Route::post('/knowledge/{id}/comment', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'postComment'])->name('member.knowledge.postComment');
+        Route::post('/knowledge/comment/{id}/toggle-like', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'toggleLikeComment'])->name('member.knowledge.toggleLike');
+
         // 3/31/2026 Edit Bayu - Route baru: Fitur E-Learning Modul Layer 1
         Route::get('/modules', [\App\Http\Controllers\MemberBasic\Bayu\LearningModuleController::class, 'index'])->name('member.modules.index');
         Route::get('/modules/{slug}', [\App\Http\Controllers\MemberBasic\Bayu\LearningModuleController::class, 'show'])->name('member.modules.show');
@@ -92,7 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/certificate/{code}/download', [\App\Http\Controllers\CertificateVerifyController::class, 'download'])->name('member.certificate.download');
     });
 
-    // 4/5/2026 Edit Bayu - Admin Learning: Kelola Modul E-Learning
+    // 4/5/2026 Edit Bayu - Admin Learning: Kelola Modul E-Learning (LMS)
     Route::middleware(['role:super_admin|admin_layer1'])->prefix('admin/learning')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\LearningAdminController::class, 'index'])->name('admin.learning.index');
         Route::get('/create', [\App\Http\Controllers\Admin\LearningAdminController::class, 'create'])->name('admin.learning.create');
@@ -100,6 +115,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}/edit', [\App\Http\Controllers\Admin\LearningAdminController::class, 'edit'])->name('admin.learning.edit');
         Route::put('/{id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'update'])->name('admin.learning.update');
         Route::delete('/{id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'destroy'])->name('admin.learning.destroy');
+
+        // Sub-Modul Video Management
+        Route::get('/{course_id}/modules', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'index'])->name('admin.learning.modules.index');
+        Route::get('/{course_id}/modules/create', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'create'])->name('admin.learning.modules.create');
+        Route::post('/{course_id}/modules', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'store'])->name('admin.learning.modules.store');
+        Route::get('/{course_id}/modules/{module_id}/edit', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'edit'])->name('admin.learning.modules.edit');
+        Route::put('/{course_id}/modules/{module_id}', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'update'])->name('admin.learning.modules.update');
+        Route::delete('/{course_id}/modules/{module_id}', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'destroy'])->name('admin.learning.modules.destroy');
+        // 4/5/2026 Edit Bayu - Admin Knowledge Hub: Kelola Artikel Literasi
+        Route::resource('/knowledge', \App\Http\Controllers\Admin\KnowledgeAdminController::class)->names([
+            'index' => 'admin.knowledge.index',
+            'create' => 'admin.knowledge.create',
+            'store' => 'admin.knowledge.store',
+            'edit' => 'admin.knowledge.edit',
+            'update' => 'admin.knowledge.update',
+            'destroy' => 'admin.knowledge.destroy',
+        ]);
     });
 
     // 4/5/2026 Edit Bayu - Admin Program: Publish Nilai & Piagam

@@ -1,90 +1,82 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Admin Learning - Kelola Modul E-Learning')
+@section('title', 'Kelola E-Learning (LMS)')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 p-8">
-    <div class="max-w-6xl mx-auto">
-
-        {{-- Header --}}
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">📚 Kelola Modul E-Learning</h1>
-                <p class="text-slate-500 text-sm mt-1">Tambah, edit, dan hapus modul pembelajaran untuk peserta Layer 1.</p>
-            </div>
-            <a href="{{ route('admin.learning.create') }}"
-               class="inline-flex items-center gap-2 px-5 py-3 bg-lime-500 text-slate-900 font-black text-sm uppercase tracking-widest rounded-xl hover:bg-lime-400 transition shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Tambah Modul Baru
-            </a>
-        </div>
-
-        @if(session('success'))
-        <div class="mb-6 p-4 bg-lime-50 border border-lime-200 text-lime-800 rounded-xl font-bold text-sm">
-            ✅ {{ session('success') }}
-        </div>
-        @endif
-
-        {{-- Tabel Modul --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <table class="w-full text-sm">
-                <thead class="bg-slate-900 text-white">
-                    <tr>
-                        <th class="text-left px-6 py-4 font-bold uppercase tracking-widest text-xs">#</th>
-                        <th class="text-left px-6 py-4 font-bold uppercase tracking-widest text-xs">Judul Modul</th>
-                        <th class="text-left px-6 py-4 font-bold uppercase tracking-widest text-xs">Tipe Penilaian</th>
-                        <th class="text-left px-6 py-4 font-bold uppercase tracking-widest text-xs">Status</th>
-                        <th class="text-right px-6 py-4 font-bold uppercase tracking-widest text-xs">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50">
-                    @forelse($modules as $i => $module)
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4 text-slate-400 font-bold">{{ $i + 1 }}</td>
-                        <td class="px-6 py-4">
-                            <p class="font-bold text-slate-900">{{ $module->title }}</p>
-                            <p class="text-xs text-slate-400 mt-0.5">{{ Str::limit($module->description, 60) }}</p>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest {{ $module->grading_type === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700' }}">
-                                {{ $module->grading_type === 'auto' ? '⚡ Otomatis' : '📝 Manual' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest {{ $module->is_active ? 'bg-lime-100 text-lime-700' : 'bg-red-100 text-red-600' }}">
-                                {{ $module->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right space-x-2">
-                            <a href="{{ route('admin.learning.edit', $module->id) }}"
-                               class="inline-flex items-center px-3 py-1.5 text-xs font-bold bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition">
-                                ✏️ Edit
-                            </a>
-                            <form action="{{ route('admin.learning.destroy', $module->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus modul ini?')">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-bold bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition">
-                                    🗑️ Hapus
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-16 text-center text-slate-400">
-                            <p class="text-4xl mb-3">📭</p>
-                            <p class="font-bold">Belum ada modul. Klik "+ Tambah Modul Baru" untuk memulai!</p>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <div class="mt-6 flex gap-4">
-            <a href="{{ route('admin.certificates.index') }}" class="px-5 py-3 bg-white border border-slate-200 text-slate-700 font-bold text-sm rounded-xl hover:bg-slate-50 transition">
-                🏆 Panel Penilaian & Piagam →
-            </a>
-        </div>
+<div class="sm:flex sm:items-center sm:justify-between mb-8">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Manajemen E-Learning</h2>
+        <p class="mt-1 text-sm text-slate-500">Kelola daftar Short Course dan modul pembelajarannya.</p>
     </div>
+    <div class="mt-4 sm:mt-0">
+        <a href="{{ route('admin.learning.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-slate-900 bg-lime-400 hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Tambah Kursus Baru
+        </a>
+    </div>
+</div>
+
+@if(session('success'))
+<div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold">
+    {{ session('success') }}
+</div>
+@endif
+
+<div class="bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+    <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+        <thead class="bg-slate-50 dark:bg-slate-800">
+            <tr>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Info Kelas</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Tipe & Harga</th>
+                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 uppercase tracking-wider">Kuota</th>
+                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 uppercase tracking-wider">Bab Modul</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-right text-xs font-black text-slate-500 uppercase tracking-wider">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
+            @forelse($courses as $course)
+            <tr>
+                <td class="px-6 py-4">
+                    <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $course->title }}</div>
+                    <div class="text-xs text-slate-500">{{ $course->organizer }}</div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="px-2 inline-flex text-xs leading-5 font-bold rounded-full {{ $course->course_type == 'free' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800' }}">
+                        {{ strtoupper($course->course_type) }}
+                    </span>
+                    <div class="text-xs font-bold text-slate-500 mt-1">Rp{{ number_format($course->price, 0, ',', '.') }}</div>
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <div class="text-sm text-slate-900 dark:text-white font-bold">{{ $course->quota_total - $course->quota_remaining }} / {{ $course->quota_total }}</div>
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <a href="{{ route('admin.learning.modules.index', $course->id) }}" class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-lime-100 dark:hover:bg-lime-900/30 text-slate-700 dark:text-lime-400 rounded-lg text-xs font-bold transition-colors">
+                        📦 {{ $course->modules->count() ?? 0 }} Modul
+                    </a>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="px-2 inline-flex text-xs leading-5 font-bold rounded-full {{ $course->status == 'open' ? 'bg-lime-100 text-lime-800' : 'bg-red-100 text-red-800' }}">
+                        {{ strtoupper($course->status) }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
+                    <a href="{{ route('admin.learning.edit', $course->id) }}" class="text-blue-600 hover:text-blue-900 dark:hover:text-blue-400">Edit</a>
+                    <form action="{{ route('admin.learning.destroy', $course->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin hapus kelas ini sekaligus bab materinya?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-600 hover:text-red-900 dark:hover:text-red-400">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6" class="px-6 py-12 text-center text-slate-500 border-2 border-dashed border-slate-200">
+                    Belum ada program kursus yang dibuat.
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 @endsection

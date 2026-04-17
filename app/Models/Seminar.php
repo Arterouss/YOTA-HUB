@@ -35,6 +35,10 @@ class Seminar extends Model
         'recording_link',
         'grading_type',
         'quota',
+        'quota_remaining',
+        'status',
+        'payment_type',
+        'price',
         'poster_path',
         'is_active',
     ];
@@ -74,7 +78,7 @@ public function users()
 {
     // 4/5/2026 Edit Bayu - Tambah kolom pivot baru: submission, certificate
     return $this->belongsToMany(User::class, 'seminar_user')
-                ->withPivot('is_attended', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at')
+                ->withPivot('is_attended', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at', 'payment_status', 'is_feedback_filled', 'point_earned')
                 ->withTimestamps();
 }
 
