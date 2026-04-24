@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\MemberBasic\Bayu\Seminar;
+namespace App\Http\Controllers\MemberBasic\Bayu\Seminar; // 4/18/2026 Edit Bayu - Mengubah namespace sesuai restrukturisasi folder
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class SeminarController extends Controller
             ->orderBy('event_date', 'asc')
             ->paginate(10);
 
-        return view('member_basic.bayu.seminar.index', compact('seminars'));
+        return view('member_basic.bayu.seminar.index', compact('seminars')); // 4/18/2026 Edit Bayu - Update path view seminar
     }
 
     /**
@@ -39,7 +39,7 @@ class SeminarController extends Controller
         $hasFullAccess = $isRegistered || $isFinished;
 
         // Bawa data userPivot agar view tidak usah menebak-nebak query lagi (hemat load)
-        return view('member_basic.bayu.seminar.show', compact('seminar', 'isRegistered', 'isFinished', 'hasFullAccess', 'userPivot'));
+        return view('member_basic.bayu.seminar.show', compact('seminar', 'isRegistered', 'isFinished', 'hasFullAccess', 'userPivot')); // 4/18/2026 Edit Bayu - Update path view seminar
     }
 
     // Logic untuk Pendaftaran dengan Kuota & Tipe Pembayaran (Ecosystem Refinement)

@@ -29,6 +29,7 @@
             border: 2px solid #a3e635;
             padding: 60px 70px;
             position: relative;
+            z-index: 1; /* 4/18/2026 Edit Bayu - Set stacking context agar bg-pattern dengan z-index -1 tidak tenggelam ke belakang body */
             overflow: hidden;
             box-shadow: 0 25px 60px rgba(0,0,0,0.12);
         }
@@ -65,6 +66,7 @@
             border-radius: 50%;
             background: radial-gradient(circle, rgba(163,230,53,0.04) 0%, transparent 70%);
             pointer-events: none;
+            z-index: -1; /* 4/18/2026 Edit Bayu - Taruh di belakang teks agar tidak menghalangi/menciptakan blok bulat putih di tengah */
         }
 
         .header {
@@ -193,6 +195,7 @@
             body { background: white; padding: 0; }
             .no-print { display: none !important; }
             .certificate { box-shadow: none; }
+            .bg-pattern { display: none !important; } /* 4/18/2026 Edit Bayu - Hapus pattern saat diprint ke PDF agar bersih tanpa efek bulat putih */
         }
     </style>
 </head>
