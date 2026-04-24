@@ -223,7 +223,7 @@
     </div>
 </div>
 {{-- Form Klaim Poin (Hanya muncul jika sudah daftar) --}}
-@if($isRegistered && !$seminar->users()->where('user_id', auth()->id())->first()->pivot->is_attended)
+@if($isRegistered && !$seminar->users()->where('user_id', auth()->id())->first()->pivot->attendance_status)
 <div class="mt-12 bg-slate-900 rounded-[2rem] p-8 text-white">
     <h3 class="font-heading text-xl mb-6">KLAIM KOMPETENSI & EVALUASI</h3>
 

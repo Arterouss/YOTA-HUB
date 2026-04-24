@@ -18,7 +18,7 @@ class CertificateAdminController extends Controller
     {
         $modules = Seminar::where('type', 'E-Learning')
             ->with(['users' => function ($q) {
-                $q->wherePivot('is_attended', false)
+                $q->wherePivot('attendance_status', false)
                   ->orWherePivot('certificate_code', null);
             }])
             ->get();
@@ -32,7 +32,7 @@ class CertificateAdminController extends Controller
     public function show($id)
     {
         $module = Seminar::where('type', 'E-Learning')->findOrFail($id);
-        $students = $module->users()->withPivot('submission_link', 'submission_note', 'quiz_score', 'is_attended', 'certificate_code', 'certificate_issued_at')->get();
+        $students = $module->users()->withPivot('submission_link', 'submission_note', 'quiz_score', 'attendance_status', 'certificate_code', 'certificate_issued_at')->get();
 
         return view('admin.certificates.show', compact('module', 'students'));
     }
@@ -54,7 +54,7 @@ class CertificateAdminController extends Controller
 
         if (!$pivot) {
             $module->users()->attach($userId, [
-                'is_attended'           => true,
+                'attendance_status'           => true,
                 'quiz_score'            => $request->grade,
                 'total_points'          => $request->grade,
                 'certificate_code'      => $certCode,
@@ -62,7 +62,7 @@ class CertificateAdminController extends Controller
             ]);
         } else {
             $module->users()->updateExistingPivot($userId, [
-                'is_attended'           => true,
+                'attendance_status'           => true,
                 'quiz_score'            => $request->grade,
                 'total_points'          => $request->grade,
                 'certificate_code'      => $certCode,

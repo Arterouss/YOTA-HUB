@@ -42,7 +42,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <span class="px-2 inline-flex text-xs leading-5 font-bold rounded-full bg-slate-100 text-slate-800">
-                        {{ $article->category->name ?? 'Uncategorized' }}
+                        {{ $article->category->category_name ?? 'Uncategorized' }}
                     </span>
                 </td>
                 <td class="px-6 py-4 text-center">

@@ -78,8 +78,22 @@
                 {{-- Konten Video --}}
                 @if($activeModule->content_type === 'video' && $activeModule->video_url)
                 <div class="aspect-video bg-slate-900 rounded-2xl overflow-hidden mb-8 shadow-inner">
-                    {{-- Asumsi video url adalah youtube embed link untuk disederhanakan --}}
-                    <iframe src="{{ str_replace('watch?v=', 'embed/', $activeModule->video_url) }}" class="w-full h-full border-0" allowfullscreen></iframe>
+                    @php
+                        $videoUrl = $activeModule->video_url;
+                        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $videoUrl, $match);
+                        $youtubeId = $match[1] ?? null;
+                        
+                        $isGdrive = str_contains($videoUrl, 'drive.google.com');
+
+                        if ($youtubeId) {
+                            $embedUrl = "https://www.youtube.com/embed/" . $youtubeId;
+                        } elseif ($isGdrive) {
+                            $embedUrl = str_replace('/view', '/preview', $videoUrl);
+                        } else {
+                            $embedUrl = $videoUrl;
+                        }
+                    @endphp
+                    <iframe src="{{ $embedUrl }}" class="w-full h-full border-0" allowfullscreen></iframe>
                 </div>
                 @endif
 

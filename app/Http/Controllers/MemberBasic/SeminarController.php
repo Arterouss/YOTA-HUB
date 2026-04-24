@@ -86,7 +86,7 @@ public function claimPoint(Request $request, $id)
     $finalPoints = $totalQuizPoints + 20;
 
     $seminar->users()->updateExistingPivot($user->id, [
-        'is_attended' => true,
+        'attendance_status' => true,
         'quiz_score' => $totalQuizPoints,
         'total_points' => $finalPoints,
     ]);

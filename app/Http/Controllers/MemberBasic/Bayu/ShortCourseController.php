@@ -157,6 +157,18 @@ class ShortCourseController extends Controller
             return back()->with('error', 'Selesaikan seluruh materi untuk mendapatkan sertifikat.');
         }
 
+        // Cek jika ada tugas, pastikan semua tugas sudah di-submit
+        $courseTasks = \App\Models\CourseTask::where('course_id', $course_id)->get();
+        if ($courseTasks->count() > 0) {
+            $submittedTasksCount = \App\Models\TaskSubmission::where('user_id', $user->id)
+                ->whereIn('task_id', $courseTasks->pluck('id'))
+                ->count();
+            
+            if ($submittedTasksCount < $courseTasks->count()) {
+                return back()->with('error', 'Semua tugas wajib dikumpulkan terlebih dahulu.');
+            }
+        }
+
         // TODO: Impelemntasikan fitur integrasi sistem sertifikat PDF/domPDF disini 
         // Untuk tahap perdana, berikan notifikasi lencana kesuksesan.
         return back()->with('success', 'Sertifikat kelulusan berhasil diproses! [Fitur Download PDF menyusul]');

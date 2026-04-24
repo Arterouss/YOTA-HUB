@@ -23,7 +23,7 @@ class LearningModuleController extends Controller
         $progressMap = [];
         foreach ($modules as $module) {
             $pivot = $module->users()->where('user_id', $user->id)->first();
-            $progressMap[$module->id] = ($pivot && $pivot->pivot->is_attended) ? 100 : 0;
+            $progressMap[$module->id] = ($pivot && $pivot->pivot->attendance_status) ? 100 : 0;
         }
 
         return view('member_basic.bayu.modules.index', compact('modules', 'progressMap'));
@@ -41,7 +41,7 @@ class LearningModuleController extends Controller
             ->firstOrFail();
 
         $pivot = $module->users()->where('user_id', $user->id)->first();
-        $isDone = ($pivot && $pivot->pivot->is_attended);
+        $isDone = ($pivot && $pivot->pivot->attendance_status);
         $progress = $isDone ? 100 : 0;
 
         return view('member_basic.bayu.modules.show', compact('module', 'isDone', 'progress'));
@@ -56,18 +56,18 @@ class LearningModuleController extends Controller
         $module = Seminar::findOrFail($id);
 
         $pivot = $module->users()->where('user_id', $user->id)->first();
-        if ($pivot && $pivot->pivot->is_attended) {
+        if ($pivot && $pivot->pivot->attendance_status) {
             return back()->with('info', 'Anda sudah menyelesaikan modul ini sebelumnya!');
         }
 
         if (!$pivot) {
             $module->users()->attach($user->id, [
-                'is_attended' => true,
+                'attendance_status' => true,
                 'total_points' => 100,
             ]);
         } else {
             $module->users()->updateExistingPivot($user->id, [
-                'is_attended' => true,
+                'attendance_status' => true,
                 'total_points' => $module->quota ?? 100,
             ]);
         }
@@ -94,7 +94,7 @@ class LearningModuleController extends Controller
             $module->users()->attach($user->id, [
                 'submission_link' => $request->submission_link,
                 'submission_note' => $request->submission_note,
-                'is_attended'     => false,
+                'attendance_status'     => false,
                 'total_points'    => 0,
             ]);
         } else {

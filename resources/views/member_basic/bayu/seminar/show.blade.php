@@ -28,10 +28,10 @@
                             Status: {{ $seminar->status }}
                         </span>
                         <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-400 text-blue-900">
-                            {{ $seminar->payment_type == 'free' ? 'Gratis' : 'Rp' . number_format($seminar->price, 0, ',', '.') }}
+                            Tipe: {{ $seminar->seminar_type == 'free' ? 'Gratis' : 'Berbayar (' . 'Rp' . number_format($seminar->price, 0, ',', '.') . ')' }}
                         </span>
                         <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-900 text-white">
-                            Sisa Kuota: {{ $seminar->quota_remaining }} / {{ $seminar->quota }}
+                            Kuota Tersisa: {{ $seminar->quota_remaining }} / {{ $seminar->quota_total }}
                         </span>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
         <p class="text-lg font-black text-slate-900 dark:text-white uppercase">Misi Aktif</p>
         <div class="flex gap-2 mt-2">
             <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 text-slate-600 border border-slate-200">Terdaftar ✅</span>
-            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 border {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->payment_type === 'free' ? 'border-lime-200 text-lime-600' : 'border-orange-200 text-orange-500' }}">Lunas {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->payment_type === 'free' ? '✅' : '⏳' }}</span>
+            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 border {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? 'border-lime-200 text-lime-600' : 'border-orange-200 text-orange-500' }}">Pembayaran: {{ strtoupper($userPivot->pivot->payment_status ?? 'pending') }} {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? '✅' : '⏳' }}</span>
         </div>
     </div>
     <div class="text-right">
@@ -121,9 +121,9 @@
     <div class="w-full mt-2 pt-4 border-t border-dashed border-lime-200">
         <p class="text-[10px] text-slate-500 font-bold uppercase mb-2">Checklist Pencapaian Akhir:</p>
         <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
-            <span>Kehadiran: {!! ($userPivot->pivot->is_attended ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
-            <span>Feedback: {!! ($userPivot->pivot->is_feedback_filled ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
-            <span>Kuis: {!! ($userPivot->pivot->quiz_score ?? 0) > 0 ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-40)</span>' !!}</span>
+            <span>Kehadiran: {!! ($userPivot->pivot->attendance_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
+            <span>Feedback: {!! ($userPivot->pivot->feedback_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
+            <span>Kuis: {!! ($userPivot->pivot->quiz_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-40)</span>' !!}</span>
         </div>
     </div>
     @endif
@@ -249,7 +249,7 @@
 </div>
 {{-- Form Klaim Poin (Hanya muncul jika sudah daftar) --}}
 <!-- 3/31/2026 Edit Bayu - Membaca is_attended dari instance $userPivot untuk menghindari N+1 problem di Blade -->
-@if($isRegistered && !($userPivot->pivot->is_attended ?? false))
+@if($isRegistered && !($userPivot->pivot->attendance_status ?? false))
 <div class="mt-12 bg-slate-900 rounded-[2rem] p-8 text-white">
     <h3 class="font-heading text-xl mb-6">KLAIM KOMPETENSI & EVALUASI</h3>
 

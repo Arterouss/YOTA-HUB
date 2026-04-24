@@ -74,16 +74,16 @@ class Seminar extends Model
         return $query->where('is_active', true);
     }
 
-public function users()
-{
-    // 4/5/2026 Edit Bayu - Tambah kolom pivot baru: submission, certificate
-    return $this->belongsToMany(User::class, 'seminar_user')
-                ->withPivot('is_attended', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at', 'payment_status', 'is_feedback_filled', 'point_earned')
-                ->withTimestamps();
-}
+    public function users()
+    {
+        // 4/5/2026 Edit Bayu - Tambah kolom pivot baru: submission, certificate
+        return $this->belongsToMany(User::class, 'seminar_user')
+            ->withPivot('attendance_status', 'quiz_status', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at', 'payment_status', 'feedback_status', 'point_earned')
+            ->withTimestamps();
+    }
 
-public function quizzes()
-{
-    return $this->hasMany(SeminarQuiz::class, 'seminar_id');
-}
+    public function quizzes()
+    {
+        return $this->hasMany(SeminarQuiz::class, 'seminar_id');
+    }
 }

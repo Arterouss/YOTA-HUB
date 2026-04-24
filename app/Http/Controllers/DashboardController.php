@@ -34,16 +34,42 @@ class DashboardController extends Controller
         // }
 
         // 2. Data Logic untuk User Biasa (Layer 1 - 4)
-        // Kita kirimkan status layer untuk kontrol UI di Blade
+        // Ambil seminar yang diikuti user untuk ditampilkan di dashboard
+        $joinedSeminars = $user->seminars()->take(5)->get();
+
+        // 3. Data Logic untuk Short Course
+        $enrolledCourses = \App\Models\CourseEnrollment::with('course')
+            ->where('user_id', $user->id)
+            ->get();
+        $completedCoursesCount = $enrolledCourses->where('status', 'completed')->count();
+
+        // 4. Data Logic untuk Knowledge Hub
+        $totalArticlesRead = \App\Models\ArticleRead::where('user_id', $user->id)->count();
+        $totalLiteracyPoints = \App\Models\ArticleRead::where('user_id', $user->id)->sum('point_earned');
+        
+        // Cari topik favorit (kategori yang paling sering dibaca)
+        $favoriteCategory = \App\Models\ArticleRead::select('knowledge_categories.category_name')
+            ->join('knowledge_articles', 'article_reads.article_id', '=', 'knowledge_articles.id')
+            ->join('knowledge_categories', 'knowledge_articles.category_id', '=', 'knowledge_categories.id')
+            ->where('article_reads.user_id', $user->id)
+            ->groupBy('knowledge_categories.id', 'knowledge_categories.category_name')
+            ->orderByRaw('COUNT(article_reads.id) DESC')
+            ->value('category_name') ?? 'Belum ada';
+
         $data = [
             'user' => $user,
+            'joinedSeminars' => $joinedSeminars,
+            'enrolledCourses' => $enrolledCourses,
             'layerInfo' => [
                 'current_level' => $user->level, // Berasal dari kolom level di DB
                 'is_verified' => ($user->member_type === 'verified'), // Cek tipe member
             ],
             'stats' => [
-                'courses_completed' => 0, // Placeholder untuk fitur selanjutnya
-                'innovation_points' => 0,
+                'courses_completed' => $completedCoursesCount,
+                'innovation_points' => $user->seminars()->sum('seminar_user.point_earned') + $totalLiteracyPoints,
+                'articles_read' => $totalArticlesRead,
+                'literacy_points' => $totalLiteracyPoints,
+                'favorite_topic' => $favoriteCategory,
             ]
         ];
 

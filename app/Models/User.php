@@ -101,10 +101,23 @@ class User extends Authenticatable implements MustVerifyEmail
 }
 
 
-// Di dalam file App\Models\Seminar.php
-public function users()
+public function seminars()
 {
-    return $this->belongsToMany(User::class)->withPivot('is_attended', 'quiz_score', 'total_points');
+    return $this->belongsToMany(Seminar::class, 'seminar_user')
+                ->withPivot(
+                    'attendance_status', 
+                    'feedback_status', 
+                    'quiz_status', 
+                    'point_earned',
+                    'payment_status',
+                    'quiz_score', 
+                    'total_points', 
+                    'submission_link', 
+                    'submission_note', 
+                    'certificate_code', 
+                    'certificate_issued_at'
+                )
+                ->withTimestamps();
 }
 
 

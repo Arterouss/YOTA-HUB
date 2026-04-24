@@ -23,17 +23,17 @@
         <p x-show="sidebarOpen" class="px-4 text-[9px] font-black text-lime-600 uppercase tracking-[0.2em] mb-4">Admin Workspace</p>
 
         @hasanyrole('super_admin|admin_layer1')
-        <a href="{{ route('admin.learning.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->is('admin/learning*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+        <a href="{{ route('admin.learning.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.learning.*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Kelola E-Learning (LMS)</span>
         </a>
 
-        <a href="{{ route('admin.knowledge.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->is('admin/knowledge*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+        <a href="{{ route('admin.knowledge.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.knowledge.*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Manajemen Knowledge Hub</span>
         </a>
 
-        <a href="{{ route('admin.certificates.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->is('admin/certificates*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+        <a href="{{ route('admin.certificates.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.certificates.*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Penilaian & Piagam</span>
         </a>

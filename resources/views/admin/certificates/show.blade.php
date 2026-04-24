@@ -61,7 +61,7 @@
                                     <span class="px-3 py-1 bg-lime-100 text-lime-700 text-xs font-black rounded-full">✅ Piagam Diterbitkan</span>
                                     <p class="text-xs text-slate-400 mt-1">Nilai: <strong>{{ $student->pivot->quiz_score }}</strong></p>
                                 </div>
-                            @elseif($student->pivot->is_attended)
+                            @elseif($student->pivot->attendance_status)
                                 <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-black rounded-full">Selesai (Belum Dinilai)</span>
                             @else
                                 <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-black rounded-full">Menunggu Penilaian</span>

@@ -23,9 +23,9 @@ class KnowledgeAdminController extends Controller
         // Fallback jika belum ada kategori
         if ($categories->isEmpty()) {
             KnowledgeCategory::insert([
-                ['id' => Str::uuid(), 'category_name' => 'Mitigasi', 'category_slug' => 'mitigasi'],
-                ['id' => Str::uuid(), 'category_name' => 'Teknologi', 'category_slug' => 'teknologi'],
-                ['id' => Str::uuid(), 'category_name' => 'Pendidik', 'category_slug' => 'pendidik']
+                ['id' => (string) Str::uuid(), 'category_name' => 'Mitigasi', 'category_slug' => 'mitigasi'],
+                ['id' => (string) Str::uuid(), 'category_name' => 'Teknologi', 'category_slug' => 'teknologi'],
+                ['id' => (string) Str::uuid(), 'category_name' => 'Pendidik', 'category_slug' => 'pendidik']
             ]);
             $categories = KnowledgeCategory::all();
         }

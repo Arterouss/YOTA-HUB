@@ -56,14 +56,15 @@ class SeminarController extends Controller
             return back()->with('error', 'Mohon maaf, kuota pendaftaran sudah penuh.');
         }
 
-        $paymentStatus = $seminar->payment_type === 'paid' ? 'pending' : null;
+        $paymentStatus = $seminar->seminar_type === 'paid' ? 'pending' : 'paid'; // Default paid if free
 
         // Daftarkan user ke seminar dengan data ecosystem awal
         $seminar->users()->syncWithoutDetaching([
             auth()->id() => [
                 'payment_status' => $paymentStatus,
-                'is_attended' => false,
-                'is_feedback_filled' => false,
+                'attendance_status' => false,
+                'feedback_status' => false,
+                'quiz_status' => false,
                 'point_earned' => 0
             ]
         ]);
@@ -93,12 +94,12 @@ class SeminarController extends Controller
         $seminar = Seminar::findOrFail($id);
         $user = auth()->user();
         
-        // 3/31/2026 Edit Bayu - [KEAMANAN] Cegah user melakukan submit berkali-kali untuk panen XP
+        // [KEAMANAN] Cegah user melakukan submit berkali-kali untuk panen XP
         $pivot = $seminar->users()->where('user_id', $user->id)->first();
         if (!$pivot) {
             return back()->with('error', 'Akses ditolak. Anda belum terdaftar di misi ini.');
         }
-        if ($pivot->pivot->is_attended) {
+        if ($pivot->pivot->attendance_status && $pivot->pivot->feedback_status) {
             return back()->with('error', 'Kecurangan terdeteksi! Anda sudah mengklaim aktivitas ini.');
         }
 
@@ -106,12 +107,12 @@ class SeminarController extends Controller
         $pointEarned = 100;
         
         // 1. Presensi (Asumsi karena klik fungsi klaim ini, berarti hadir)
-        $isAttended = true;
-        // Jika skenario tidak hadir, maka pointEarned -= 30; tapi endpoint ini di trigger oleh yang hadir.
-
+        $attendanceStatus = true; 
+        // Jika attendance_status false, point -= 30 (tapi di sini kita set true karena user melakukan aksi klaim)
+        
         // 2. Feedback Form logic
-        $hasFeedback = $request->filled('rating');
-        if (!$hasFeedback) {
+        $feedbackStatus = $request->filled('rating');
+        if (!$feedbackStatus) {
             $pointEarned -= 30; // Penalti tidak isi feedback
         } else {
             SeminarFeedback::create([
@@ -123,10 +124,10 @@ class SeminarController extends Controller
         }
 
         // 3. Quiz logic
-        $hasQuiz = $request->filled('answers');
+        $quizStatus = $request->filled('answers');
         $quizScore = 0;
         
-        if (!$hasQuiz) {
+        if (!$quizStatus) {
             $pointEarned -= 40; // Penalti tidak ikut quiz
         } else {
             $questions = SeminarQuiz::where('seminar_id', $seminar->id)->get();
@@ -137,10 +138,14 @@ class SeminarController extends Controller
             }
         }
 
+        // Final sanity check on point_earned (min 0)
+        $pointEarned = max(0, $pointEarned);
+
         // 4. Update data gamifikasi ke Pivot
         $seminar->users()->updateExistingPivot($user->id, [
-            'is_attended' => $isAttended,
-            'is_feedback_filled' => $hasFeedback,
+            'attendance_status' => $attendanceStatus,
+            'feedback_status' => $feedbackStatus,
+            'quiz_status' => $quizStatus,
             'quiz_score' => $quizScore,
             'point_earned' => $pointEarned,
             'total_points' => $pointEarned, // Simpan total poin
