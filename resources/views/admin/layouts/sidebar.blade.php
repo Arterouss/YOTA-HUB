@@ -28,6 +28,11 @@
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Kelola E-Learning (LMS)</span>
         </a>
 
+        <a href="{{ route('admin.seminars.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.seminars.*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Kelola Seminar/Webinar</span>
+        </a>
+
         <a href="{{ route('admin.knowledge.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.knowledge.*') ? 'bg-slate-900 text-lime-400 shadow-xl shadow-slate-900/20' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Manajemen Knowledge Hub</span>

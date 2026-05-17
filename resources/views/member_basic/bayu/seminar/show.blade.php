@@ -92,14 +92,6 @@
 
                     {{-- FITUR EXTRA (Dynamic Links) --}}
 
-{{-- Deskripsi --}}
-<div class="mt-10">
-    <h4 class="font-heading text-sm text-slate-900 dark:text-white mb-4 uppercase tracking-widest">Informasi Misi</h4>
-    <div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed space-y-4">
-        {!! nl2br(e($seminar->description)) !!}
-    </div>
-</div>
-
 {{-- STATUS POIN & XP (Hanya muncul jika sudah daftar) --}}
 @if($isRegistered)
 <div class="mt-8 p-4 bg-lime-50 dark:bg-lime-900/10 border-2 border-dashed border-lime-400 rounded-3xl flex justify-between items-center flex-wrap gap-4">
@@ -228,10 +220,20 @@
             </button>
         @endif
 
-        @if($hasFullAccess && $seminar->evaluation_link)
-            <a href="{{ $seminar->evaluation_link }}" target="_blank" class="flex-1 bg-slate-900 dark:bg-slate-700 text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase text-center flex items-center justify-center gap-3 hover:bg-slate-800 transition-all">
+        @if($hasFullAccess && !($userPivot->pivot->attendance_status ?? false))
+            <a href="#form-evaluasi" class="flex-1 bg-slate-900 dark:bg-slate-700 text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase text-center flex items-center justify-center gap-3 hover:bg-slate-800 transition-all">
                 KLAIM XP & EVALUASI
             </a>
+        @elseif($hasFullAccess && ($userPivot->pivot->attendance_status ?? false))
+            <button disabled class="flex-1 bg-slate-800 text-lime-400 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
+                XP SUDAH DIKLAIM ✅
+            </button>
+            @if(!empty($userPivot->pivot->certificate_code))
+                <a href="{{ route('member.certificate.download', $userPivot->pivot->certificate_code) }}" target="_blank" class="flex-1 bg-emerald-500 text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase text-center flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    UNDUH SERTIFIKAT
+                </a>
+            @endif
         @endif
     </div>
 
@@ -250,7 +252,7 @@
 {{-- Form Klaim Poin (Hanya muncul jika sudah daftar) --}}
 <!-- 3/31/2026 Edit Bayu - Membaca is_attended dari instance $userPivot untuk menghindari N+1 problem di Blade -->
 @if($isRegistered && !($userPivot->pivot->attendance_status ?? false))
-<div class="mt-12 bg-slate-900 rounded-[2rem] p-8 text-white">
+<div id="form-evaluasi" class="mt-12 bg-slate-900 rounded-[2rem] p-8 text-white scroll-mt-24">
     <h3 class="font-heading text-xl mb-6">KLAIM KOMPETENSI & EVALUASI</h3>
 
     <form action="{{ route('member.seminars.claim', $seminar->id) }}" method="POST">
@@ -272,6 +274,16 @@
             </div>
             @endforeach
         </div>
+
+        @if($seminar->grading_type === 'manual')
+        {{-- Section Kumpul Tugas --}}
+        <div class="border-t border-slate-700 pt-8 mb-8">
+            <p class="text-sm font-bold mb-4 uppercase tracking-widest text-lime-400">Kumpul Tugas / Resume</p>
+            <p class="text-xs text-slate-400 mb-4">Misi ini mewajibkan Anda untuk mengumpulkan link tugas/resume (Google Drive, Docs, dll). Pastikan link tidak diprivate.</p>
+            <input type="url" name="submission_link" required placeholder="https://..." class="bg-slate-800 border-none rounded-lg text-white w-full mb-4">
+            <textarea name="submission_note" placeholder="Catatan tambahan untuk instruktur (opsional)" class="bg-slate-800 border-none rounded-xl text-white w-full h-20"></textarea>
+        </div>
+        @endif
 
         {{-- Section Rating --}}
         <div class="border-t border-slate-700 pt-8">

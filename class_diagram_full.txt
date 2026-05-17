@@ -1,0 +1,187 @@
+@startuml
+title Class Diagram (Versi Full Database) - YOTA HUB
+skinparam linetype ortho
+skinparam ClassBackgroundColor LightCyan
+skinparam ClassBorderColor SteelBlue
+
+class User {
+  + id : char(36) [PK]
+  + name : varchar
+  + email : varchar
+  + password : varchar
+  + level : int
+  + member_type : enum('basic', 'verified')
+  + registration_ip : varchar
+  + google_id : varchar
+  + created_at : timestamp
+  + updated_at : timestamp
+}
+
+class Seminar {
+  + id : char(36) [PK]
+  + title : varchar
+  + slug : varchar
+  + description : text
+  + speaker : varchar
+  + event_date : datetime
+  + location : varchar
+  + meeting_link : varchar
+  + type : enum('online', 'offline', 'hybrid', 'E-Learning')
+  + seminar_type : enum('free', 'paid')
+  + price : decimal
+  + quota_total : int
+  + quota_remaining : int
+  + status : enum('Open', 'Full', 'Closed')
+  + is_active : boolean
+}
+
+class seminar_user {
+  + user_id : char(36) [FK]
+  + seminar_id : char(36) [FK]
+  + attendance_status : boolean
+  + feedback_status : boolean
+  + quiz_status : boolean
+  + quiz_score : int
+  + point_earned : int
+  + total_points : int
+  + payment_status : enum('pending', 'paid')
+  + certificate_code : varchar
+  + submission_link : varchar
+  + created_at : timestamp
+}
+
+class SeminarQuiz {
+  + id : bigint [PK]
+  + seminar_id : char(36) [FK]
+  + question : text
+  + option_a : varchar
+  + option_b : varchar
+  + option_c : varchar
+  + option_d : varchar
+  + correct_answer : char
+  + points : int
+}
+
+class SeminarFeedback {
+  + id : bigint [PK]
+  + seminar_id : char(36) [FK]
+  + user_id : char(36) [FK]
+  + rating : int
+  + message : text
+}
+
+class ShortCourse {
+  + id : char(36) [PK]
+  + title : varchar
+  + course_type : enum('internal', 'mitra')
+  + status : enum('open', 'full', 'closed')
+  + quota_total : int
+  + quota_remaining : int
+}
+
+class CourseModule {
+  + id : char(36) [PK]
+  + course_id : char(36) [FK]
+  + module_title : varchar
+  + content_type : enum('video', 'document', 'interactive')
+  + video_url : varchar
+  + module_order : int
+}
+
+class CourseEnrollment {
+  + id : bigint [PK]
+  + user_id : char(36) [FK]
+  + course_id : char(36) [FK]
+  + progress_percentage : int
+  + status : enum('in_progress', 'completed')
+}
+
+class ModuleProgress {
+  + id : bigint [PK]
+  + user_id : char(36) [FK]
+  + module_id : char(36) [FK]
+  + status : enum('not_started', 'completed')
+  + completed_at : timestamp
+}
+
+class CourseTask {
+  + id : char(36) [PK]
+  + course_id : char(36) [FK]
+  + task_title : varchar
+  + task_point : int
+  + submission_type : enum('link', 'file')
+}
+
+class TaskSubmission {
+  + id : bigint [PK]
+  + task_id : char(36) [FK]
+  + user_id : char(36) [FK]
+  + submission_link : varchar
+  + status : enum('submitted', 'graded')
+}
+
+class KnowledgeCategory {
+  + id : char(36) [PK]
+  + category_name : varchar
+  + category_slug : varchar
+}
+
+class KnowledgeArticle {
+  + id : char(36) [PK]
+  + category_id : char(36) [FK]
+  + author_id : char(36) [FK]
+  + title : varchar
+  + slug : varchar
+  + content : text
+  + status : enum('draft', 'published')
+  + view_count : int
+  + reading_time : int
+}
+
+class ArticleComment {
+  + id : char(36) [PK]
+  + article_id : char(36) [FK]
+  + user_id : char(36) [FK]
+  + parent_comment_id : char(36)
+  + comment_content : text
+}
+
+class ArticleRead {
+  + id : bigint [PK]
+  + user_id : char(36) [FK]
+  + article_id : char(36) [FK]
+  + read_duration : int
+  + point_earned : int
+}
+
+class CommentLike {
+  + id : bigint [PK]
+  + user_id : char(36) [FK]
+  + comment_id : char(36) [FK]
+}
+
+class ArticleResource {
+  + id : bigint [PK]
+  + article_id : char(36) [FK]
+  + resource_type : varchar
+  + resource_url : varchar
+}
+
+User "1" -- "0..*" seminar_user
+Seminar "1" -- "0..*" seminar_user
+Seminar "1" *-- "0..*" SeminarQuiz
+Seminar "1" *-- "0..*" SeminarFeedback
+User "1" *-- "0..*" CourseEnrollment
+ShortCourse "1" *-- "0..*" CourseEnrollment
+ShortCourse "1" *-- "0..*" CourseModule
+ShortCourse "1" *-- "0..*" CourseTask
+CourseModule "1" *-- "0..*" ModuleProgress
+CourseTask "1" *-- "0..*" TaskSubmission
+KnowledgeCategory "1" *-- "0..*" KnowledgeArticle
+KnowledgeArticle "1" *-- "0..*" ArticleComment
+KnowledgeArticle "1" *-- "0..*" ArticleRead
+KnowledgeArticle "1" *-- "0..*" ArticleResource
+ArticleComment "1" *-- "0..*" CommentLike
+ArticleComment "1" *-- "0..*" ArticleComment : replies
+User "1" *-- "0..*" KnowledgeArticle : author
+@enduml

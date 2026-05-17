@@ -169,8 +169,10 @@ class ShortCourseController extends Controller
             }
         }
 
-        // TODO: Impelemntasikan fitur integrasi sistem sertifikat PDF/domPDF disini 
-        // Untuk tahap perdana, berikan notifikasi lencana kesuksesan.
-        return back()->with('success', 'Sertifikat kelulusan berhasil diproses! [Fitur Download PDF menyusul]');
+        $module = \App\Models\ShortCourse::findOrFail($course_id);
+        $record = $enrollment;
+        $code = 'SC-' . strtoupper(substr(md5($record->id), 0, 8));
+
+        return view('certificate.course_template', compact('record', 'user', 'module', 'code'));
     }
 }

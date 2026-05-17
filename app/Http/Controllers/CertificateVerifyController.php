@@ -18,7 +18,7 @@ class CertificateVerifyController extends Controller
         $user = null;
         $module = null;
 
-        $seminars = Seminar::where('type', 'E-Learning')->with('users')->get();
+        $seminars = Seminar::with('users')->get();
 
         foreach ($seminars as $seminar) {
             foreach ($seminar->users as $u) {
@@ -43,7 +43,7 @@ class CertificateVerifyController extends Controller
         $user = null;
         $module = null;
 
-        $seminars = Seminar::where('type', 'E-Learning')->with('users')->get();
+        $seminars = Seminar::with('users')->get();
 
         foreach ($seminars as $seminar) {
             foreach ($seminar->users as $u) {

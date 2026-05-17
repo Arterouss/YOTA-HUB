@@ -142,14 +142,22 @@ class SeminarController extends Controller
         $pointEarned = max(0, $pointEarned);
 
         // 4. Update data gamifikasi ke Pivot
-        $seminar->users()->updateExistingPivot($user->id, [
+        // 4. Update data gamifikasi ke Pivot
+        $updateData = [
             'attendance_status' => $attendanceStatus,
             'feedback_status' => $feedbackStatus,
             'quiz_status' => $quizStatus,
             'quiz_score' => $quizScore,
             'point_earned' => $pointEarned,
             'total_points' => $pointEarned, // Simpan total poin
-        ]);
+        ];
+
+        if ($seminar->grading_type === 'manual') {
+            $updateData['submission_link'] = $request->submission_link;
+            $updateData['submission_note'] = $request->submission_note;
+        }
+
+        $seminar->users()->updateExistingPivot($user->id, $updateData);
 
         return back()->with('success', "Claim Berhasil! Kamu mendapatkan $pointEarned Poin Gamifikasi.");
     }

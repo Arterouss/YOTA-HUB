@@ -34,10 +34,10 @@ class Seminar extends Model
         'evaluation_link',
         'recording_link',
         'grading_type',
-        'quota',
+        'quota_total',
         'quota_remaining',
         'status',
-        'payment_type',
+        'seminar_type',
         'price',
         'poster_path',
         'is_active',
@@ -49,7 +49,8 @@ class Seminar extends Model
     protected $casts = [
         'event_date' => 'datetime',
         'is_active' => 'boolean',
-        'quota' => 'integer',
+        'quota_total' => 'integer',
+        'quota_remaining' => 'integer',
     ];
 
     /**

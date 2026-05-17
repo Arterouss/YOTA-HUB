@@ -132,9 +132,12 @@
                         </div>
                         
                         @if($enrollment->status === 'completed')
-                        <a href="{{ route('member.shortcourse.generate_certificate', $enrollment->course->id) }}" class="inline-block mt-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-200 transition">
-                            Unduh Sertifikat 🎓
-                        </a>
+                        <form action="{{ route('member.shortcourse.generateCertificate', $enrollment->course->id) }}" method="POST" class="inline-block mt-2">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-200 transition">
+                                Unduh Sertifikat 🎓
+                            </button>
+                        </form>
                         @endif
                     </div>
                     <a href="{{ route('member.shortcourse.learn', $enrollment->course->id) }}" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 transition-all text-center">

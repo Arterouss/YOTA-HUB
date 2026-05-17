@@ -134,6 +134,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     });
 
+    // Admin Seminar/Webinar: Kelola Jadwal & Peserta
+    Route::middleware(['role:super_admin|admin_layer1'])->prefix('admin/seminars')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'index'])->name('admin.seminars.index');
+        Route::get('/create', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'create'])->name('admin.seminars.create');
+        Route::post('/', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'store'])->name('admin.seminars.store');
+        Route::get('/{id}/edit', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'edit'])->name('admin.seminars.edit');
+        Route::put('/{id}', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'update'])->name('admin.seminars.update');
+        Route::delete('/{id}', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'destroy'])->name('admin.seminars.destroy');
+        
+        Route::get('/{id}/participants', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'participants'])->name('admin.seminars.participants');
+        Route::post('/{seminar_id}/verify/{user_id}', [\App\Http\Controllers\Admin\SeminarAdminController::class, 'verifyPayment'])->name('admin.seminars.verify');
+    });
+
     // 4/5/2026 Edit Bayu - Admin Program: Publish Nilai & Piagam
     Route::middleware(['role:super_admin|admin_layer1'])->prefix('admin/certificates')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'index'])->name('admin.certificates.index');

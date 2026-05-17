@@ -16,8 +16,7 @@ class CertificateAdminController extends Controller
      */
     public function index()
     {
-        $modules = Seminar::where('type', 'E-Learning')
-            ->with(['users' => function ($q) {
+        $modules = Seminar::with(['users' => function ($q) {
                 $q->wherePivot('attendance_status', false)
                   ->orWherePivot('certificate_code', null);
             }])
@@ -31,7 +30,7 @@ class CertificateAdminController extends Controller
      */
     public function show($id)
     {
-        $module = Seminar::where('type', 'E-Learning')->findOrFail($id);
+        $module = Seminar::findOrFail($id);
         $students = $module->users()->withPivot('submission_link', 'submission_note', 'quiz_score', 'attendance_status', 'certificate_code', 'certificate_issued_at')->get();
 
         return view('admin.certificates.show', compact('module', 'students'));

@@ -1,0 +1,201 @@
+======================================================
+KUMPULAN DIAGRAM YOTA HUB INNOVATION (UNTUK TUGAS AKHIR)
+======================================================
+Cara Penggunaan:
+1. Buka website: https://www.planttext.com/
+2. Copy teks dari tulisan @startuml sampai @enduml
+3. Paste di kotak teks website tersebut lalu klik "Refresh"
+
+------------------------------------------------------
+1. USE CASE DIAGRAM (Paling Akurat dengan Sistem)
+------------------------------------------------------
+@startuml
+left to right direction
+skinparam actorStyle awesome
+
+actor "Guest" as G
+actor "Member" as M
+actor "Admin" as A
+actor "Super Admin" as SA
+
+rectangle YOTA_HUB {
+  (Login, Register & Verif Email) as Auth
+  (Google OAuth Login) as OAuth
+  (Lupa Password & Logout) as Akun
+  
+  (Daftar Seminar & Klaim Poin) as Seminar
+  (Belajar E-Learning & Submit Link Tugas) as ELearning
+  (Enroll & Belajar Short Course) as Course
+  (Generate Sertifikat Kursus) as CertCourse
+  
+  (Baca Artikel & Klaim Poin) as Artikel
+  (Komentar & Like) as Komentar
+  
+  (Dashboard & Edit Profil) as UserDash
+  (Download Sertifikat E-Learning) as DLSertif
+  (Verifikasi Sertifikat Publik) as VerifyQR
+  
+  (Kelola Short Course & Modul) as ACourse
+  (Kelola Artikel) as AArtikel
+  (Publish Sertifikat E-Learning) as ACert
+  (Kelola User & Role) as AUser
+}
+
+G --> Auth
+G --> OAuth
+G --> VerifyQR
+
+M --> Auth
+M --> OAuth
+M --> Akun
+M --> Seminar
+M --> ELearning
+M --> Course
+M --> CertCourse
+M --> Artikel
+M --> Komentar
+M --> UserDash
+M --> DLSertif
+M --> VerifyQR
+
+A --> ACourse
+A --> AArtikel
+A --> ACert
+
+SA --> AUser
+SA --> ACourse
+SA --> AArtikel
+SA --> ACert
+@enduml
+
+
+------------------------------------------------------
+2. ACTIVITY DIAGRAM (Seminar & E-Learning)
+------------------------------------------------------
+@startuml
+start
+:Lihat & Daftar Seminar / E-Learning;
+if (Validasi Status/Kuota?) then (Gagal)
+  :Tampil Error;
+  stop
+endif
+:Simpan ke seminar_user;
+if (Berbayar?) then (Ya)
+  :payment_status=pending;
+else (Gratis)
+  :payment_status=paid;
+endif
+:Ikuti Seminar;
+:Klaim Poin;
+:point_earned = 100;
+if (Isi Feedback?) then (Tidak)
+  :Kurangi 30 poin;
+endif
+if (Jawab Quiz?) then (Tidak)
+  :Kurangi 40 poin;
+endif
+:Update seminar_user pivot;
+stop
+@enduml
+
+
+------------------------------------------------------
+3. ACTIVITY DIAGRAM (Short Course)
+------------------------------------------------------
+@startuml
+start
+:Enroll Short Course;
+if (Validasi Status/Kuota?) then (Gagal)
+  :Error + Rollback;
+  stop
+endif
+:INSERT course_enrollments;
+:Belajar Modul;
+:Tandai Selesai (completeModule);
+:Update module_progress = completed;
+:Update progress_percentage;
+if (Progress 100%?) then (Ya)
+  :status = completed;
+  if (Cek Ada Tugas Belum Kumpul?) then (Ya)
+    :Error Lengkapi Tugas Dulu;
+  else (Tidak)
+    :Sertifikat Kursus Tersedia;
+  endif
+else (Tidak)
+  :Lanjut Modul Berikut;
+endif
+stop
+@enduml
+
+
+------------------------------------------------------
+4. CLASS DIAGRAM (Ringkas)
+------------------------------------------------------
+@startuml
+skinparam linetype ortho
+
+class User { level, member_type }
+class Seminar { type, status, quota_remaining }
+class seminar_user { attendance_status, point_earned, certificate_code }
+class SeminarQuiz
+class SeminarFeedback
+class ShortCourse { status, quota_remaining }
+class CourseModule
+class CourseEnrollment { progress_percentage, status }
+class ModuleProgress { status }
+class CourseTask
+class TaskSubmission
+class KnowledgeArticle { status, reading_time }
+class KnowledgeCategory
+class ArticleComment
+class ArticleRead { point_earned }
+class CommentLike
+
+User "1" -- "0..*" seminar_user
+Seminar "1" -- "0..*" seminar_user
+Seminar "1" *-- "0..*" SeminarQuiz
+Seminar "1" *-- "0..*" SeminarFeedback
+User "1" *-- "0..*" CourseEnrollment
+ShortCourse "1" *-- "0..*" CourseEnrollment
+ShortCourse "1" *-- "0..*" CourseModule
+ShortCourse "1" *-- "0..*" CourseTask
+CourseModule "1" *-- "0..*" ModuleProgress
+CourseTask "1" *-- "0..*" TaskSubmission
+KnowledgeCategory "1" *-- "0..*" KnowledgeArticle
+KnowledgeArticle "1" *-- "0..*" ArticleComment
+KnowledgeArticle "1" *-- "0..*" ArticleRead
+ArticleComment "1" *-- "0..*" CommentLike
+@enduml
+
+
+------------------------------------------------------
+5. SEQUENCE DIAGRAM (Short Course Enroll)
+------------------------------------------------------
+@startuml
+actor Member
+participant "ShortCourseController" as Ctrl
+database DB
+
+Member -> Ctrl : Enroll Kursus
+Ctrl -> DB : BEGIN TRANSACTION
+Ctrl -> DB : SELECT FOR UPDATE (lockForUpdate)
+alt Validasi Gagal
+  Ctrl --> Member : Error + ROLLBACK
+else Lolos
+  Ctrl -> DB : INSERT course_enrollments
+  Ctrl -> DB : UPDATE short_courses (decrement kuota)
+  Ctrl -> DB : COMMIT
+  Ctrl --> Member : Redirect Belajar
+end
+
+Member -> Ctrl : Tandai Selesai Modul
+Ctrl -> DB : firstOrCreate module_progress
+Ctrl -> DB : UPDATE module_progress (status=completed)
+Ctrl -> DB : UPDATE course_enrollments (progress)
+alt Progress 100%
+  Ctrl -> DB : UPDATE course_enrollments (status=completed)
+  Ctrl --> Member : Generate Sertifikat
+else
+  Ctrl --> Member : Lanjut Modul
+end
+@enduml
