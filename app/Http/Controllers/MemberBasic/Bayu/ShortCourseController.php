@@ -53,11 +53,14 @@ class ShortCourseController extends Controller
                 return back()->with('info', 'Anda sudah terdaftar di kursus ini.');
             }
 
+            $paymentStatus = $course->price > 0 ? 'pending' : 'paid';
+
             CourseEnrollment::create([
                 'user_id' => $user->id,
                 'course_id' => $course->id,
                 'progress_percentage' => 0,
-                'status' => 'in_progress'
+                'status' => 'in_progress',
+                'payment_status' => $paymentStatus
             ]);
 
             $course->decrement('quota_remaining');
@@ -66,6 +69,11 @@ class ShortCourseController extends Controller
             }
 
             DB::commit();
+
+            if ($paymentStatus === 'pending') {
+                return back()->with('success', 'Berhasil mendaftar! Segera selesaikan pembayaran untuk mulai belajar.');
+            }
+
             return redirect()->route('member.shortcourse.learn', $course->id)
                              ->with('success', 'Berhasil mendaftar kursus!');
         } catch (\Exception $e) {
@@ -82,6 +90,11 @@ class ShortCourseController extends Controller
 
         $user = Auth::user();
         $enrollment = CourseEnrollment::where('user_id', $user->id)->where('course_id', $course->id)->firstOrFail();
+
+        if ($enrollment->payment_status === 'pending') {
+            return redirect()->route('member.shortcourse.show', $course->slug ?? $course->id)
+                             ->with('error', 'Akses ditolak. Pembayaran kursus Anda masih menunggu verifikasi Admin.');
+        }
 
         // Cari modul yang aktif
         if (!$module_id) {

@@ -45,6 +45,7 @@ class LearningAdminController extends Controller
             'quota_remaining'=> $request->quota_total,
             'price'          => $request->price ?? 0,
             'status'         => $request->status,
+            'grading_type'   => $request->grading_type ?? 'auto',
         ]);
 
         return redirect()->route('admin.learning.index')
@@ -83,6 +84,7 @@ class LearningAdminController extends Controller
             'quota_remaining'=> $newRemaining,
             'price'          => $request->price ?? 0,
             'status'         => $request->status,
+            'grading_type'   => $request->grading_type ?? 'auto',
         ]);
 
         return redirect()->route('admin.learning.index')
@@ -94,5 +96,25 @@ class LearningAdminController extends Controller
         $course = ShortCourse::findOrFail($id);
         $course->delete();
         return back()->with('success', 'Program berhasil dihapus beserta modul-modulnya.');
+    }
+
+    public function participants($id)
+    {
+        $course = ShortCourse::findOrFail($id);
+        $enrollments = \App\Models\CourseEnrollment::with('user')->where('course_id', $id)->get();
+        return view('admin.learning.participants', compact('course', 'enrollments'));
+    }
+
+    public function verifyPayment($course_id, $user_id)
+    {
+        $enrollment = \App\Models\CourseEnrollment::where('course_id', $course_id)
+                                                  ->where('user_id', $user_id)
+                                                  ->firstOrFail();
+        
+        $enrollment->update([
+            'payment_status' => 'paid'
+        ]);
+
+        return back()->with('success', 'Pembayaran user berhasil diverifikasi! Akses belajar telah dibuka.');
     }
 }

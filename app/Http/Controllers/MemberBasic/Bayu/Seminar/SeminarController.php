@@ -36,10 +36,12 @@ class SeminarController extends Controller
         $userPivot = $seminar->users()->where('user_id', $user->id)->first();
         $isRegistered = $userPivot !== null;
         $isFinished = $seminar->event_date->isPast();
-        $hasFullAccess = $isRegistered || $isFinished;
+        
+        $isPaidOrFree = $isRegistered && $userPivot->pivot->payment_status === 'paid';
+        $hasFullAccess = $isPaidOrFree || $isFinished;
 
         // Bawa data userPivot agar view tidak usah menebak-nebak query lagi (hemat load)
-        return view('member_basic.bayu.seminar.show', compact('seminar', 'isRegistered', 'isFinished', 'hasFullAccess', 'userPivot')); // 4/18/2026 Edit Bayu - Update path view seminar
+        return view('member_basic.bayu.seminar.show', compact('seminar', 'isRegistered', 'isFinished', 'hasFullAccess', 'isPaidOrFree', 'userPivot')); // 4/18/2026 Edit Bayu - Update path view seminar
     }
 
     // Logic untuk Pendaftaran dengan Kuota & Tipe Pembayaran (Ecosystem Refinement)
@@ -98,6 +100,9 @@ class SeminarController extends Controller
         $pivot = $seminar->users()->where('user_id', $user->id)->first();
         if (!$pivot) {
             return back()->with('error', 'Akses ditolak. Anda belum terdaftar di misi ini.');
+        }
+        if ($pivot->pivot->payment_status === 'pending') {
+            return back()->with('error', 'Akses ditolak. Pembayaran Anda belum diverifikasi oleh Admin.');
         }
         if ($pivot->pivot->attendance_status && $pivot->pivot->feedback_status) {
             return back()->with('error', 'Kecurangan terdeteksi! Anda sudah mengklaim aktivitas ini.');

@@ -115,6 +115,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}/edit', [\App\Http\Controllers\Admin\LearningAdminController::class, 'edit'])->name('admin.learning.edit');
         Route::put('/{id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'update'])->name('admin.learning.update');
         Route::delete('/{id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'destroy'])->name('admin.learning.destroy');
+        
+        Route::get('/{id}/participants', [\App\Http\Controllers\Admin\LearningAdminController::class, 'participants'])->name('admin.learning.participants');
+        Route::post('/{course_id}/verify/{user_id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'verifyPayment'])->name('admin.learning.verify');
 
         // Sub-Modul Video Management
         Route::get('/{course_id}/modules', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'index'])->name('admin.learning.modules.index');

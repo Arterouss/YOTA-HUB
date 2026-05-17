@@ -61,6 +61,8 @@
                     </span>
                 </td>
                 <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
+                    <a href="{{ route('admin.learning.participants', $course->id) }}" class="text-lime-600 hover:text-lime-900 font-bold">Peserta</a>
+                    <span class="text-slate-300">|</span>
                     <a href="{{ route('admin.learning.edit', $course->id) }}" class="text-blue-600 hover:text-blue-900 dark:hover:text-blue-400">Edit</a>
                     <form action="{{ route('admin.learning.destroy', $course->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin hapus kelas ini sekaligus bab materinya?');">
                         @csrf

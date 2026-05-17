@@ -44,6 +44,15 @@
         </a>
         @endhasanyrole
 
+        @role('super_admin')
+        <div class="my-4 border-t border-slate-200 dark:border-slate-800"></div>
+        <p x-show="sidebarOpen" class="px-4 text-[9px] font-black text-rose-500 uppercase tracking-[0.2em] mb-4">Super Admin Tools</p>
+        <a href="{{ route('admin.super.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('admin.super.*') ? 'bg-rose-500 text-white shadow-xl shadow-rose-500/20' : 'text-slate-500 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-600' }}">
+            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 15.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Master Data & User</span>
+        </a>
+        @endrole
+
         <div class="pt-6">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

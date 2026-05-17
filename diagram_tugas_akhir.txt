@@ -37,7 +37,8 @@ rectangle YOTA_HUB {
   
   (Kelola Short Course & Modul) as ACourse
   (Kelola Artikel) as AArtikel
-  (Publish Sertifikat E-Learning) as ACert
+  (Kelola Seminar / Webinar) as ASeminar
+  (Verifikasi Pembayaran & Publish Sertifikat) as ACert
   (Kelola User & Role) as AUser
 }
 
@@ -60,95 +61,117 @@ M --> VerifyQR
 
 A --> ACourse
 A --> AArtikel
+A --> ASeminar
 A --> ACert
 
 SA --> AUser
 SA --> ACourse
 SA --> AArtikel
+SA --> ASeminar
 SA --> ACert
 @enduml
 
 
 ------------------------------------------------------
-2. ACTIVITY DIAGRAM (Seminar & E-Learning)
+2. ACTIVITY DIAGRAM GABUNGAN (SEMINAR & E-LEARNING)
 ------------------------------------------------------
 @startuml
 start
-:Lihat & Daftar Seminar / E-Learning;
-if (Validasi Status/Kuota?) then (Gagal)
-  :Tampil Error;
+:Lihat & Daftar Program (Seminar / E-Learning);
+
+if (Validasi Status/Kuota?) then (Penuh/Tutup)
+  :Tampil Error + Rollback;
   stop
 endif
-:Simpan ke seminar_user;
-if (Berbayar?) then (Ya)
-  :payment_status=pending;
-else (Gratis)
-  :payment_status=paid;
-endif
-:Ikuti Seminar;
-:Klaim Poin;
-:point_earned = 100;
-if (Isi Feedback?) then (Tidak)
-  :Kurangi 30 poin;
-endif
-if (Jawab Quiz?) then (Tidak)
-  :Kurangi 40 poin;
-endif
-:Update seminar_user pivot;
-stop
-@enduml
 
+:INSERT Data Pendaftaran (seminar_user / course_enrollments);
 
-------------------------------------------------------
-3. ACTIVITY DIAGRAM (Short Course)
-------------------------------------------------------
-@startuml
-start
-:Enroll Short Course;
-if (Validasi Status/Kuota?) then (Gagal)
-  :Error + Rollback;
-  stop
+if (Harga > 0 / Berbayar?) then (Ya)
+  :payment_status = pending;
+  :Tunggu Verifikasi Pembayaran Admin;
+  :payment_status = paid;
+else (Tidak/Gratis)
+  :payment_status = paid;
 endif
-:INSERT course_enrollments;
-:Belajar Modul;
-:Tandai Selesai (completeModule);
-:Update module_progress = completed;
-:Update progress_percentage;
-if (Progress 100%?) then (Ya)
-  :status = completed;
-  if (Cek Ada Tugas Belum Kumpul?) then (Ya)
-    :Error Lengkapi Tugas Dulu;
-  else (Tidak)
-    :Sertifikat Kursus Tersedia;
+
+if (Jenis Program?) then (Seminar / Webinar)
+  :Ikuti Acara Sesuai Jadwal;
+else (E-Learning)
+  repeat
+    :Nonton Video / Baca Modul;
+    :Update module_progress = completed;
+    :Update progress_percentage;
+  repeat while (Progress < 100%?) is (Belum Selesai)
+endif
+
+:status = completed;
+
+if (grading_type == 'manual') then (Ya)
+  :Wajib Mengumpulkan Tugas / Resume;
+  :Admin Menilai & Konfirmasi;
+else (auto)
+  if (Jenis Program?) then (Seminar)
+    :Isi Kuis & Form Evaluasi;
+  else (E-Learning)
+    :Penilaian Selesai Otomatis;
   endif
-else (Tidak)
-  :Lanjut Modul Berikut;
 endif
+
+:Klaim XP / Poin Reward;
+:Generate certificate_code;
+:Unduh Sertifikat Tersedia;
 stop
 @enduml
 
 
 ------------------------------------------------------
-4. CLASS DIAGRAM (Ringkas)
+3. CLASS DIAGRAM (Ringkas)
 ------------------------------------------------------
 @startuml
 skinparam linetype ortho
 
-class User { level, member_type }
-class Seminar { type, status, quota_remaining }
-class seminar_user { attendance_status, point_earned, certificate_code }
+class User {
+  level
+  member_type
+}
+class Seminar {
+  type
+  status
+  quota_total
+  grading_type
+}
+class seminar_user {
+  attendance_status
+  submission_link
+  certificate_code
+}
 class SeminarQuiz
 class SeminarFeedback
-class ShortCourse { status, quota_remaining }
+class ShortCourse {
+  status
+  grading_type
+  quota_remaining
+}
 class CourseModule
-class CourseEnrollment { progress_percentage, status }
-class ModuleProgress { status }
+class CourseEnrollment {
+  payment_status
+  progress_percentage
+  status
+}
+class ModuleProgress {
+  status
+}
 class CourseTask
 class TaskSubmission
-class KnowledgeArticle { status, reading_time }
+class KnowledgeArticle {
+  status
+  reading_time
+}
 class KnowledgeCategory
 class ArticleComment
-class ArticleRead { point_earned }
+class ArticleRead {
+  point_earned
+}
 class CommentLike
 
 User "1" -- "0..*" seminar_user
@@ -169,33 +192,63 @@ ArticleComment "1" *-- "0..*" CommentLike
 
 
 ------------------------------------------------------
-5. SEQUENCE DIAGRAM (Short Course Enroll)
+4. SEQUENCE DIAGRAM GABUNGAN (Pendaftaran & Belajar)
 ------------------------------------------------------
 @startuml
 actor Member
-participant "ShortCourseController" as Ctrl
+participant "ProgramController" as Ctrl
+participant "AdminController" as Admin
 database DB
 
-Member -> Ctrl : Enroll Kursus
+Member -> Ctrl : Request Daftar Program (Seminar / E-Learning)
 Ctrl -> DB : BEGIN TRANSACTION
 Ctrl -> DB : SELECT FOR UPDATE (lockForUpdate)
-alt Validasi Gagal
-  Ctrl --> Member : Error + ROLLBACK
-else Lolos
-  Ctrl -> DB : INSERT course_enrollments
-  Ctrl -> DB : UPDATE short_courses (decrement kuota)
+alt Kuota Habis
+  Ctrl --> Member : Error Kuota Penuh + ROLLBACK
+else Kuota Tersedia
+  Ctrl -> DB : INSERT Data Pendaftaran
+  Ctrl -> DB : UPDATE Sisa Kuota
   Ctrl -> DB : COMMIT
-  Ctrl --> Member : Redirect Belajar
+  
+  alt Jika Program Berbayar (Harga > 0)
+    Ctrl -> DB : UPDATE payment_status = 'pending'
+    Ctrl --> Member : Success (Menunggu Verifikasi)
+    Admin -> DB : Verifikasi Pembayaran (Set 'paid')
+    Admin --> Member : Akses Terbuka
+  else Jika Program Gratis
+    Ctrl -> DB : UPDATE payment_status = 'paid'
+    Ctrl --> Member : Success (Akses Langsung Buka)
+  end
 end
 
-Member -> Ctrl : Tandai Selesai Modul
-Ctrl -> DB : firstOrCreate module_progress
-Ctrl -> DB : UPDATE module_progress (status=completed)
-Ctrl -> DB : UPDATE course_enrollments (progress)
-alt Progress 100%
-  Ctrl -> DB : UPDATE course_enrollments (status=completed)
-  Ctrl --> Member : Generate Sertifikat
-else
-  Ctrl --> Member : Lanjut Modul
+== Proses Belajar & Penilaian ==
+
+alt Jika Program = Seminar
+  Member -> Ctrl : Menghadiri Seminar (Absen/Selesai)
+  alt grading_type == 'manual'
+    Member -> Ctrl : Submit Link Tugas/Resume
+    Admin -> DB : Verifikasi Tugas & Set Lulus
+  else grading_type == 'auto'
+    Member -> Ctrl : Submit Form Kuis & Evaluasi
+    Ctrl -> DB : Set Lulus
+  end
+
+else Jika Program = E-Learning
+  loop Hingga Progress 100%
+    Member -> Ctrl : Tonton Video & Selesai Modul
+    Ctrl -> DB : UPDATE module_progress & percentage
+  end
+  
+  alt grading_type == 'manual'
+    Member -> Ctrl : Submit Tugas Praktik E-Learning
+    Admin -> DB : Verifikasi Tugas & Set Lulus
+  else grading_type == 'auto'
+    Ctrl -> DB : Set Lulus Otomatis
+  end
 end
+
+== Klaim Poin & Sertifikat ==
+Ctrl -> DB : Tambah Experience Points (XP)
+Ctrl -> DB : Generate certificate_code
+Ctrl --> Member : Unduh Sertifikat Tersedia
 @enduml

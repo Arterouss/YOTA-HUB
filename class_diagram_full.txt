@@ -27,6 +27,7 @@ class Seminar {
   + location : varchar
   + meeting_link : varchar
   + type : enum('online', 'offline', 'hybrid', 'E-Learning')
+  + grading_type : enum('auto', 'manual')
   + seminar_type : enum('free', 'paid')
   + price : decimal
   + quota_total : int
@@ -74,6 +75,7 @@ class ShortCourse {
   + id : char(36) [PK]
   + title : varchar
   + course_type : enum('internal', 'mitra')
+  + grading_type : enum('auto', 'manual')
   + status : enum('open', 'full', 'closed')
   + quota_total : int
   + quota_remaining : int
@@ -93,6 +95,7 @@ class CourseEnrollment {
   + user_id : char(36) [FK]
   + course_id : char(36) [FK]
   + progress_percentage : int
+  + payment_status : enum('pending', 'paid')
   + status : enum('in_progress', 'completed')
 }
 

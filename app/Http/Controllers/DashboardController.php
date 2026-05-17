@@ -15,12 +15,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // 1. Redirection Logics untuk Role Administratif
-        if ($user->hasRole('super_admin')) {
-            return redirect()->route('admin.super.index');
-        }
-
-        // 4/5/2026 Edit Bayu - Admin Layer 1 langsung diarahkan ke halaman Admin E-Learning
-        if ($user->hasRole('admin_layer1')) {
+        if ($user->hasRole('super_admin') || $user->hasRole('admin_layer1')) {
             return redirect()->route('admin.learning.index');
         }
 
