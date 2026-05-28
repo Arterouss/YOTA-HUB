@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-emerald-500">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border-t-4 border-emerald-500">
         <h3 class="text-lg font-bold">Ringkasan Kerjasama PT Yota Inovasi Nusantara</h3>
         <p class="text-gray-600 mt-2">Daftar MoU aktif dan progress project kolaborasi tersedia di sini.</p>
     </div>

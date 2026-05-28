@@ -3,7 +3,7 @@
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-lime-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto">
-        <div class="glass-card bg-white/5 border-white/10 dark:border-lime-900/30 rounded-[2.5rem] p-8 md:p-12 mb-20 flex flex-col lg:flex-row items-center justify-between gap-8 transition-all">
+        <div class="glass-card bg-white dark:bg-slate-800/5 border-white/10 dark:border-lime-900/30 rounded-[2.5rem] p-8 md:p-12 mb-20 flex flex-col lg:flex-row items-center justify-between gap-8 transition-all">
             <div class="max-w-md text-center lg:text-left">
                 <h3 class="font-heading text-2xl text-white mb-2 uppercase tracking-tight">Impact Update</h3>
                 <p class="text-sm font-medium text-slate-400">Join the journey of spreading benefits. Get our monthly action transparency reports directly to your inbox.</p>
@@ -30,9 +30,9 @@
                     A national non-profit social organization (NGO) dedicated to building a sustainable civilization through local wisdom and technology.
                 </p>
                 <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 transition-all font-black text-xs">LI</a>
-                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 transition-all font-black text-xs">IN</a>
-                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 transition-all font-black text-xs">YO</a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all font-black text-xs">LI</a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all font-black text-xs">IN</a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-800 dark:bg-lime-900/20 flex items-center justify-center hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all font-black text-xs">YO</a>
                 </div>
             </div>
 

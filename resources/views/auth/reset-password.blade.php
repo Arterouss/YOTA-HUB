@@ -22,7 +22,7 @@
                 <div>
                     <label class="block text-[10px] font-black text-lime-800 dark:text-lime-400 uppercase tracking-widest mb-1 ml-1">Email Kamu</label>
                     <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus readonly
-                        class="w-full p-4 rounded-2xl border-2 border-lime-100 dark:border-lime-900 bg-slate-50 dark:bg-slate-800/50 text-slate-500 font-bold text-sm cursor-not-allowed opacity-70">
+                        class="w-full p-4 rounded-2xl border-2 border-lime-100 dark:border-lime-900 bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-bold text-sm cursor-not-allowed opacity-70">
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 

@@ -35,10 +35,10 @@
             <div class="flex flex-col items-center md:items-end gap-4">
                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Join Community</span>
                 <div class="flex gap-3">
-                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-lime-400 hover:text-slate-900 transition-all active:scale-90">
+                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-lime-400 hover:text-slate-900 dark:text-white transition-all active:scale-90">
                         <i class="fab fa-instagram text-sm"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-lime-400 hover:text-slate-900 transition-all active:scale-90">
+                    <a href="#" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-lime-400 hover:text-slate-900 dark:text-white transition-all active:scale-90">
                         <i class="fab fa-discord text-sm"></i>
                     </a>
                 </div>

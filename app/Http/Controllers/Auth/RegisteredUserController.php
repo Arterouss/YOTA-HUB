@@ -53,6 +53,7 @@ class RegisteredUserController extends Controller
             'agreed_to_terms' => true,
             'terms_agreed_at' => Carbon::now(),
             'registration_ip' => $request->ip(),
+            'email_verified_at' => Carbon::now(), // Auto-verify email
         ]);
 
         // 3. INTEGRASI ROLE: Memberikan akses dasar secara otomatis

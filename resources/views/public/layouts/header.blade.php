@@ -66,7 +66,7 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-            <a href="/login" class="text-center py-4 rounded-2xl border-2 border-lime-200 dark:border-lime-900 font-bold text-slate-600 dark:text-white text-sm active:bg-slate-50 dark:active:bg-slate-800 transition">
+            <a href="/login" class="text-center py-4 rounded-2xl border-2 border-lime-200 dark:border-lime-900 font-bold text-slate-600 dark:text-white text-sm active:bg-slate-50 dark:bg-slate-900 dark:active:bg-slate-800 transition">
                 Login
             </a>
             <a href="/register" class="text-center py-4 rounded-2xl btn-lemon font-bold text-sm shadow-lg active:scale-95 transition">

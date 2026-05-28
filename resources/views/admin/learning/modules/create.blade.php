@@ -12,32 +12,38 @@
     </div>
 
     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
-        <form action="{{ route('admin.learning.modules.store', $course->id) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.learning.modules.store', $course->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div class="grid grid-cols-1 gap-6">
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Urutan Bab (Bab Ke-)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Urutan Bab (Bab Ke-)</label>
                     <input type="number" name="order_index" value="{{ $nextOrder }}" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Judul Materi Pembahasan</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Judul Materi Pembahasan</label>
                     <input type="text" name="title" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Contoh: Pengenalan Dasar HTML">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Link Video YouTube / HLS (Opsional)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Link Video YouTube / HLS (Opsional)</label>
                     <input type="url" name="video_url" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="https://youtube.com/...">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Teks Penjelasan Materi Pendukung</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Upload Dokumen / PDF (Opsional)</label>
+                    <input type="file" name="document_file" accept=".pdf,.doc,.docx,.ppt,.pptx" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800">
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2">*Maksimal 10MB. Format: PDF, DOCX, PPTX.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Teks Penjelasan Materi Pendukung</label>
                     <textarea name="content" rows="6" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Ketik ringkasan teks di sini..."></textarea>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3">
                 <button type="submit" class="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
                     Unggah Modul
                 </button>

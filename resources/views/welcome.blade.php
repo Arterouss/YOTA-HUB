@@ -9,7 +9,7 @@
 <section id="explore" class="max-w-7xl mx-auto px-4 py-24">
         <div class="text-center mb-16">
             <h2 class="font-heading text-3xl md:text-5xl text-slate-900 dark:text-white mb-4 uppercase">Explore Categories</h2>
-            <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">Pilih jalur pengembangan skill kamu</p>
+            <p class="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs">Pilih jalur pengembangan skill kamu</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

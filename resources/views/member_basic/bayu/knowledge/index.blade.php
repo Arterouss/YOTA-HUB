@@ -11,13 +11,13 @@
     </div>
     
     <form action="{{ route('member.knowledge.index') }}" method="GET" class="w-full md:w-auto relative">
-        <input type="text" name="search" placeholder="Cari artikel..." class="w-full bg-white border border-gray-200 rounded-full px-5 py-2 text-sm text-gray-700 outline-none focus:border-blue-500" value="{{ request('search') }}">
+        <input type="text" name="search" placeholder="Cari artikel..." class="w-full bg-white dark:bg-slate-800 border border-gray-200 rounded-full px-5 py-2 text-sm text-gray-700 outline-none focus:border-blue-500" value="{{ request('search') }}">
     </form>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @forelse($articles as $article)
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
         <div class="relative">
             @if($article->featured_image)
                  <img src="{{ asset($article->featured_image) }}" class="h-48 w-full object-cover">
@@ -42,7 +42,7 @@
                 <span>👁️ {{ $article->view_count }} Views</span>
             </div>
 
-            <h4 class="font-bold text-lg text-gray-900 leading-tight mb-2">{{ $article->title }}</h4>
+            <h4 class="font-bold text-lg text-gray-900 dark:text-white leading-tight mb-2">{{ $article->title }}</h4>
             <p class="text-sm text-gray-500 line-clamp-3 mb-6 flex-1">{{ $article->summary ?? Str::limit(strip_tags($article->content), 120) }}</p>
 
             <a href="{{ route('member.knowledge.show', $article->slug) }}" class="inline-flex items-center justify-center w-full px-4 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">

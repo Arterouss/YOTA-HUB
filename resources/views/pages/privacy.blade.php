@@ -9,14 +9,14 @@
         <span class="text-slate-400">Kebijakan Privasi</span>
     </nav>
 
-    <div class="glass-card rounded-[2.5rem] overflow-hidden bg-white/80 shadow-xl">
+    <div class="glass-card rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-800/80 shadow-xl">
         <div class="p-8 sm:p-12 border-b border-lime-100 bg-lime-50/50">
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="font-heading text-3xl sm:text-4xl text-slate-900 leading-tight">
+                    <h1 class="font-heading text-3xl sm:text-4xl text-slate-900 dark:text-white leading-tight">
                         Kebijakan Privasi <br> <span class="text-lime-600">YOTA HUB</span>
                     </h1>
-                    <p class="mt-4 text-slate-500 font-medium max-w-xl">
+                    <p class="mt-4 text-slate-500 dark:text-slate-400 font-medium max-w-xl">
                         Kami menghargai privasi Anda. Dokumen ini menjelaskan bagaimana kami mengelola data Anda dalam ekosistem digital YOTA HUB secara bertanggung jawab.
                     </p>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="md:w-1/3">
                     <h2 class="font-heading text-xl text-lime-800 tracking-tight">Koleksi Data</h2>
                 </div>
-                <div class="md:w-2/3 text-slate-600 leading-relaxed font-medium">
+                <div class="md:w-2/3 text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                     Kami mengumpulkan informasi identitas dasar seperti nama dan alamat email untuk keperluan akses platform, serta data teknis penggunaan guna meningkatkan performa layanan kami.
                 </div>
             </section>
@@ -43,7 +43,7 @@
                 <div class="md:w-1/3">
                     <h2 class="font-heading text-xl text-lime-800 tracking-tight">Tujuan Penggunaan</h2>
                 </div>
-                <div class="md:w-2/3 text-slate-600 leading-relaxed font-medium">
+                <div class="md:w-2/3 text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                     Data yang terkumpul digunakan untuk memverifikasi keanggotaan, mengelola partisipasi program, menerbitkan sertifikat digital, serta memfasilitasi kolaborasi antar pengguna di dalam ekosistem.
                 </div>
             </section>
@@ -54,7 +54,7 @@
                 <div class="md:w-1/3">
                     <h2 class="font-heading text-xl text-lime-800 tracking-tight">Keamanan Data</h2>
                 </div>
-                <div class="md:w-2/3 text-slate-600 leading-relaxed font-medium">
+                <div class="md:w-2/3 text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                     Kami menerapkan standar keamanan digital untuk melindungi informasi Anda dari akses yang tidak sah. Data Anda hanya akan digunakan untuk kepentingan pengembangan kapasitas pemuda di bawah naungan YOTA HUB.
                 </div>
             </section>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <div class="p-8 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div class="p-8 bg-slate-50 dark:bg-slate-900 flex flex-col sm:flex-row justify-between items-center gap-6">
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                 Pembaruan terakhir: {{ date('d F Y') }}
             </span>

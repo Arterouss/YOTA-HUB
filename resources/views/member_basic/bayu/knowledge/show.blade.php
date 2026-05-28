@@ -5,17 +5,17 @@
 @section('content')
 <div class="max-w-4xl mx-auto pb-32 mt-6 px-4 relative">
     
-    <a href="{{ route('member.knowledge.index') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 mb-6 hover:text-lime-600 transition-colors">
+    <a href="{{ route('member.knowledge.index') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 mb-6 hover:text-lime-600 transition-colors">
         🔙 KEMBALI KE MODULE
     </a>
 
     {{-- Kepala Artikel --}}
     <div class="text-center mb-10">
-        <span class="inline-block px-3 py-1 bg-lime-400 text-slate-900 rounded-md text-[10px] font-black uppercase tracking-widest mb-4">
+        <span class="inline-block px-3 py-1 bg-lime-400 text-slate-900 dark:text-white rounded-md text-[10px] font-black uppercase tracking-widest mb-4">
             {{ $article->category ? $article->category->category_name : 'Knowledge' }}
         </span>
         <h1 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-6">{{ $article->title }}</h1>
-        <div class="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-500">
+        <div class="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-500 dark:text-slate-400">
             <span>Penulis: <span class="text-slate-700 dark:text-slate-300">{{ $article->author ? $article->author->name : '-' }}</span></span>
             <span>•</span>
             <span>⏱️ {{ $article->reading_time }} Menit Baca</span>
@@ -33,7 +33,7 @@
     @endif
 
     {{-- Isi Artikel --}}
-    <div class="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-[3rem] shadow-2xl mb-12 prose prose-lg prose-slate dark:prose-invert max-w-none prose-headings:font-black prose-p:text-slate-600 dark:prose-p:text-slate-300 leading-loose">
+    <div class="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-[3rem] shadow-2xl mb-12 prose prose-lg prose-slate dark:prose-invert max-w-none prose-headings:font-black prose-p:text-slate-600 dark:text-slate-400 dark:prose-p:text-slate-300 leading-loose">
         {!! $article->content !!}
     </div>
 
@@ -47,7 +47,7 @@
                         <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center text-lg">📄</div>
                         <div class="flex-1">
                             <p class="text-xs font-bold text-slate-900 dark:text-white">{{ $res->resource_title }}</p>
-                            <p class="text-[10px] text-slate-500 uppercase">{{ $res->resource_type }}</p>
+                            <p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase">{{ $res->resource_type }}</p>
                         </div>
                     </a>
                 @endforeach
@@ -63,7 +63,7 @@
             @csrf
             <textarea name="comment_content" rows="3" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm focus:border-lime-400 focus:ring focus:ring-lime-100 transition-all dark:text-white mb-3" placeholder="Tulis wawasan atau pertanyaan Anda mengenai artikel ini..." required></textarea>
             <div class="flex justify-end">
-                <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-lime-400 hover:text-slate-900 transition-all">Submit Feedback</button>
+                <button type="submit" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-lime-400 hover:text-slate-900 dark:text-white transition-all">Submit Feedback</button>
             </div>
         </form>
 
@@ -72,12 +72,12 @@
                 <div class="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-6">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-lime-400 flex items-center justify-center font-black text-slate-900 text-xs">
+                            <div class="w-8 h-8 rounded-full bg-lime-400 flex items-center justify-center font-black text-slate-900 dark:text-white text-xs">
                                 {{ substr($comment->user->name, 0, 1) }}
                             </div>
                             <div>
                                 <p class="text-xs font-bold text-slate-900 dark:text-white">{{ $comment->user->name }}</p>
-                                <p class="text-[10px] text-slate-500">{{ $comment->created_at->diffForHumans() }}</p>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400">{{ $comment->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
                         <button onclick="toggleLike('{{ $comment->id }}')" class="flex items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-pink-500" id="like-btn-{{ $comment->id }}">
@@ -89,11 +89,11 @@
                     {{-- Form Balasan --}}
                     <div class="mt-4">
                         <button onclick="toggleReplyForm('{{ $comment->id }}')" class="text-[10px] font-bold text-blue-500 uppercase">Balas Diskusi</button>
-                        <form id="reply-form-{{ $comment->id }}" action="{{ route('member.knowledge.postComment', $article->id) }}" method="POST" class="hidden mt-3 ml-4 border-l-2 border-slate-200 pl-4">
+                        <form id="reply-form-{{ $comment->id }}" action="{{ route('member.knowledge.postComment', $article->id) }}" method="POST" class="hidden mt-3 ml-4 border-l-2 border-slate-200 dark:border-slate-700 pl-4">
                             @csrf
                             <input type="hidden" name="parent_comment_id" value="{{ $comment->id }}">
                             <textarea name="comment_content" rows="2" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs focus:border-lime-400 mb-2" placeholder="Tulis balasan..." required></textarea>
-                            <button type="submit" class="bg-lime-400 text-slate-900 px-4 py-1.5 rounded-lg font-black text-[10px] uppercase">Kirim Balasan</button>
+                            <button type="submit" class="bg-lime-400 text-slate-900 dark:text-white px-4 py-1.5 rounded-lg font-black text-[10px] uppercase">Kirim Balasan</button>
                         </form>
                     </div>
 
@@ -103,7 +103,7 @@
                             @foreach($comment->replies as $reply)
                                 <div>
                                     <div class="flex items-center gap-2 mb-2">
-                                        <div class="w-6 h-6 rounded-full bg-slate-300 flex items-center justify-center font-black text-slate-600 text-[10px]">
+                                        <div class="w-6 h-6 rounded-full bg-slate-300 flex items-center justify-center font-black text-slate-600 dark:text-slate-400 text-[10px]">
                                             {{ substr($reply->user->name, 0, 1) }}
                                         </div>
                                         <p class="text-[10px] font-bold text-slate-900 dark:text-white">{{ $reply->user->name }} <span class="text-slate-400 font-normal ml-1">{{ $reply->created_at->diffForHumans() }}</span></p>

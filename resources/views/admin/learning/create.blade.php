@@ -17,17 +17,17 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Judul Kursus</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Judul Kursus</label>
                     <input type="text" name="title" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-lime-500 focus:ring-1 focus:ring-lime-500" placeholder="Cth: Dasar Pemrograman Web">
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Penyelenggara</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Penyelenggara</label>
                     <input type="text" name="organizer" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Cth: YOTA Hub Mentor">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Tipe Kursus</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Tipe Kursus</label>
                     <select name="course_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         <option value="free">Gratis (Free)</option>
                         <option value="paid">Berbayar (Paid)</option>
@@ -35,17 +35,17 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Harga (Rp)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Harga (Rp)</label>
                     <input type="number" name="price" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Total Kuota Peserta</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Total Kuota Peserta</label>
                     <input type="number" name="quota_total" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Cth: 100">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Status Pembukaan</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Status Pembukaan</label>
                     <select name="status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         <option value="open">Buka (Open)</option>
                         <option value="full">Penuh (Full)</option>
@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Tipe Penilaian (Syarat Lulus)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Tipe Penilaian (Syarat Lulus)</label>
                     <select name="grading_type" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         <option value="auto">Otomatis (Selesai nonton semua bab)</option>
                         <option value="manual">Manual (Wajib mengumpulkan tugas akhir)</option>
@@ -62,12 +62,12 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Deskripsi Kursus</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Deskripsi Kursus</label>
                     <textarea name="description" rows="5" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Jelaskan secara rinci tentang materi yang dipelajari..."></textarea>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3">
                 <button type="submit" class="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
                     Simpan Kursus Baru
                 </button>

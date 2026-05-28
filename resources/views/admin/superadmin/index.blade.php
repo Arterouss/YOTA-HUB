@@ -107,7 +107,7 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Showing 1 to 10 of 1,240 Entries</p>
             <div class="flex gap-2">
                 <button class="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:text-lime-500 transition">←</button>
-                <button class="w-8 h-8 rounded-lg bg-lime-500 text-slate-900 flex items-center justify-center font-bold text-xs">1</button>
+                <button class="w-8 h-8 rounded-lg bg-lime-500 text-slate-900 dark:text-white flex items-center justify-center font-bold text-xs">1</button>
                 <button class="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:text-lime-500 transition">→</button>
             </div>
         </div>

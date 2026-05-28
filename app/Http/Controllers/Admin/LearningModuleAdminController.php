@@ -7,6 +7,7 @@ use App\Models\ShortCourse;
 use App\Models\CourseModule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class LearningModuleAdminController extends Controller
 {
@@ -30,17 +31,24 @@ class LearningModuleAdminController extends Controller
         $course = ShortCourse::findOrFail($course_id);
         
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'video_url'   => 'nullable|url',
-            'content'     => 'nullable|string',
-            'order_index' => 'required|integer',
+            'title'         => 'required|string|max:255',
+            'video_url'     => 'nullable|url',
+            'content'       => 'nullable|string',
+            'document_file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:10240', // Max 10MB
+            'order_index'   => 'required|integer',
         ]);
+
+        $documentPath = null;
+        if ($request->hasFile('document_file')) {
+            $documentPath = $request->file('document_file')->store('course_documents', 'public');
+        }
 
         CourseModule::create([
             'course_id'       => $course->id,
             'module_title'    => $request->title,
             'text_content'    => $request->content,
             'video_url'       => $request->video_url,
+            'document_path'   => $documentPath,
             'module_order'    => $request->order_index,
             'content_type'    => $request->video_url ? 'video' : 'text',
         ]);
@@ -61,16 +69,26 @@ class LearningModuleAdminController extends Controller
         $module = CourseModule::where('course_id', $course_id)->findOrFail($module_id);
         
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'video_url'   => 'nullable|url',
-            'content'     => 'nullable|string',
-            'order_index' => 'required|integer',
+            'title'         => 'required|string|max:255',
+            'video_url'     => 'nullable|url',
+            'content'       => 'nullable|string',
+            'document_file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:10240',
+            'order_index'   => 'required|integer',
         ]);
+
+        $documentPath = $module->document_path;
+        if ($request->hasFile('document_file')) {
+            if ($documentPath) {
+                Storage::disk('public')->delete($documentPath);
+            }
+            $documentPath = $request->file('document_file')->store('course_documents', 'public');
+        }
 
         $module->update([
             'module_title'    => $request->title,
             'text_content'    => $request->content,
             'video_url'       => $request->video_url,
+            'document_path'   => $documentPath,
             'module_order'    => $request->order_index,
             'content_type'    => $request->video_url ? 'video' : 'text',
         ]);

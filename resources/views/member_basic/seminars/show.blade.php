@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-6xl mx-auto pb-20">
     {{-- Tombol Kembali --}}
-    <a href="{{ route('member.seminars.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 mb-8 hover:text-lime-600 transition-colors group">
+    <a href="{{ route('member.seminars.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 mb-8 hover:text-lime-600 transition-colors group">
         <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         KEMBALI KE EXPLORE
     </a>
@@ -21,7 +21,7 @@
 
                     {{-- Badge Status Mobile --}}
                     <div class="mt-6 flex flex-wrap gap-2">
-                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900">
+                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900 dark:text-white">
                             {{ $seminar->type }} Event
                         </span>
                         @if($seminar->quota > 0)
@@ -58,7 +58,7 @@
                             <div>
                                 <p class="text-[9px] text-slate-400 uppercase font-black tracking-widest">Waktu Misi</p>
                                 <p class="text-sm font-bold text-slate-900 dark:text-white">{{ $seminar->event_date->format('l, d F Y') }}</p>
-                                <p class="text-xs text-slate-500 font-bold">{{ $seminar->event_date->format('H:i') }} WIB</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 font-bold">{{ $seminar->event_date->format('H:i') }} WIB</p>
                             </div>
                         </div>
 
@@ -184,7 +184,7 @@
             {{-- Tombol Daftar Jika Belum Terdaftar & Event Belum Selesai --}}
             <form action="{{ route('member.seminars.register', $seminar->id) }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full bg-lime-400 text-slate-900 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-lime-500 transition-all active:scale-95 shadow-xl shadow-lime-400/20">
+                <button type="submit" class="w-full bg-lime-400 text-slate-900 dark:text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:bg-lime-500 transition-all active:scale-95 shadow-xl shadow-lime-400/20">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     SAYA SETUJU & AMBIL MISI
                 </button>
@@ -197,7 +197,7 @@
             </button>
         @elseif($isFinished)
             {{-- Jika Sudah Selesai (Akses Publik) --}}
-            <button class="flex-1 bg-slate-100 text-slate-500 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
+            <button class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 MISI SELESAI (ARSIP TERBUKA)
             </button>
@@ -254,7 +254,7 @@
             <textarea name="message" placeholder="Apa yang kamu pelajari dari misi ini?" class="bg-slate-800 border-none rounded-xl text-white w-full h-32"></textarea>
         </div>
 
-        <button type="submit" class="w-full mt-6 bg-lime-400 text-slate-900 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-lime-500 transition-all">
+        <button type="submit" class="w-full mt-6 bg-lime-400 text-slate-900 dark:text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-lime-500 transition-all">
             KIRIM EVALUASI & KLAIM XP
         </button>
     </form>

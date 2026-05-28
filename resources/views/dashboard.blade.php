@@ -19,7 +19,7 @@
                     <button class="btn-lemon px-8 py-3 rounded-2xl font-heading text-xs uppercase tracking-widest">
                         Lanjut Belajar
                     </button>
-                    <button class="bg-white/50 dark:bg-slate-800/50 backdrop-blur-md px-8 py-3 rounded-2xl font-bold text-xs text-slate-900 dark:text-white border border-white dark:border-slate-700 transition hover:bg-white dark:hover:bg-slate-800">
+                    <button class="bg-white/50 dark:bg-slate-800/50 backdrop-blur-md px-8 py-3 rounded-2xl font-bold text-xs text-slate-900 dark:text-white border border-white dark:border-slate-700 transition hover:bg-white dark:bg-slate-800 dark:hover:bg-slate-800">
                         Lihat Roadmap
                     </button>
                 </div>
@@ -61,14 +61,14 @@
             <div class="glass-card rounded-[2rem] p-6 flex flex-col md:flex-row items-center gap-6 border-l-8 {{ $seminar->pivot->payment_status === 'paid' ? 'border-lime-400' : 'border-orange-400' }}">
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">{{ $seminar->seminar_type }}</span>
+                        <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase">{{ $seminar->seminar_type }}</span>
                         <h3 class="font-heading text-lg text-slate-900 dark:text-white uppercase leading-none">{{ $seminar->title }}</h3>
                     </div>
                     
                     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
                         <div>
                             <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Pembayaran</p>
-                            <p class="text-xs font-bold {{ $seminar->pivot->payment_status === 'paid' ? 'text-lime-600' : 'text-orange-500' }}">{{ strtoupper($seminar->pivot->payment_status ?? 'pending') }}</p>
+                            <p class="text-xs font-bold {{ $seminar->pivot->payment_status === 'paid' ? 'text-lime-600 dark:text-lime-400' : 'text-orange-500 dark:text-orange-400' }}">{{ strtoupper($seminar->pivot->payment_status ?? 'pending') }}</p>
                         </div>
                         <div>
                             <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Presensi</p>
@@ -88,14 +88,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('member.seminars.show', $seminar->slug) }}" class="px-6 py-3 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-lime-500 hover:text-slate-900 transition-all">
+                <a href="{{ route('member.seminars.show', $seminar->slug) }}" class="px-6 py-3 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all">
                     Detail Misi
                 </a>
             </div>
             @empty
-            <div class="glass-card rounded-[2rem] p-10 text-center border-2 border-dashed border-slate-200">
-                <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Kamu belum mengikuti seminar apapun.</p>
-                <a href="{{ route('member.seminars.index') }}" class="mt-4 inline-block text-lime-600 font-black text-xs uppercase tracking-[0.2em]">Cari Seminar Sekarang &rarr;</a>
+            <div class="glass-card rounded-[2rem] p-10 text-center border-2 border-dashed border-slate-200 dark:border-slate-800">
+                <p class="text-slate-400 dark:text-slate-500 text-sm font-bold uppercase tracking-widest">Kamu belum mengikuti seminar apapun.</p>
+                <a href="{{ route('member.seminars.index') }}" class="mt-4 inline-block text-lime-600 dark:text-lime-400 font-black text-xs uppercase tracking-[0.2em]">Cari Seminar Sekarang &rarr;</a>
             </div>
             @endforelse
         </div>
@@ -116,14 +116,14 @@
                 <div class="glass-card rounded-[2rem] p-6 flex flex-col sm:flex-row items-center gap-6 border-l-8 {{ $enrollment->status === 'completed' ? 'border-emerald-400' : 'border-blue-400' }}">
                     <div class="flex-1 w-full space-y-3">
                         <div class="flex justify-between items-start">
-                            <span class="text-[9px] font-black text-blue-600 uppercase tracking-widest">{{ $enrollment->course->course_type }}</span>
+                            <span class="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest">{{ $enrollment->course->course_type }}</span>
                             <span class="text-[10px] font-bold text-slate-400">{{ $enrollment->status === 'completed' ? 'LULUS' : 'ON PROGRESS' }}</span>
                         </div>
                         <h3 class="font-heading text-lg text-slate-900 dark:text-white uppercase leading-none tracking-tight">{{ $enrollment->course->title }}</h3>
                         
                         <div class="space-y-2">
                             <div class="flex justify-between text-[10px] font-bold">
-                                <span class="text-slate-500">Progress</span>
+                                <span class="text-slate-500 dark:text-slate-400">Progress</span>
                                 <span class="text-slate-900 dark:text-white">{{ $enrollment->progress_percentage }}%</span>
                             </div>
                             <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -134,7 +134,7 @@
                         @if($enrollment->status === 'completed')
                         <form action="{{ route('member.shortcourse.generateCertificate', $enrollment->course->id) }}" method="POST" class="inline-block mt-2">
                             @csrf
-                            <button type="submit" class="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-200 transition">
+                            <button type="submit" class="px-4 py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition">
                                 Unduh Sertifikat 🎓
                             </button>
                         </form>
@@ -145,8 +145,8 @@
                     </a>
                 </div>
                 @empty
-                <div class="glass-card rounded-[2rem] p-10 text-center border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Belum ada kursus aktif.</p>
+                <div class="glass-card rounded-[2rem] p-10 text-center border-2 border-dashed border-slate-200 dark:border-slate-800">
+                    <p class="text-slate-400 dark:text-slate-500 text-sm font-bold uppercase tracking-widest">Belum ada kursus aktif.</p>
                 </div>
                 @endforelse
             </div>
@@ -172,7 +172,7 @@
                 <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 dark:border-slate-700/50">
                     <div>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Poin Literasi</p>
-                        <p class="text-lg font-bold text-lime-600">{{ $stats['literacy_points'] }} PTS</p>
+                        <p class="text-lg font-bold text-lime-600 dark:text-lime-400">{{ $stats['literacy_points'] }} PTS</p>
                     </div>
                     <div>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Topik Favorit</p>
@@ -180,7 +180,7 @@
                     </div>
                 </div>
                 
-                <a href="{{ route('member.knowledge.index') }}" class="block w-full py-3 rounded-xl border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all">
+                <a href="{{ route('member.knowledge.index') }}" class="block w-full py-3 rounded-xl border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:bg-slate-800 dark:hover:text-slate-900 dark:text-white transition-all">
                     Eksplor Knowledge Hub
                 </a>
             </div>

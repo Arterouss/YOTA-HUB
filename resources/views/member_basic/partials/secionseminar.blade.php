@@ -20,7 +20,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @forelse($latestSeminars as $seminar)
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
                 {{-- Poster Seminar --}}
                 <div class="relative h-40 bg-gray-200">
                     @if($seminar->poster_path)
@@ -42,7 +42,7 @@
                     <p class="text-xs text-blue-600 font-bold mb-1">
                         {{ \Carbon\Carbon::parse($seminar->event_date)->format('d M Y') }}
                     </p>
-                    <h4 class="font-bold text-gray-900 line-clamp-1">{{ $seminar->title }}</h4>
+                    <h4 class="font-bold text-gray-900 dark:text-white line-clamp-1">{{ $seminar->title }}</h4>
                     <p class="text-gray-500 text-xs mt-2 line-clamp-2">{{ Str::limit($seminar->description, 80) }}</p>
 
                     <a href="{{ route('member.seminars.show', $seminar->slug) }}" class="mt-4 block w-full text-center py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition">

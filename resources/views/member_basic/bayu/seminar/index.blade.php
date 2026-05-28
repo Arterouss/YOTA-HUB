@@ -11,7 +11,7 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @forelse($seminars as $seminar)
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
         <div class="relative">
             <img src="{{ $seminar->poster_path ? asset('storage/' . $seminar->poster_path) : 'https://via.placeholder.com/600x400' }}" class="h-56 w-full object-cover" alt="{{ $seminar->title }}">
             <div class="absolute top-4 left-4">
@@ -40,7 +40,7 @@
                 </span>
             </div>
 
-            <h4 class="font-bold text-lg text-gray-900 leading-tight mb-3 line-clamp-2 h-12">{{ $seminar->title }}</h4>
+            <h4 class="font-bold text-lg text-gray-900 dark:text-white leading-tight mb-3 line-clamp-2 h-12">{{ $seminar->title }}</h4>
 
             <a href="{{ route('member.seminars.show', $seminar->slug) }}" class="inline-flex items-center justify-center w-full px-4 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
                 {{ $seminar->status === 'Full' ? 'Kuota Penuh' : 'Detail Misi' }}

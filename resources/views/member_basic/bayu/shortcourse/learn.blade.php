@@ -8,7 +8,7 @@
         {{-- Sidebar navigasi Modul --}}
         <div class="lg:w-1/3">
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-xl sticky top-6 border border-slate-100 dark:border-slate-700">
-                <a href="{{ route('member.shortcourse.show', $course->id) }}" class="text-xs font-bold text-slate-400 hover:text-lime-500 mb-4 block inline-flex shadow items-center gap-2">
+                <a href="{{ route('member.shortcourse.show', $course->id) }}" class="text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-lime-500 mb-4 block inline-flex shadow items-center gap-2">
                     🔙 Kembali ke Info
                 </a>
                 
@@ -16,7 +16,7 @@
                 
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold text-slate-500">Progress Pembelajaran</span>
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Progress Pembelajaran</span>
                         <span class="text-xs font-black text-lime-600">{{ $enrollment->progress_percentage }}%</span>
                     </div>
                     <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
@@ -32,11 +32,11 @@
                         @endphp
                         <a href="{{ route('member.shortcourse.learn', ['course_id' => $course->id, 'module_id' => $mod->id]) }}" 
                            class="flex items-center gap-3 p-3 rounded-xl border transition-all {{ $isActive ? 'border-lime-400 bg-lime-50 dark:bg-lime-900/20' : 'border-slate-100 dark:border-slate-700 hover:border-slate-300' }}">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs {{ $isCompleted ? 'bg-emerald-400 text-emerald-900' : 'bg-slate-200 text-slate-500' }}">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs {{ $isCompleted ? 'bg-emerald-400 text-emerald-900' : 'bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400' }}">
                                 {{ $isCompleted ? '✓' : $index + 1 }}
                             </div>
                             <div class="flex-1">
-                                <p class="text-xs font-bold text-slate-900 {{ $isActive ? 'text-lime-600' : 'dark:text-white' }}">{{ $mod->module_title }}</p>
+                                <p class="text-xs font-bold text-slate-900 {{ $isActive ? 'text-lime-600 dark:text-lime-400' : 'dark:text-white' }}">{{ $mod->module_title }}</p>
                             </div>
                         </a>
                     @endforeach
@@ -53,7 +53,7 @@
                             </button>
                         </form>
                     @else
-                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
                             Selesaikan 100% untuk Sertifikat
                         </div>
                     @endif
@@ -65,13 +65,13 @@
         {{-- Main Konten Pembelajaran --}}
         <div class="lg:w-2/3">
             @if(session('success'))
-                <div class="bg-lime-100 text-lime-700 px-4 py-3 rounded-2xl mb-6 font-bold">
+                <div class="bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-400 px-4 py-3 rounded-2xl mb-6 font-bold">
                     {{ session('success') }}
                 </div>
             @endif
 
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl">
-                <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-600 mb-4 inline-block">Modul Pembelajaran</span>
+                <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-4 inline-block">Modul Pembelajaran</span>
                 
                 <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white uppercase mb-6">{{ $activeModule->module_title }}</h1>
 
@@ -112,15 +112,33 @@
                     @endif
                 </div>
 
+                {{-- Download Dokumen Pendukung --}}
+                @if($activeModule->document_path)
+                    <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-300 text-2xl">
+                                📄
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase">Dokumen Materi Pendukung</h4>
+                                <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1">Unduh file ini untuk materi referensi tambahan.</p>
+                            </div>
+                        </div>
+                        <a href="{{ Storage::url($activeModule->document_path) }}" target="_blank" class="w-full sm:w-auto bg-blue-600 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30 text-center">
+                            UNDUH FILE
+                        </a>
+                    </div>
+                @endif
+
                 {{-- Trigger Selesai Modul --}}
                 <div class="mt-14 pt-8 border-t border-slate-100 dark:border-slate-700 border-dashed flex items-center justify-between">
-                    <p class="text-xs font-bold text-slate-500">Pastikan Anda telah memahami seluruh materi ini.</p>
+                    <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Pastikan Anda telah memahami seluruh materi ini.</p>
                     <form action="{{ route('member.shortcourse.completeModule', ['course_id' => $course->id, 'module_id' => $activeModule->id]) }}" method="POST">
                         @csrf
                         @php
                             $isCompletedNow = isset($progressions[$activeModule->id]) && $progressions[$activeModule->id]->status === 'completed';
                         @endphp
-                        <button type="submit" class="bg-lime-400 text-slate-900 px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-lime-500 transition-colors {{ $isCompletedNow ? 'opacity-50' : '' }}">
+                        <button type="submit" class="bg-lime-400 text-slate-900 dark:text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-lime-500 transition-colors {{ $isCompletedNow ? 'opacity-50' : '' }}">
                             {{ $isCompletedNow ? '✓ MATERI SELESAI' : 'TANDAI SELESAI & LANJUT' }}
                         </button>
                     </form>

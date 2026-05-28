@@ -22,10 +22,10 @@
             </div>
         </div>
 
-        <div class="p-8 sm:p-12 bg-white/80 flex flex-col justify-center">
+        <div class="p-8 sm:p-12 bg-white dark:bg-slate-800/80 flex flex-col justify-center">
             <div class="mb-8 text-center lg:text-left">
-                <h1 class="font-heading text-3xl text-slate-900">Sign In</h1>
-                <p class="text-slate-500 font-semibold text-sm">Masuk ke akun Kuest kamu</p>
+                <h1 class="font-heading text-3xl text-slate-900 dark:text-white">Sign In</h1>
+                <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm">Masuk ke akun Kuest kamu</p>
             </div>
 
             <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -37,7 +37,7 @@
                     <label class="block text-xs font-black text-lime-800 uppercase tracking-widest mb-1 ml-1">Email</label>
                     <input id="email" type="email" name="email" :value="old('email')" required autofocus
                         placeholder="yourname@gmail.com"
-                        class="w-full p-4 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white text-slate-700 font-bold shadow-sm">
+                        class="w-full p-4 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 text-slate-700 font-bold shadow-sm">
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
@@ -50,14 +50,14 @@
                     </div>
                     <input id="password" type="password" name="password" required
                         placeholder="••••••••"
-                        class="w-full p-4 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white text-slate-700 font-bold shadow-sm">
+                        class="w-full p-4 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 text-slate-700 font-bold shadow-sm">
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
                 <div class="flex items-center ml-1">
                     <input id="remember_me" type="checkbox" name="remember"
                         class="w-5 h-5 rounded border-lime-300 text-lime-500 focus:ring-lime-400 shadow-sm transition">
-                    <span class="ms-3 text-sm font-bold text-slate-600">{{ __('Remember me') }}</span>
+                    <span class="ms-3 text-sm font-bold text-slate-600 dark:text-slate-400">{{ __('Remember me') }}</span>
                 </div>
 
                 <div class="pt-2">
@@ -69,8 +69,8 @@
 
             <div class="mt-8 text-center">
                 <p class="text-sm font-bold text-slate-400 mb-4">OR CONTINUE WITH</p>
-<div class="mt-6 border-t border-gray-200 pt-6">
-    <a href="{{ route('google.login') }}" class="flex w-full justify-center items-center gap-3 bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
+<div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+    <a href="{{ route('google.login') }}" class="flex w-full justify-center items-center gap-3 bg-white dark:bg-slate-800 border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
         <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -81,7 +81,7 @@
     </a>
 </div>
 
-                <p class="mt-8 text-sm font-bold text-slate-500">
+                <p class="mt-8 text-sm font-bold text-slate-500 dark:text-slate-400">
                     Belum punya akun?
                     <a href="{{ route('register') }}" class="text-lime-600 hover:underline">Daftar sekarang!</a>
                 </p>

@@ -6,10 +6,10 @@
 <div class="sm:flex sm:items-center sm:justify-between mb-8">
     <div>
         <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Manajemen Seminar & Webinar</h2>
-        <p class="mt-1 text-sm text-slate-500">Kelola pendaftaran, verifikasi peserta, dan acara.</p>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Kelola pendaftaran, verifikasi peserta, dan acara.</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="{{ route('admin.seminars.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-slate-900 bg-lime-400 hover:bg-lime-500 transition-colors">
+        <a href="{{ route('admin.seminars.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-slate-900 dark:text-white bg-lime-400 hover:bg-lime-500 transition-colors">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             Tambah Seminar Baru
         </a>
@@ -26,12 +26,12 @@
     <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
         <thead class="bg-slate-50 dark:bg-slate-800">
             <tr>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Info Acara</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Tipe & Harga</th>
-                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 uppercase tracking-wider">Kuota</th>
-                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 uppercase tracking-wider">Peserta</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-4 text-right text-xs font-black text-slate-500 uppercase tracking-wider">Aksi</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Info Acara</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tipe & Harga</th>
+                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kuota</th>
+                <th class="px-6 py-4 text-center text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Peserta</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-right text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
@@ -39,13 +39,13 @@
             <tr>
                 <td class="px-6 py-4">
                     <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $seminar->title }}</div>
-                    <div class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($seminar->event_date)->format('d M Y H:i') }} - {{ $seminar->speaker }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ \Carbon\Carbon::parse($seminar->event_date)->format('d M Y H:i') }} - {{ $seminar->speaker }}</div>
                 </td>
                 <td class="px-6 py-4">
                     <span class="px-2 inline-flex text-xs leading-5 font-bold rounded-full {{ $seminar->seminar_type == 'free' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800' }}">
                         {{ strtoupper($seminar->type) }} ({{ strtoupper($seminar->seminar_type) }})
                     </span>
-                    <div class="text-xs font-bold text-slate-500 mt-1">Rp{{ number_format($seminar->price, 0, ',', '.') }}</div>
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-1">Rp{{ number_format($seminar->price, 0, ',', '.') }}</div>
                 </td>
                 <td class="px-6 py-4 text-center">
                     <div class="text-sm text-slate-900 dark:text-white font-bold">{{ $seminar->quota_total - $seminar->quota_remaining }} / {{ $seminar->quota_total }}</div>
@@ -71,7 +71,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="px-6 py-12 text-center text-slate-500 border-2 border-dashed border-slate-200">
+                <td colspan="6" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-700">
                     Belum ada Seminar atau Webinar yang dibuat.
                 </td>
             </tr>

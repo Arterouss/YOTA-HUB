@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-6xl mx-auto pb-20">
     {{-- Tombol Kembali --}}
-    <a href="{{ route('member.seminars.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 mb-8 hover:text-lime-600 transition-colors group">
+    <a href="{{ route('member.seminars.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 mb-8 hover:text-lime-600 transition-colors group">
         <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         KEMBALI KE EXPLORE
     </a>
@@ -21,7 +21,7 @@
 
                     {{-- Badge Status Mobile --}}
                     <div class="mt-6 flex flex-wrap gap-2">
-                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900">
+                        <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900 dark:text-white">
                             {{ $seminar->type }} Event
                         </span>
                         <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $seminar->status === 'Open' ? 'bg-emerald-400 text-emerald-900' : ($seminar->status === 'Full' ? 'bg-red-500 text-white' : 'bg-slate-500 text-white') }}">
@@ -99,7 +99,7 @@
         <p class="text-[9px] font-black uppercase text-lime-600 tracking-[0.2em]">Kesiapan Peserta</p>
         <p class="text-lg font-black text-slate-900 dark:text-white uppercase">Misi Aktif</p>
         <div class="flex gap-2 mt-2">
-            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 text-slate-600 border border-slate-200">Terdaftar ✅</span>
+            <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Terdaftar ✅</span>
             <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 border {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? 'border-lime-200 text-lime-600' : 'border-orange-200 text-orange-500' }}">Pembayaran: {{ strtoupper($userPivot->pivot->payment_status ?? 'pending') }} {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? '✅' : '⏳' }}</span>
         </div>
     </div>
@@ -111,7 +111,7 @@
     
     @if($isFinished)
     <div class="w-full mt-2 pt-4 border-t border-dashed border-lime-200">
-        <p class="text-[10px] text-slate-500 font-bold uppercase mb-2">Checklist Pencapaian Akhir:</p>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-2">Checklist Pencapaian Akhir:</p>
         <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
             <span>Kehadiran: {!! ($userPivot->pivot->attendance_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
             <span>Feedback: {!! ($userPivot->pivot->feedback_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
@@ -201,7 +201,7 @@
             {{-- Tombol Daftar Jika Belum Terdaftar & Event Belum Selesai --}}
             <form action="{{ route('member.seminars.register', $seminar->id) }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-lime-400 text-slate-900 hover:bg-lime-500 active:scale-95 shadow-xl shadow-lime-400/20' }} py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 transition-all" {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'disabled' : '' }}>
+                <button type="submit" class="w-full {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-lime-400 text-slate-900 dark:text-white hover:bg-lime-500 active:scale-95 shadow-xl shadow-lime-400/20' }} py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 transition-all" {{ $seminar->status === 'Full' || $seminar->status === 'Closed' ? 'disabled' : '' }}>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     {{ $seminar->status === 'Full' ? 'KUOTA HABIS' : ($seminar->status === 'Closed' ? 'PENDAFTARAN DITUTUP' : 'SAYA SETUJU & AMBIL MISI') }}
                 </button>
@@ -221,7 +221,7 @@
             @endif
         @elseif($isFinished)
             {{-- Jika Sudah Selesai (Akses Publik) --}}
-            <button class="flex-1 bg-slate-100 text-slate-500 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
+            <button class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 MISI SELESAI (ARSIP TERBUKA)
             </button>
@@ -284,11 +284,12 @@
 
         @if($seminar->grading_type === 'manual')
         {{-- Section Kumpul Tugas --}}
+        {{-- Section Kumpul Tugas --}}
         <div class="border-t border-slate-700 pt-8 mb-8">
-            <p class="text-sm font-bold mb-4 uppercase tracking-widest text-lime-400">Kumpul Tugas / Resume</p>
-            <p class="text-xs text-slate-400 mb-4">Misi ini mewajibkan Anda untuk mengumpulkan link tugas/resume (Google Drive, Docs, dll). Pastikan link tidak diprivate.</p>
-            <input type="url" name="submission_link" required placeholder="https://..." class="bg-slate-800 border-none rounded-lg text-white w-full mb-4">
-            <textarea name="submission_note" placeholder="Catatan tambahan untuk instruktur (opsional)" class="bg-slate-800 border-none rounded-xl text-white w-full h-20"></textarea>
+            <p class="text-sm font-bold mb-4 uppercase tracking-widest text-lime-400">Upload Bukti Kehadiran</p>
+            <p class="text-xs text-slate-400 mb-4">Misi ini mewajibkan Anda untuk mengumpulkan bukti telah mengikuti acara (misal: Screenshot Zoom, Foto Kegiatan). Silakan upload ke Google Drive Anda dan masukkan link-nya di bawah ini. Pastikan link tidak diprivate!</p>
+            <input type="url" name="submission_link" required placeholder="https://drive.google.com/..." class="bg-slate-800 border-none rounded-lg text-white w-full mb-4">
+            <textarea name="submission_note" placeholder="Catatan tambahan (opsional)" class="bg-slate-800 border-none rounded-xl text-white w-full h-20"></textarea>
         </div>
         @endif
 
@@ -299,7 +300,7 @@
             <textarea name="message" placeholder="Apa yang kamu pelajari dari misi ini?" class="bg-slate-800 border-none rounded-xl text-white w-full h-32"></textarea>
         </div>
 
-        <button type="submit" class="w-full mt-6 bg-lime-400 text-slate-900 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-lime-500 transition-all">
+        <button type="submit" class="w-full mt-6 bg-lime-400 text-slate-900 dark:text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-lime-500 transition-all">
             KIRIM EVALUASI & KLAIM XP
         </button>
     </form>

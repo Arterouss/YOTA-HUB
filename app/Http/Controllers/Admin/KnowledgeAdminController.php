@@ -25,7 +25,7 @@ class KnowledgeAdminController extends Controller
             KnowledgeCategory::insert([
                 ['id' => (string) Str::uuid(), 'category_name' => 'Mitigasi', 'category_slug' => 'mitigasi'],
                 ['id' => (string) Str::uuid(), 'category_name' => 'Teknologi', 'category_slug' => 'teknologi'],
-                ['id' => (string) Str::uuid(), 'category_name' => 'Pendidik', 'category_slug' => 'pendidik']
+                ['id' => (string) Str::uuid(), 'category_name' => 'Pendidikan', 'category_slug' => 'pendidikan']
             ]);
             $categories = KnowledgeCategory::all();
         }

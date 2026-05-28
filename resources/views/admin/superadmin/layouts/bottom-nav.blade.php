@@ -3,7 +3,7 @@
 
         <a href="#"
            class="flex flex-col items-center gap-1 group">
-            <div class="p-2 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-lime-500 text-slate-900' : 'text-slate-400' }}">
+            <div class="p-2 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-lime-500 text-slate-900 dark:text-white' : 'text-slate-400' }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             </div>
             <span class="text-[9px] font-black uppercase tracking-tighter {{ request()->routeIs('admin.dashboard') ? 'text-lime-600' : 'text-slate-400' }}">Home</span>
@@ -11,7 +11,7 @@
 
         <a href="#"
            class="flex flex-col items-center gap-1 group">
-            <div class="p-2 rounded-xl transition-all {{ request()->routeIs('admin.master*') ? 'bg-lime-500 text-slate-900' : 'text-slate-400' }}">
+            <div class="p-2 rounded-xl transition-all {{ request()->routeIs('admin.master*') ? 'bg-lime-500 text-slate-900 dark:text-white' : 'text-slate-400' }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
             </div>
             <span class="text-[9px] font-black uppercase tracking-tighter {{ request()->routeIs('admin.master*') ? 'text-lime-600' : 'text-slate-400' }}">Master</span>

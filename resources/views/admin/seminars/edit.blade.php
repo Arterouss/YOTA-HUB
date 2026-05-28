@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-3xl mx-auto">
     <div class="mb-8">
-        <a href="{{ route('admin.seminars.index') }}" class="text-xs font-bold text-slate-500 hover:text-lime-600 mb-2 inline-block">← KEMBALI</a>
+        <a href="{{ route('admin.seminars.index') }}" class="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-lime-600 mb-2 inline-block">← KEMBALI</a>
         <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Edit Seminar: {{ $seminar->title }}</h2>
     </div>
 
@@ -72,7 +72,7 @@
                     <option value="auto" {{ $seminar->grading_type == 'auto' ? 'selected' : '' }}>Otomatis (Hanya Kuis & Evaluasi)</option>
                     <option value="manual" {{ $seminar->grading_type == 'manual' ? 'selected' : '' }}>Manual (Wajib Kumpul Link Tugas)</option>
                 </select>
-                <p class="text-xs text-slate-500 mt-1">Pilih "Manual" jika Anda mewajibkan peserta untuk mengumpulkan file tugas/resume dalam bentuk Google Drive link.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih "Manual" jika Anda mewajibkan peserta untuk mengumpulkan file tugas/resume dalam bentuk Google Drive link.</p>
             </div>
 
             <div class="grid grid-cols-3 gap-4">

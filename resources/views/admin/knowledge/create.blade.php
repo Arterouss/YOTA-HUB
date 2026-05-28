@@ -17,12 +17,12 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Judul Artikel</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Judul Artikel</label>
                     <input type="text" name="title" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-lime-500 focus:ring-1 focus:ring-lime-500" placeholder="Ketik judul memikat di sini...">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Kategori</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Kategori</label>
                     <select name="category_id" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
@@ -31,28 +31,28 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Estimasi Waktu Baca (Menit)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Estimasi Waktu Baca (Menit)</label>
                     <input type="number" name="reading_time" value="3" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" min="1">
                     <span class="text-[10px] text-slate-400 mt-1 block">Ini akan menentukan delay tombol "Klaim Poin" di sisi pembaca.</span>
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Link Cover Image (Opsional)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Link Cover Image (Opsional)</label>
                     <input type="url" name="featured_image" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="https://unsplash.com/photos/...">
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Ringkasan (Summary Singkat)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan (Summary Singkat)</label>
                     <textarea name="summary" rows="3" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" placeholder="Ringkasan 2 kalimat tentang artikel ini yang akan tampil di halaman depan..."></textarea>
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Isi Konten Artikel</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Isi Konten Artikel</label>
                     <textarea name="content" rows="15" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white font-mono text-sm leading-relaxed" placeholder="Gunakan sintaks HTML standar untuk formatting paragraf <p>, <strong>, <ul> dll..."></textarea>
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Status Publikasi</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Status Publikasi</label>
                     <select name="status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         <option value="draft">Simpan ke Draft (Belum Publikasi)</option>
                         <option value="published">Langsung Publish Sekarang</option>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3">
                 <button type="submit" class="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
                     Simpan Artikel
                 </button>

@@ -18,12 +18,12 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Judul Artikel</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Judul Artikel</label>
                     <input type="text" name="title" value="{{ $article->title }}" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Kategori</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Kategori</label>
                     <select name="category_id" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ $article->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->category_name }}</option>
@@ -32,27 +32,27 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Estimasi Waktu Baca (Menit)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Estimasi Waktu Baca (Menit)</label>
                     <input type="number" name="reading_time" value="{{ $article->reading_time }}" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white" min="1">
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Link Cover Image (Opsional)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Link Cover Image (Opsional)</label>
                     <input type="url" name="featured_image" value="{{ $article->featured_image }}" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Ringkasan (Summary Singkat)</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan (Summary Singkat)</label>
                     <textarea name="summary" rows="3" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">{{ $article->summary }}</textarea>
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Isi Konten Artikel</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Isi Konten Artikel</label>
                     <textarea name="content" rows="15" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white font-mono text-sm leading-relaxed">{{ $article->content }}</textarea>
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">Status Publikasi</label>
+                    <label class="block text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Status Publikasi</label>
                     <select name="status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white">
                         <option value="draft" {{ $article->status == 'draft' ? 'selected' : '' }}>Simpan ke Draft (Belum Publikasi)</option>
                         <option value="published" {{ $article->status == 'published' ? 'selected' : '' }}>Published</option>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3">
                 <button type="submit" class="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
                     Simpan Perubahan
                 </button>

@@ -14,7 +14,7 @@
     @forelse($modules as $module)
     @php $pct = $progressMap[$module->id] ?? 0; @endphp
     <a href="{{ route('member.modules.show', $module->slug) }}"
-       class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+       class="group bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
 
         {{-- Cover Modul --}}
         <div class="relative h-48 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
@@ -26,7 +26,7 @@
                 </div>
             @endif
             <div class="absolute inset-0 flex flex-col justify-end p-5">
-                <span class="px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900 self-start mb-2">
+                <span class="px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-lime-400 text-slate-900 dark:text-white self-start mb-2">
                     {{ $module->type }}
                 </span>
                 <h4 class="font-bold text-white text-lg leading-tight">{{ $module->title }}</h4>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="mt-4">
-                <span class="inline-block w-full text-center px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl group-hover:bg-lime-500 group-hover:text-slate-900 transition-colors">
+                <span class="inline-block w-full text-center px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl group-hover:bg-lime-500 group-hover:text-slate-900 dark:text-white transition-colors">
                     {{ $pct >= 100 ? '✅ Selesai' : ($pct > 0 ? 'Lanjutkan →' : 'Mulai Belajar →') }}
                 </span>
             </div>

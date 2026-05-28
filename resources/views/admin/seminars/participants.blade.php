@@ -5,9 +5,9 @@
 @section('content')
 <div class="sm:flex sm:items-center sm:justify-between mb-8">
     <div>
-        <a href="{{ route('admin.seminars.index') }}" class="text-xs font-bold text-slate-500 hover:text-lime-600 mb-2 inline-block">← KEMBALI KE DAFTAR SEMINAR</a>
+        <a href="{{ route('admin.seminars.index') }}" class="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-lime-600 mb-2 inline-block">← KEMBALI KE DAFTAR SEMINAR</a>
         <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Pendaftar: {{ $seminar->title }}</h2>
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Tipe Acara: <span class="font-bold text-slate-700">{{ strtoupper($seminar->seminar_type) }}</span> 
             | Harga: <span class="font-bold text-slate-700">Rp{{ number_format($seminar->price, 0, ',', '.') }}</span>
         </p>
@@ -24,11 +24,11 @@
     <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
         <thead class="bg-slate-50 dark:bg-slate-800">
             <tr>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Nama Peserta</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Email</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Status Pembayaran</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 uppercase tracking-wider">Poin & Kuis</th>
-                <th class="px-6 py-4 text-right text-xs font-black text-slate-500 uppercase tracking-wider">Aksi Verifikasi</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama Peserta</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Pembayaran</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Poin & Kuis</th>
+                <th class="px-6 py-4 text-right text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi Verifikasi</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
@@ -37,7 +37,7 @@
                 <td class="px-6 py-4">
                     <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $user->name }}</div>
                 </td>
-                <td class="px-6 py-4 text-sm text-slate-500">
+                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                     {{ $user->email }}
                 </td>
                 <td class="px-6 py-4">
@@ -51,7 +51,7 @@
                         </span>
                     @endif
                 </td>
-                <td class="px-6 py-4 text-sm text-slate-500">
+                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                     <div class="font-bold text-lime-600">{{ $user->pivot->point_earned }} XP</div>
                     <div class="text-xs">Kehadiran: {{ $user->pivot->attendance_status ? '✅' : '❌' }}</div>
                 </td>
@@ -59,7 +59,7 @@
                     @if($user->pivot->payment_status == 'pending')
                         <form action="{{ route('admin.seminars.verify', [$seminar->id, $user->id]) }}" method="POST">
                             @csrf
-                            <button type="submit" class="px-3 py-1 bg-lime-400 text-slate-900 hover:bg-lime-500 rounded-lg text-xs font-bold transition-colors" onclick="return confirm('Apakah Anda yakin dana dari peserta ini sudah masuk dan ingin diverifikasi LUNAS?');">
+                            <button type="submit" class="px-3 py-1 bg-lime-400 text-slate-900 dark:text-white hover:bg-lime-500 rounded-lg text-xs font-bold transition-colors" onclick="return confirm('Apakah Anda yakin dana dari peserta ini sudah masuk dan ingin diverifikasi LUNAS?');">
                                 Verifikasi Pembayaran
                             </button>
                         </form>
@@ -70,7 +70,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="px-6 py-12 text-center text-slate-500 border-2 border-dashed border-slate-200">
+                <td colspan="5" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-700">
                     Belum ada pendaftar untuk acara ini.
                 </td>
             </tr>

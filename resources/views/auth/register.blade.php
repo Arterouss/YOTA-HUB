@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto min-h-screen flex items-center justify-center p-2 sm:p-4">
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden glass-card rounded-[2.5rem] shadow-2xl bg-white/40">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden glass-card rounded-[2.5rem] shadow-2xl bg-white dark:bg-slate-800/40">
 
         <div class="hidden lg:flex lg:col-span-5 flex-col justify-between p-12 bg-lime-400 text-lime-950 relative overflow-hidden">
             <div class="relative z-10">
-                <div class="bg-white/30 backdrop-blur-md w-fit px-4 py-1 rounded-full text-xs font-black tracking-widest mb-6 border border-white/20">
+                <div class="bg-white dark:bg-slate-800/30 backdrop-blur-md w-fit px-4 py-1 rounded-full text-xs font-black tracking-widest mb-6 border border-white/20">
                     DIGITAL ECOSYSTEM
                 </div>
                 <h1 class="font-heading text-5xl mb-2">YOTA HUB</h1>
@@ -39,10 +39,10 @@
             <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-lime-300 rounded-full opacity-50"></div>
         </div>
 
-        <div class="lg:col-span-7 p-6 sm:p-12 bg-white/90">
+        <div class="lg:col-span-7 p-6 sm:p-12 bg-white dark:bg-slate-800/90">
             <div class="mb-8">
-                <h2 class="font-heading text-3xl text-slate-900">Join the Movement</h2>
-                <p class="text-slate-500 font-bold text-sm">Create your YOTA HUB account</p>
+                <h2 class="font-heading text-3xl text-slate-900 dark:text-white">Join the Movement</h2>
+                <p class="text-slate-500 dark:text-slate-400 font-bold text-sm">Create your YOTA HUB account</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
@@ -52,14 +52,14 @@
                     <div>
                         <label class="block text-[10px] font-black text-lime-800 uppercase tracking-tighter mb-1 ml-1">Full Name</label>
                         <input id="name" type="text" name="name" :value="old('name')" required autofocus
-                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white font-bold shadow-sm text-sm">
+                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 font-bold shadow-sm text-sm">
                         <x-input-error :messages="$errors->get('name')" class="mt-1" />
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black text-lime-800 uppercase tracking-tighter mb-1 ml-1">Email Address</label>
                         <input id="email" type="email" name="email" :value="old('email')" required
-                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white font-bold shadow-sm text-sm">
+                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 font-bold shadow-sm text-sm">
                         <x-input-error :messages="$errors->get('email')" class="mt-1" />
                     </div>
                 </div>
@@ -68,14 +68,14 @@
                     <div>
                         <label class="block text-[10px] font-black text-lime-800 uppercase tracking-tighter mb-1 ml-1">Password</label>
                         <input id="password" type="password" name="password" required
-                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white font-bold shadow-sm text-sm">
+                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 font-bold shadow-sm text-sm">
                         <x-input-error :messages="$errors->get('password')" class="mt-1" />
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black text-lime-800 uppercase tracking-tighter mb-1 ml-1">Confirm Password</label>
                         <input id="password_confirmation" type="password" name="password_confirmation" required
-                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white font-bold shadow-sm text-sm">
+                            class="w-full p-3 rounded-2xl border-2 border-lime-100 focus:border-lime-500 focus:ring-0 transition bg-white dark:bg-slate-800 font-bold shadow-sm text-sm">
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <label for="terms" class="flex items-start gap-3 cursor-pointer">
                         <input id="terms" type="checkbox" name="terms" required
                             class="mt-1 w-5 h-5 rounded border-lime-300 text-lime-500 focus:ring-lime-400 transition">
-                        <span class="text-xs font-bold text-slate-600 leading-relaxed">
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-400 leading-relaxed">
                             Saya telah membaca dan menyetujui
                             <a target="_blank" href="{{ route('terms') }}" class="text-lime-600 underline">Syarat dan Ketentuan</a>
                             serta <a target="_blank" href="{{ route('privacy') }}" class="text-lime-600 underline">Kebijakan Privasi</a> YOTA HUB.
@@ -101,7 +101,7 @@
             </form>
 
             <div class="mt-6 text-center">
-                <p class="text-sm font-bold text-slate-500">
+                <p class="text-sm font-bold text-slate-500 dark:text-slate-400">
                     Sudah jadi bagian dari ekosistem?
                     <a href="{{ route('login') }}" class="text-lime-600 hover:underline">Masuk di sini</a>
                 </p>
