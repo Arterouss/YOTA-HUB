@@ -25,6 +25,7 @@ Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->nam
 Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
 use App\Http\Controllers\Admin\SuperAdminController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\PublicationController;
 
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Workspace Super Admin (manage users)
     Route::middleware(['role:super_admin'])->prefix('admin/master')->group(function () {
         Route::get('/', [SuperAdminController::class, 'index'])->name('admin.super.index');
+        Route::resource('users', UserController::class)->names('admin.users')->except(['show', 'edit', 'update']);
     });
 
     // Workspace Admin Program (manage programs)
@@ -86,6 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/short-course/{id}/enroll', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'enroll'])->name('member.shortcourse.enroll');
         Route::get('/short-course/{course_id}/learn/{module_id?}', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'learn'])->name('member.shortcourse.learn');
         Route::post('/short-course/{course_id}/learn/{module_id}/done', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'completeModule'])->name('member.shortcourse.completeModule');
+        Route::post('/short-course/{course_id}/task/{task_id}/submit', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'submitTask'])->name('member.shortcourse.submitTask');
         Route::post('/short-course/{course_id}/certificate', [\App\Http\Controllers\MemberBasic\Bayu\ShortCourseController::class, 'generateCertificate'])->name('member.shortcourse.generateCertificate');
 
         // --- FITUR OPEN MODULE (KNOWLEDGE HUB) ---
@@ -118,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('/{id}/participants', [\App\Http\Controllers\Admin\LearningAdminController::class, 'participants'])->name('admin.learning.participants');
         Route::post('/{course_id}/verify/{user_id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'verifyPayment'])->name('admin.learning.verify');
+        Route::post('/{course_id}/approve-task/{user_id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'approveTask'])->name('admin.learning.approveTask');
 
         // Sub-Modul Video Management
         Route::get('/{course_id}/modules', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'index'])->name('admin.learning.modules.index');

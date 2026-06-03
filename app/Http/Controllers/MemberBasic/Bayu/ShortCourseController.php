@@ -53,7 +53,7 @@ class ShortCourseController extends Controller
                 return back()->with('info', 'Anda sudah terdaftar di kursus ini.');
             }
 
-            $paymentStatus = $course->price > 0 ? 'pending' : 'paid';
+            $paymentStatus = ($course->course_type === 'paid' || $course->price > 0) ? 'pending' : 'paid';
 
             CourseEnrollment::create([
                 'user_id' => $user->id,
@@ -112,7 +112,16 @@ class ShortCourseController extends Controller
             ->whereIn('module_id', $course->modules->pluck('id'))
             ->get()->keyBy('module_id');
 
-        return view('member_basic.bayu.shortcourse.learn', compact('course', 'activeModule', 'enrollment', 'progressions'));
+        // Ambil data tugas
+        $courseTasks = \App\Models\CourseTask::where('course_id', $course->id)->get();
+        $taskSubmissions = collect();
+        if ($courseTasks->count() > 0) {
+            $taskSubmissions = \App\Models\TaskSubmission::where('user_id', $user->id)
+                ->whereIn('task_id', $courseTasks->pluck('id'))
+                ->get()->keyBy('task_id');
+        }
+
+        return view('member_basic.bayu.shortcourse.learn', compact('course', 'activeModule', 'enrollment', 'progressions', 'courseTasks', 'taskSubmissions'));
     }
 
     public function completeModule(Request $request, $course_id, $module_id)
@@ -161,6 +170,26 @@ class ShortCourseController extends Controller
         return back()->with('success', 'Selamat! Anda telah menyelesaikan seluruh modul kursus ini.');
     }
 
+    public function submitTask(Request $request, $course_id, $task_id)
+    {
+        $user = Auth::user();
+        $task = \App\Models\CourseTask::where('course_id', $course_id)->findOrFail($task_id);
+        
+        $request->validate([
+            'submission_link' => 'required|url'
+        ]);
+
+        $submission = \App\Models\TaskSubmission::updateOrCreate(
+            ['user_id' => $user->id, 'task_id' => $task->id],
+            [
+                'submission_link' => $request->submission_link,
+                'status' => 'submitted'
+            ]
+        );
+
+        return back()->with('success', 'Tugas berhasil dikumpulkan! Menunggu penilaian admin.');
+    }
+
     public function generateCertificate($course_id)
     {
         $user = Auth::user();
@@ -170,15 +199,16 @@ class ShortCourseController extends Controller
             return back()->with('error', 'Selesaikan seluruh materi untuk mendapatkan sertifikat.');
         }
 
-        // Cek jika ada tugas, pastikan semua tugas sudah di-submit
+        // Cek jika ada tugas, pastikan semua tugas sudah di-submit dan disetujui
         $courseTasks = \App\Models\CourseTask::where('course_id', $course_id)->get();
         if ($courseTasks->count() > 0) {
-            $submittedTasksCount = \App\Models\TaskSubmission::where('user_id', $user->id)
+            $approvedTasksCount = \App\Models\TaskSubmission::where('user_id', $user->id)
                 ->whereIn('task_id', $courseTasks->pluck('id'))
+                ->where('status', 'approved')
                 ->count();
             
-            if ($submittedTasksCount < $courseTasks->count()) {
-                return back()->with('error', 'Semua tugas wajib dikumpulkan terlebih dahulu.');
+            if ($approvedTasksCount < $courseTasks->count()) {
+                return back()->with('error', 'Semua tugas wajib dikumpulkan dan harus menunggu dinilai (Approved) oleh Admin terlebih dahulu.');
             }
         }
 

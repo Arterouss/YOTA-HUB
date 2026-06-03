@@ -207,7 +207,10 @@
                 style="padding:12px 24px; background:#0f172a; color:white; font-family:'Inter',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.2);">
             📥 Unduh / Print PDF
         </button>
-
+        <a href="{{ route('certificate.verify', $code) }}"
+           style="padding:12px 24px; background:#a3e635; color:#0f172a; font-family:'Inter',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; border:none; border-radius:12px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center;">
+            🔍 Verifikasi Piagam
+        </a>
     </div>
 
     <div class="certificate-wrapper">
@@ -261,7 +264,7 @@
                 {{-- QR Code --}}
                 <div class="qr-block">
                     @php
-                        $verifyUrl = url('/');
+                        $verifyUrl = route('certificate.verify', $code);
                         $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' . urlencode($verifyUrl);
                     @endphp
                     <img src="{{ $qrUrl }}" alt="QR Verifikasi">

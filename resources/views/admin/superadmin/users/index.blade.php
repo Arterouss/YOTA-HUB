@@ -1,60 +1,28 @@
 @extends('admin.superadmin.layouts.app')
 
 @section('content')
-<div class="space-y-10">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
         <div>
-            <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-lime-600 mb-2">
-                <a href="{{ route('admin.super.index') }}" class="hover:text-lime-500 transition">Core Panel</a>
-                <span class="text-slate-300 dark:text-slate-700">/</span>
-                <span class="text-slate-900 dark:text-white">Master Systems</span>
-            </nav>
-            <h1 class="font-heading text-3xl md:text-4xl text-slate-900 dark:text-white leading-none uppercase">
-                Master <span class="text-lime-500 dark:text-lime-400">Control</span> Center
-            </h1>
-            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mt-2">
-                Workspace khusus manajemen infrastruktur digital YOTA HUB.
-            </p>
+            <h1 class="font-heading text-3xl text-slate-900 dark:text-white uppercase">User Management</h1>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400">Kelola semua pengguna YOTA HUB.</p>
         </div>
-
-        <div class="flex items-center gap-3">
-            <button class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-lime-400 transition">
-                <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </button>
-            <button class="btn-lemon px-6 py-3 rounded-xl font-heading text-xs tracking-widest uppercase shadow-lg shadow-lime-500/20">
-                Generate Report
-            </button>
-        </div>
+        <a href="{{ route('admin.users.create') }}" class="bg-[#BEF264] text-slate-900 px-6 py-3 rounded-xl font-heading text-xs tracking-widest uppercase shadow-lg shadow-lime-500/20 hover:scale-105 transition">
+            + Tambah Pengguna
+        </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="glass-panel rounded-[2rem] p-6 relative overflow-hidden group">
-            <div class="absolute -right-4 -top-4 w-24 h-24 bg-lime-500/10 rounded-full blur-2xl group-hover:bg-lime-500/20 transition"></div>
-            <div class="relative z-10">
-                <div class="w-12 h-12 rounded-2xl bg-lime-100 dark:bg-lime-900/30 flex items-center justify-center mb-4 border border-lime-200 dark:border-lime-800">
-                    <svg class="w-6 h-6 text-lime-600 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 15.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                </div>
-                <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Total Users</span>
-                <span class="text-3xl font-heading text-slate-900 dark:text-white">{{ number_format($totalUsers) }}</span>
-                <div class="mt-2 flex items-center gap-1 text-[10px] font-bold text-emerald-500 uppercase">
-                    <span>↑ 12%</span>
-                    <span class="text-slate-400 dark:text-slate-600 tracking-normal">this month</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-panel rounded-[2rem] p-6 relative overflow-hidden group">
-            <div class="relative z-10">
-                <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 border border-blue-200 dark:border-blue-800">
-                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                </div>
-                <span class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Active Projects</span>
-                <span class="text-3xl font-heading text-slate-900 dark:text-white">{{ number_format($activeProjects) }}</span>
-                <div class="mt-2 text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase">Seminars & Courses</div>
-            </div>
-        </div>
-
-        </div>
+    @if(session('success'))
+    <div class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 px-6 py-4 rounded-xl text-sm font-bold border border-emerald-200 dark:border-emerald-800">
+        {{ session('success') }}
+    </div>
+    @endif
+    
+    @if(session('error'))
+    <div class="bg-red-100 dark:bg-red-900/30 text-red-600 px-6 py-4 rounded-xl text-sm font-bold border border-red-200 dark:border-red-800">
+        {{ session('error') }}
+    </div>
+    @endif
 
     <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl">
         <div class="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">

@@ -13,20 +13,35 @@ class CertificateVerifyController extends Controller
      */
     public function verify($code)
     {
-        // Cari di semua pivot seminar_user berdasarkan certificate_code
         $record = null;
         $user = null;
         $module = null;
 
-        $seminars = Seminar::with('users')->get();
+        if (str_starts_with($code, 'SC-')) {
+            // E-Learning / Short Course Certificate
+            $enrollment = \App\Models\CourseEnrollment::with(['user', 'course'])->get()->first(function ($e) use ($code) {
+                return 'SC-' . strtoupper(substr(md5($e->id), 0, 8)) === $code;
+            });
 
-        foreach ($seminars as $seminar) {
-            foreach ($seminar->users as $u) {
-                if ($u->pivot->certificate_code === $code) {
-                    $record = $u->pivot;
-                    $user   = $u;
-                    $module = $seminar;
-                    break 2;
+            if ($enrollment) {
+                $record = $enrollment;
+                $user = $enrollment->user;
+                $module = $enrollment->course; // In view it expects 'module'
+                
+                // Add a dummy pivot property so the view doesn't break if it expects $record->certificate_issued_at
+                $record->certificate_issued_at = $record->updated_at;
+            }
+        } else {
+            // Seminar Certificate
+            $seminars = Seminar::with('users')->get();
+            foreach ($seminars as $seminar) {
+                foreach ($seminar->users as $u) {
+                    if ($u->pivot->certificate_code === $code) {
+                        $record = $u->pivot;
+                        $user   = $u;
+                        $module = $seminar;
+                        break 2;
+                    }
                 }
             }
         }
@@ -43,15 +58,31 @@ class CertificateVerifyController extends Controller
         $user = null;
         $module = null;
 
-        $seminars = Seminar::with('users')->get();
+        if (str_starts_with($code, 'SC-')) {
+            // E-Learning / Short Course Certificate
+            $enrollment = \App\Models\CourseEnrollment::with(['user', 'course'])->get()->first(function ($e) use ($code) {
+                return 'SC-' . strtoupper(substr(md5($e->id), 0, 8)) === $code;
+            });
 
-        foreach ($seminars as $seminar) {
-            foreach ($seminar->users as $u) {
-                if ($u->pivot->certificate_code === $code) {
-                    $record = $u->pivot;
-                    $user   = $u;
-                    $module = $seminar;
-                    break 2;
+            if ($enrollment) {
+                $record = $enrollment;
+                $user = $enrollment->user;
+                $module = $enrollment->course;
+                $record->certificate_issued_at = $record->updated_at;
+                return view('certificate.course_template', compact('record', 'user', 'module', 'code'));
+            }
+        } else {
+            // Seminar Certificate
+            $seminars = Seminar::with('users')->get();
+
+            foreach ($seminars as $seminar) {
+                foreach ($seminar->users as $u) {
+                    if ($u->pivot->certificate_code === $code) {
+                        $record = $u->pivot;
+                        $user   = $u;
+                        $module = $seminar;
+                        break 2;
+                    }
                 }
             }
         }

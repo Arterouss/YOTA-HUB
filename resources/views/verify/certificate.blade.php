@@ -89,8 +89,12 @@
                     <span class="info-value">{{ $module->title }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Nilai Akhir</span>
-                    <span class="info-value" style="color:#15803d;">{{ $record->quiz_score }} / 100</span>
+                    <span class="info-label">Nilai Akhir / Status</span>
+                    @if(isset($record->quiz_score))
+                        <span class="info-value" style="color:#15803d;">{{ $record->quiz_score }} / 100</span>
+                    @else
+                        <span class="info-value" style="color:#15803d;">LULUS (Tuntas 100%)</span>
+                    @endif
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Terbit</span>

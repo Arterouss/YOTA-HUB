@@ -42,6 +42,39 @@
                     @endforeach
                 </div>
 
+                {{-- Tugas Kursus --}}
+                @if(isset($courseTasks) && $courseTasks->count() > 0)
+                <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700">
+                    <h4 class="text-xs font-black text-slate-900 dark:text-white uppercase mb-4">Tugas Akhir</h4>
+                    <div class="space-y-4">
+                        @foreach($courseTasks as $task)
+                            @php
+                                $submission = $taskSubmissions[$task->id] ?? null;
+                            @endphp
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-700">
+                                <p class="text-xs font-bold text-slate-900 dark:text-white mb-1">{{ $task->task_title }}</p>
+                                <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">{{ Str::limit($task->task_description, 60) }}</p>
+                                
+                                @if($submission)
+                                    <div class="text-[10px] font-bold p-2 rounded-lg text-center uppercase tracking-widest
+                                        {{ $submission->status === 'approved' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' }}">
+                                        {{ $submission->status === 'approved' ? 'Lulus / Approved' : 'Menunggu Penilaian' }}
+                                    </div>
+                                @else
+                                    <form action="{{ route('member.shortcourse.submitTask', ['course_id' => $course->id, 'task_id' => $task->id]) }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="url" name="submission_link" required placeholder="https://link-tugas..." class="w-full text-xs p-2 rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white mb-2" title="Masukkan URL/Link Google Drive, Github, dll">
+                                        <button type="submit" class="w-full bg-blue-500 text-white font-bold text-[10px] uppercase tracking-widest py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                            Kumpulkan Tugas
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
                 {{-- Sertifikasi Kelulusan --}}
                 @if($course->certificate_available)
                 <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 text-center">
@@ -67,6 +100,16 @@
             @if(session('success'))
                 <div class="bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-400 px-4 py-3 rounded-2xl mb-6 font-bold">
                     {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-4 py-3 rounded-2xl mb-6 font-bold">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
 

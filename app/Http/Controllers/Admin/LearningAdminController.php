@@ -33,7 +33,7 @@ class LearningAdminController extends Controller
             'status'       => 'required|in:open,full,closed'
         ]);
 
-        ShortCourse::create([
+        $course = ShortCourse::create([
             'title'          => $request->title,
             'description'    => $request->description,
             'course_type'    => $request->course_type,
@@ -47,6 +47,16 @@ class LearningAdminController extends Controller
             'status'         => $request->status,
             'grading_type'   => $request->grading_type ?? 'auto',
         ]);
+
+        if ($course->grading_type === 'manual') {
+            \App\Models\CourseTask::create([
+                'course_id' => $course->id,
+                'task_title' => 'Tugas Akhir',
+                'task_description' => 'Silakan kumpulkan link tugas akhir Anda untuk dinilai oleh instruktur.',
+                'task_point' => 100,
+                'submission_type' => 'link_submission'
+            ]);
+        }
 
         return redirect()->route('admin.learning.index')
             ->with('success', 'Program E-Learning / Short Course berhasil ditambahkan!');
@@ -87,6 +97,20 @@ class LearningAdminController extends Controller
             'grading_type'   => $request->grading_type ?? 'auto',
         ]);
 
+        if ($course->grading_type === 'manual') {
+            \App\Models\CourseTask::firstOrCreate(
+                ['course_id' => $course->id],
+                [
+                    'task_title' => 'Tugas Akhir',
+                    'task_description' => 'Silakan kumpulkan link tugas akhir Anda untuk dinilai oleh instruktur.',
+                    'task_point' => 100,
+                    'submission_type' => 'link_submission'
+                ]
+            );
+        } else {
+            \App\Models\CourseTask::where('course_id', $course->id)->delete();
+        }
+
         return redirect()->route('admin.learning.index')
             ->with('success', 'Program berhasil diperbarui!');
     }
@@ -102,7 +126,16 @@ class LearningAdminController extends Controller
     {
         $course = ShortCourse::findOrFail($id);
         $enrollments = \App\Models\CourseEnrollment::with('user')->where('course_id', $id)->get();
-        return view('admin.learning.participants', compact('course', 'enrollments'));
+        
+        $courseTask = \App\Models\CourseTask::where('course_id', $id)->first();
+        $taskSubmissions = collect();
+        if ($courseTask) {
+            $taskSubmissions = \App\Models\TaskSubmission::where('task_id', $courseTask->id)
+                ->get()
+                ->keyBy('user_id');
+        }
+
+        return view('admin.learning.participants', compact('course', 'enrollments', 'courseTask', 'taskSubmissions'));
     }
 
     public function verifyPayment($course_id, $user_id)
@@ -116,5 +149,17 @@ class LearningAdminController extends Controller
         ]);
 
         return back()->with('success', 'Pembayaran user berhasil diverifikasi! Akses belajar telah dibuka.');
+    }
+
+    public function approveTask($course_id, $user_id)
+    {
+        $courseTask = \App\Models\CourseTask::where('course_id', $course_id)->firstOrFail();
+        $submission = \App\Models\TaskSubmission::where('task_id', $courseTask->id)
+                                                ->where('user_id', $user_id)
+                                                ->firstOrFail();
+        
+        $submission->update(['status' => 'approved']);
+
+        return back()->with('success', 'Tugas akhir berhasil disetujui (Approved). User sekarang bisa mengklaim sertifikat!');
     }
 }
