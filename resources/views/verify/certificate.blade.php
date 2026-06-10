@@ -85,15 +85,19 @@
                     <span class="info-value">{{ $user->name }}</span>
                 </div>
                 <div class="info-row">
+                    <span class="info-label">Kategori Program</span>
+                    <span class="info-value">{{ str_starts_with($code, 'SC-') ? 'E-Learning (Short Course)' : 'Seminar / Webinar' }}</span>
+                </div>
+                <div class="info-row">
                     <span class="info-label">Program Diselesaikan</span>
                     <span class="info-value">{{ $module->title }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Nilai Akhir / Status</span>
-                    @if(isset($record->quiz_score))
-                        <span class="info-value" style="color:#15803d;">{{ $record->quiz_score }} / 100</span>
-                    @else
+                    <span class="info-label">Status Kelulusan</span>
+                    @if(str_starts_with($code, 'SC-'))
                         <span class="info-value" style="color:#15803d;">LULUS (Tuntas 100%)</span>
+                    @else
+                        <span class="info-value" style="color:#15803d;">HADIR (Tuntas)</span>
                     @endif
                 </div>
                 <div class="info-row">
@@ -113,8 +117,8 @@
             </a>
 
             <p class="footer-note" style="margin-top: 16px;">
-                Dokumen ini dapat digunakan sebagai bukti sah penyelesaian program pembelajaran<br>
-                <strong>YOTA HUB Innovation Platform — Layer 1: Knowledge Program</strong>
+                Dokumen ini dapat digunakan sebagai bukti sah partisipasi dalam ekosistem<br>
+                <strong>YOTA HUB Innovation Platform</strong>
             </p>
 
         @else

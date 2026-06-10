@@ -40,7 +40,7 @@ class DashboardController extends Controller
 
         // 4. Data Logic untuk Knowledge Hub
         $totalArticlesRead = \App\Models\ArticleRead::where('user_id', $user->id)->count();
-        $totalLiteracyPoints = \App\Models\ArticleRead::where('user_id', $user->id)->sum('point_earned');
+
         
         // Cari topik favorit (kategori yang paling sering dibaca)
         $favoriteCategory = \App\Models\ArticleRead::select('knowledge_categories.category_name')
@@ -56,14 +56,11 @@ class DashboardController extends Controller
             'joinedSeminars' => $joinedSeminars,
             'enrolledCourses' => $enrolledCourses,
             'layerInfo' => [
-                'current_level' => $user->level, // Berasal dari kolom level di DB
-                'is_verified' => ($user->member_type === 'verified'), // Cek tipe member
+                'is_verified' => ($user->member_type === 'verified'),
             ],
             'stats' => [
                 'courses_completed' => $completedCoursesCount,
-                'innovation_points' => $user->seminars()->sum('seminar_user.point_earned') + $totalLiteracyPoints,
                 'articles_read' => $totalArticlesRead,
-                'literacy_points' => $totalLiteracyPoints,
                 'favorite_topic' => $favoriteCategory,
             ]
         ];

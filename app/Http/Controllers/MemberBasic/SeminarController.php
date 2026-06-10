@@ -54,16 +54,14 @@ public function register(Request $request, $id)
     return back()->with('success', 'Selamat! Anda berhasil terdaftar. Akses fitur seminar kini terbuka.');
 }
 
-public function claimPoint(Request $request, $id)
+public function claimAttendance(Request $request, $id)
 {
     $request->validate([
         'rating' => 'required|integer|min:1|max:5',
-        'answers' => 'required|array', // Jawaban dari form kuis
     ]);
 
     $seminar = Seminar::findOrFail($id);
     $user = auth()->user();
-    $totalQuizPoints = 0;
 
     // 1. Simpan Feedback
     SeminarFeedback::create([
@@ -73,25 +71,12 @@ public function claimPoint(Request $request, $id)
         'message' => $request->message ?? '-',
     ]);
 
-    // 2. Cek Jawaban Kuis & Hitung Skor
-    $questions = SeminarQuiz::where('seminar_id', $seminar->id)->get();
-    foreach ($questions as $q) {
-        if (isset($request->answers[$q->id]) && $request->answers[$q->id] == $q->correct_answer) {
-            $totalQuizPoints += $q->points;
-        }
-    }
-
-    // 3. Update Poin di Tabel Pivot (Presensi Berhasil)
-    // Bonus 20 poin cuma buat yang ngisi feedback (insentif)
-    $finalPoints = $totalQuizPoints + 20;
-
+    // 2. Update Status Kehadiran di Tabel Pivot
     $seminar->users()->updateExistingPivot($user->id, [
         'attendance_status' => true,
-        'quiz_score' => $totalQuizPoints,
-        'total_points' => $finalPoints,
     ]);
 
-    return back()->with('success', "Misi Selesai! Kamu dapat $finalPoints Poin Kompetensi.");
+    return back()->with('success', "Berhasil! Kehadiran Anda telah tercatat.");
 }
 
 }

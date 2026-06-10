@@ -31,7 +31,7 @@ class CertificateAdminController extends Controller
     public function show($id)
     {
         $module = Seminar::findOrFail($id);
-        $students = $module->users()->withPivot('submission_link', 'submission_note', 'quiz_score', 'attendance_status', 'certificate_code', 'certificate_issued_at')->get();
+        $students = $module->users()->withPivot('submission_link', 'submission_note', 'attendance_status', 'certificate_code', 'certificate_issued_at')->get();
 
         return view('admin.certificates.show', compact('module', 'students'));
     }
@@ -54,16 +54,12 @@ class CertificateAdminController extends Controller
         if (!$pivot) {
             $module->users()->attach($userId, [
                 'attendance_status'           => true,
-                'quiz_score'            => $request->grade,
-                'total_points'          => $request->grade,
                 'certificate_code'      => $certCode,
                 'certificate_issued_at' => now(),
             ]);
         } else {
             $module->users()->updateExistingPivot($userId, [
                 'attendance_status'           => true,
-                'quiz_score'            => $request->grade,
-                'total_points'          => $request->grade,
                 'certificate_code'      => $certCode,
                 'certificate_issued_at' => now(),
             ]);

@@ -24,6 +24,14 @@
                     </ul>
                 </div>
                 <div class="flex flex-col items-center md:items-start gap-3">
+                    <span class="text-[10px] font-black text-lime-600 dark:text-lime-400 uppercase tracking-widest">Pembayaran Acara</span>
+                    <ul class="flex flex-col gap-2 text-xs font-bold text-slate-600 dark:text-slate-400 text-center md:text-left">
+                        <li>BCA: 123 456 7890</li>
+                        <li>Mandiri: 098 765 4321</li>
+                        <li><a href="https://wa.me/6281234567890" target="_blank" class="text-[#25D366] hover:underline flex items-center justify-center md:justify-start gap-1"><i class="fab fa-whatsapp"></i> Konfirmasi WA</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-center md:items-start gap-3">
                     <span class="text-[10px] font-black text-lime-600 dark:text-lime-400 uppercase tracking-widest">Legal</span>
                     <ul class="flex md:flex-col gap-4 md:gap-2 text-xs font-bold text-slate-600 dark:text-slate-400">
                         <li><a href="{{ route('privacy') }}" class="hover:text-lime-500 transition">Privasi</a></li>

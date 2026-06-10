@@ -63,16 +63,14 @@ class LearningModuleController extends Controller
         if (!$pivot) {
             $module->users()->attach($user->id, [
                 'attendance_status' => true,
-                'total_points' => 100,
             ]);
         } else {
             $module->users()->updateExistingPivot($user->id, [
                 'attendance_status' => true,
-                'total_points' => $module->quota ?? 100,
             ]);
         }
 
-        return back()->with('success', "🎉 Keren! Kamu mendapat +{$module->quota} XP Kompetensi karena telah menyelesaikan modul ini!");
+        return back()->with('success', "🎉 Keren! Kamu telah menyelesaikan modul ini!");
     }
 
     /**
@@ -95,7 +93,6 @@ class LearningModuleController extends Controller
                 'submission_link' => $request->submission_link,
                 'submission_note' => $request->submission_note,
                 'attendance_status'     => false,
-                'total_points'    => 0,
             ]);
         } else {
             $module->users()->updateExistingPivot($user->id, [

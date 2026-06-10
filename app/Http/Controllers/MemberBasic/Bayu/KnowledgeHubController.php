@@ -43,9 +43,7 @@ class KnowledgeHubController extends Controller
 
         $user = Auth::user();
         $totalRead = ArticleRead::where('user_id', $user->id)->count();
-        $totalPoints = ArticleRead::where('user_id', $user->id)->sum('point_earned');
-
-        return view('member_basic.bayu.knowledge.index', compact('articles', 'categories', 'popularArticles', 'totalRead', 'totalPoints'));
+        return view('member_basic.bayu.knowledge.index', compact('articles', 'categories', 'popularArticles', 'totalRead'));
     }
 
     public function show($slug)
@@ -73,7 +71,7 @@ class KnowledgeHubController extends Controller
         return view('member_basic.bayu.knowledge.show', compact('article', 'comments', 'recommended', 'hasRead'));
     }
 
-    public function claimReadingPoint(Request $request, $article_id)
+    public function markArticleRead(Request $request, $article_id)
     {
         $user = Auth::user();
         $article = KnowledgeArticle::findOrFail($article_id);
@@ -87,20 +85,18 @@ class KnowledgeHubController extends Controller
         $alreadyClaimed = ArticleRead::where('user_id', $user->id)->where('article_id', $article->id)->exists();
         
         if ($alreadyClaimed) {
-            return response()->json(['success' => true, 'message' => 'Points already claimed', 'points' => 0]);
+            return response()->json(['success' => true, 'message' => 'History already recorded']);
         }
 
         ArticleRead::create([
             'user_id' => $user->id,
             'article_id' => $article->id,
-            'read_duration' => $readDuration,
-            'point_earned' => 5
+            'read_duration' => $readDuration
         ]);
 
         return response()->json([
             'success' => true, 
-            'message' => 'Berhasil klaim +5 Poin Gamifikasi!',
-            'points' => 5
+            'message' => 'History membaca berhasil direkam!'
         ]);
     }
 

@@ -79,12 +79,8 @@ class Seminar extends Model
     {
         // 4/5/2026 Edit Bayu - Tambah kolom pivot baru: submission, certificate
         return $this->belongsToMany(User::class, 'seminar_user')
-            ->withPivot('attendance_status', 'quiz_status', 'quiz_score', 'total_points', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at', 'payment_status', 'feedback_status', 'point_earned')
+            ->withPivot('attendance_status', 'quiz_status', 'submission_link', 'submission_note', 'certificate_code', 'certificate_issued_at', 'payment_status', 'feedback_status')
             ->withTimestamps();
     }
 
-    public function quizzes()
-    {
-        return $this->hasMany(SeminarQuiz::class, 'seminar_id');
-    }
 }
