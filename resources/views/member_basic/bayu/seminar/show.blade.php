@@ -103,19 +103,14 @@
             <span class="text-[10px] font-bold px-2 py-1 rounded bg-white dark:bg-slate-800 border {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? 'border-lime-200 text-lime-600' : 'border-orange-200 text-orange-500' }}">Pembayaran: {{ strtoupper($userPivot->pivot->payment_status ?? 'pending') }} {{ ($userPivot->pivot->payment_status ?? '') === 'paid' || $seminar->seminar_type === 'free' ? '✅' : '⏳' }}</span>
         </div>
     </div>
-    <div class="text-right">
-        <p class="text-[9px] font-black uppercase text-slate-400 tracking-[0.2em]">Poin Gamifikasi</p>
-        <!-- 3/31/2026 Edit Bayu - Mengganti query berulang di blade dengan $userPivot dari controller (Optimization) -->
-        <p class="text-2xl font-black text-lime-600">{{ $userPivot->pivot->point_earned ?? 0 }} <span class="text-xs">PTS</span></p>
-    </div>
+
     
     @if($isFinished)
     <div class="w-full mt-2 pt-4 border-t border-dashed border-lime-200">
         <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-2">Checklist Pencapaian Akhir:</p>
         <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
-            <span>Kehadiran: {!! ($userPivot->pivot->attendance_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
-            <span>Feedback: {!! ($userPivot->pivot->feedback_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-30)</span>' !!}</span>
-            <span>Kuis: {!! ($userPivot->pivot->quiz_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌ (-40)</span>' !!}</span>
+            <span>Kehadiran: {!! ($userPivot->pivot->attendance_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌</span>' !!}</span>
+            <span>Feedback: {!! ($userPivot->pivot->feedback_status ?? false) ? '<span class="text-lime-600">✅</span>' : '<span class="text-red-500">❌</span>' !!}</span>
         </div>
     </div>
     @endif
@@ -229,11 +224,11 @@
 
         @if($hasFullAccess && !($userPivot->pivot->attendance_status ?? false))
             <a href="#form-evaluasi" class="flex-1 bg-slate-900 dark:bg-slate-700 text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase text-center flex items-center justify-center gap-3 hover:bg-slate-800 transition-all">
-                KLAIM XP & EVALUASI
+                ISI EVALUASI
             </a>
         @elseif($hasFullAccess && ($userPivot->pivot->attendance_status ?? false))
             <button disabled class="flex-1 bg-slate-800 text-lime-400 py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 cursor-default">
-                XP SUDAH DIKLAIM ✅
+                EVALUASI SELESAI ✅
             </button>
             @if(!empty($userPivot->pivot->certificate_code))
                 <a href="{{ route('member.certificate.download', $userPivot->pivot->certificate_code) }}" target="_blank" class="flex-1 bg-emerald-500 text-white py-4 rounded-2xl font-heading text-xs tracking-[0.2em] uppercase text-center flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-500/30">
@@ -248,7 +243,7 @@
         @if($isFinished)
             Misi ini telah berakhir. Resource dibuka untuk umum sebagai Knowledge Base YOTA HUB.
         @else
-            Dapatkan +50 XP & Badge Knowledge Pioneer setelah menyelesaikan evaluasi misi ini.
+            Dapatkan Sertifikat setelah memberikan bukti kehadiran dan mengisi evaluasi misi ini.
         @endif
     </p>
 </div>
@@ -260,31 +255,13 @@
 <!-- 3/31/2026 Edit Bayu - Membaca is_attended dari instance $userPivot untuk menghindari N+1 problem di Blade -->
 @if($isRegistered && !($userPivot->pivot->attendance_status ?? false))
 <div id="form-evaluasi" class="mt-12 bg-slate-900 rounded-[2rem] p-8 text-white scroll-mt-24">
-    <h3 class="font-heading text-xl mb-6">KLAIM KOMPETENSI & EVALUASI</h3>
+    <h3 class="font-heading text-xl mb-6">BUKTI KEHADIRAN & EVALUASI</h3>
 
     <form action="{{ route('member.seminars.claim', $seminar->id) }}" method="POST">
         @csrf
 
-        {{-- Section Kuis --}}
-        <div class="space-y-8 mb-10">
-            @foreach($seminar->quizzes as $index => $quiz)
-            <div class="space-y-4">
-                <p class="text-sm font-bold">{{ $index + 1 }}. {{ $quiz->question }}</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    @foreach(['A' => $quiz->option_a, 'B' => $quiz->option_b, 'C' => $quiz->option_c, 'D' => $quiz->option_d] as $key => $val)
-                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-700 hover:bg-slate-800 cursor-pointer">
-                        <input type="radio" name="answers[{{ $quiz->id }}]" value="{{ $key }}" class="text-lime-400">
-                        <span class="text-xs uppercase">{{ $key }}. {{ $val }}</span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            @endforeach
-        </div>
-
         @if($seminar->grading_type === 'manual')
-        {{-- Section Kumpul Tugas --}}
-        {{-- Section Kumpul Tugas --}}
+        {{-- Section Bukti Kehadiran --}}
         <div class="border-t border-slate-700 pt-8 mb-8">
             <p class="text-sm font-bold mb-4 uppercase tracking-widest text-lime-400">Upload Bukti Kehadiran</p>
             <p class="text-xs text-slate-400 mb-4">Misi ini mewajibkan Anda untuk mengumpulkan bukti telah mengikuti acara (misal: Screenshot Zoom, Foto Kegiatan). Silakan upload ke Google Drive Anda dan masukkan link-nya di bawah ini. Pastikan link tidak diprivate!</p>
@@ -301,7 +278,7 @@
         </div>
 
         <button type="submit" class="w-full mt-6 bg-lime-400 text-slate-900 dark:text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-lime-500 transition-all">
-            KIRIM EVALUASI & KLAIM XP
+            KIRIM EVALUASI
         </button>
     </form>
 </div>
