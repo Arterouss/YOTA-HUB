@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Seminar;
 use App\Models\SeminarFeedback;
-use App\Models\SeminarQuiz;
+
 
 class SeminarController extends Controller
 {
@@ -89,7 +89,6 @@ class SeminarController extends Controller
     {
         $request->validate([
             'rating' => 'nullable|integer|min:1|max:5',
-            'answers' => 'nullable|array', 
         ]);
 
         $seminar = Seminar::findOrFail($id);
@@ -107,50 +106,19 @@ class SeminarController extends Controller
             return back()->with('error', 'Kecurangan terdeteksi! Anda sudah mengklaim aktivitas ini.');
         }
 
-        // Logic Gamifikasi: Poin maksimal 100
-        $pointEarned = 100;
-        
-        // 1. Presensi (Asumsi karena klik fungsi klaim ini, berarti hadir)
-        $attendanceStatus = true; 
-        // Jika attendance_status false, point -= 30 (tapi di sini kita set true karena user melakukan aksi klaim)
-        
         // 2. Feedback Form logic
         $feedbackStatus = $request->filled('rating');
-        if (!$feedbackStatus) {
-            $pointEarned -= 30; // Penalti tidak isi feedback
-        } else {
+        if ($feedbackStatus) {
             SeminarFeedback::create([
                 'seminar_id' => $seminar->id,
                 'user_id' => $user->id,
                 'rating' => $request->rating,
                 'message' => $request->message ?? '-',
             ]);
-        }
-
-        // 3. Quiz logic
-        $quizStatus = $request->filled('answers');
-        $quizScore = 0;
-        
-        if (!$quizStatus) {
-            $pointEarned -= 40; // Penalti tidak ikut quiz
-        } else {
-            $questions = SeminarQuiz::where('seminar_id', $seminar->id)->get();
-            foreach ($questions as $q) {
-                if (isset($request->answers[$q->id]) && $request->answers[$q->id] == $q->correct_answer) {
-                    $quizScore += $q->points;
-                }
-            }
-        }
-
-
-
-        // 4. Update data gamifikasi ke Pivot
-        // 4. Update data gamifikasi ke Pivot
+        }        // 4. Update data gamifikasi ke Pivot
         $updateData = [
             'attendance_status' => $attendanceStatus,
-            'feedback_status' => $feedbackStatus,
-            'quiz_status' => $quizStatus,
-            'quiz_score' => $quizScore
+            'feedback_status' => $feedbackStatus
         ];
 
         if ($seminar->grading_type === 'manual') {
@@ -160,6 +128,6 @@ class SeminarController extends Controller
 
         $seminar->users()->updateExistingPivot($user->id, $updateData);
 
-        return back()->with('success', "Claim Berhasil! Kamu mendapatkan $pointEarned Poin Gamifikasi.");
+        return back()->with('success', "Aktivitas berhasil dicatat. Terima kasih atas partisipasi Anda!");
     }
 }

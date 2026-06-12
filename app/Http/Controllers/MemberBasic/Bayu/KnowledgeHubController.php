@@ -97,8 +97,7 @@ class KnowledgeHubController extends Controller
 
         return response()->json([
             'success' => true, 
-            'message' => 'Berhasil klaim baca!',
-            'points' => 5
+            'message' => 'History membaca berhasil direkam!'
         ]);
     }
 

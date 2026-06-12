@@ -96,11 +96,10 @@ public function seminars()
 {
     return $this->belongsToMany(Seminar::class, 'seminar_user')
                 ->withPivot(
-                    'attendance_status', 
+                    'attendance_status',
                     'feedback_status', 
-                    'quiz_status', 
                     'payment_status',
-                    'quiz_score', 
+
                     'submission_link', 
                     'submission_note', 
                     'certificate_code', 
