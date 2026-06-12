@@ -69,10 +69,10 @@
             <div>
                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Tipe Penilaian (Syarat Sertifikat)</label>
                 <select name="grading_type" required class="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                    <option value="auto" {{ $seminar->grading_type == 'auto' ? 'selected' : '' }}>Otomatis (Hanya Kuis & Evaluasi)</option>
-                    <option value="manual" {{ $seminar->grading_type == 'manual' ? 'selected' : '' }}>Manual (Wajib Kumpul Link Tugas)</option>
+                    <option value="auto" {{ $seminar->grading_type == 'auto' ? 'selected' : '' }}>Otomatis (Hanya Evaluasi)</option>
+                    <option value="manual" {{ $seminar->grading_type == 'manual' ? 'selected' : '' }}>Manual (Wajib Upload Bukti Kehadiran)</option>
                 </select>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih "Manual" jika Anda mewajibkan peserta untuk mengumpulkan file tugas/resume dalam bentuk Google Drive link.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih "Manual" jika Anda mewajibkan peserta untuk mengumpulkan bukti kehadiran (misal: foto kegiatan) dalam bentuk Google Drive link.</p>
             </div>
 
             <div class="grid grid-cols-3 gap-4">
