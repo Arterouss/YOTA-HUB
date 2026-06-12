@@ -30,6 +30,17 @@
                         <li><a href="{{ route('terms') }}" class="hover:text-lime-500 transition">Ketentuan</a></li>
                     </ul>
                 </div>
+                <div class="flex flex-col items-center md:items-start gap-3">
+                    <span class="text-[10px] font-black text-lime-600 dark:text-lime-400 uppercase tracking-widest">Info Pembayaran</span>
+                    <ul class="flex md:flex-col gap-4 md:gap-2 text-xs font-bold text-slate-600 dark:text-slate-400">
+                        <li>BCA: 1234567890 (Yota Wujudkan Asa)</li>
+                        <li>
+                            <a href="https://wa.me/6285117713303" target="_blank" class="hover:text-lime-500 transition flex items-center gap-1">
+                                <i class="fab fa-whatsapp text-lime-500"></i> Konfirmasi WA
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div class="flex flex-col items-center md:items-end gap-4">

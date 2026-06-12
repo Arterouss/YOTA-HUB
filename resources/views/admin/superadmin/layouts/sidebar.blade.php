@@ -26,9 +26,9 @@
         <div class="pt-6">
             <p x-show="sidebarOpen" class="px-3 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-3">Master Systems</p>
 
-            <a href="#"
+            <a href="{{ route('admin.super.index') }}"
                class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all group
-                      {{ request()->is('admin/master*') ? 'bg-[#BEF264] text-slate-900 dark:text-white shadow-md' : 'text-slate-400 hover:bg-white dark:bg-slate-800/5 hover:text-white' }}">
+                      {{ request()->routeIs('admin.super.index') ? 'bg-[#BEF264] text-slate-900 dark:text-white shadow-md' : 'text-slate-400 hover:bg-white dark:bg-slate-800/5 hover:text-white' }}">
                 <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>

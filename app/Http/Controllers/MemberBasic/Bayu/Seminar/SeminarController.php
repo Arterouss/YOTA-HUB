@@ -66,8 +66,7 @@ class SeminarController extends Controller
                 'payment_status' => $paymentStatus,
                 'attendance_status' => false,
                 'feedback_status' => false,
-                'quiz_status' => false,
-                'point_earned' => 0
+                'quiz_status' => false
             ]
         ]);
 
@@ -143,8 +142,7 @@ class SeminarController extends Controller
             }
         }
 
-        // Final sanity check on point_earned (min 0)
-        $pointEarned = max(0, $pointEarned);
+
 
         // 4. Update data gamifikasi ke Pivot
         // 4. Update data gamifikasi ke Pivot
@@ -152,9 +150,7 @@ class SeminarController extends Controller
             'attendance_status' => $attendanceStatus,
             'feedback_status' => $feedbackStatus,
             'quiz_status' => $quizStatus,
-            'quiz_score' => $quizScore,
-            'point_earned' => $pointEarned,
-            'total_points' => $pointEarned, // Simpan total poin
+            'quiz_score' => $quizScore
         ];
 
         if ($seminar->grading_type === 'manual') {

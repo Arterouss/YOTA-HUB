@@ -48,7 +48,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
 
             // Konsep Dasar Platform YOTA HUB
-            'level' => 1, // Layer 1 (Open Learning)
             'member_type' => 'basic',
             'agreed_to_terms' => true,
             'terms_agreed_at' => Carbon::now(),

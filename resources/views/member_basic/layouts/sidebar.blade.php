@@ -7,9 +7,6 @@
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=bef264&color=1a2e05&bold=true"
                          class="w-full h-full rounded-xl object-cover" alt="Avatar">
                 </div>
-                <div class="absolute -bottom-1 -right-1 bg-slate-900 dark:bg-lime-500 w-5 h-5 rounded-lg flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-sm">
-                    <span class="text-[8px] font-black text-lime-400 dark:text-slate-900 uppercase">L1</span>
-                </div>
             </div>
             <div x-show="sidebarOpen" x-transition class="overflow-hidden">
                 <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tighter truncate">{{ Auth::user()->name }}</h3>
@@ -17,27 +14,19 @@
             </div>
         </div>
 
-        <div x-show="sidebarOpen" class="space-y-1 animate-fade-in">
-            <div class="flex justify-between text-[8px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                <span>Exp Progress</span>
-                <span>75%</span>
-            </div>
-            <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                <div class="bg-lime-500 h-full rounded-full shadow-[0_0_8px_rgba(163,230,53,0.5)]" style="width: 75%"></div>
-            </div>
-        </div>
+
     </div>
 
     <nav class="flex-1 px-4 py-8 space-y-2 overflow-y-auto custom-scrollbar">
 
         <p x-show="sidebarOpen" class="px-4 text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] mb-4">My Learning Path</p>
 
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->is('participant/dashboard*') ? 'bg-lime-400 text-slate-900 shadow-xl shadow-lime-400/20' : 'text-slate-500 dark:text-slate-400 hover:bg-lime-50 dark:hover:bg-lime-900/20 hover:text-lime-600 dark:hover:text-lime-400' }}">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('dashboard') ? 'bg-lime-400 text-slate-900 shadow-xl shadow-lime-400/20' : 'text-slate-500 dark:text-slate-400 hover:bg-lime-50 dark:hover:bg-lime-900/20 hover:text-lime-600 dark:hover:text-lime-400' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Dashboard</span>
         </a>
 
-        <a href="{{ route('member.seminars.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->is('participant/dashboard*') ? 'bg-lime-400 text-slate-900 shadow-xl shadow-lime-400/20' : 'text-slate-500 dark:text-slate-400 hover:bg-lime-50 dark:hover:bg-lime-900/20 hover:text-lime-600 dark:hover:text-lime-400' }}">
+        <a href="{{ route('member.seminars.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group {{ request()->routeIs('member.seminars.*') ? 'bg-lime-400 text-slate-900 shadow-xl shadow-lime-400/20' : 'text-slate-500 dark:text-slate-400 hover:bg-lime-50 dark:hover:bg-lime-900/20 hover:text-lime-600 dark:hover:text-lime-400' }}">
             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Main Quests</span>
         </a>
@@ -92,13 +81,7 @@
     </nav>
 
     <div class="p-4 border-t border-lime-50 dark:border-slate-900 bg-lime-50/30 dark:bg-slate-900/30">
-        <div x-show="sidebarOpen" class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm mb-4 border border-lime-100 dark:border-lime-900/50">
-            <div class="flex items-center gap-2">
-                <span class="text-xl group-hover:rotate-12 transition-transform">🪙</span>
-                <span class="font-heading text-sm text-slate-900 dark:text-white">1,250</span>
-            </div>
-            <span class="text-[8px] font-black text-lime-600 uppercase">Points</span>
-        </div>
+
 
         <button @click="sidebarOpen = !sidebarOpen"
                 class="w-full flex items-center justify-center p-3 rounded-xl bg-slate-900 dark:bg-lime-500 text-lime-400 dark:text-slate-900 transition-all active:scale-95 shadow-lg shadow-lime-500/10">

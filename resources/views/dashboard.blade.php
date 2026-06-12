@@ -7,20 +7,20 @@
         <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
             <div class="space-y-4 text-center lg:text-left">
                 <div class="inline-block px-4 py-1 rounded-full bg-white dark:bg-slate-800 shadow-sm">
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-lime-600">Adventurer Level 1</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-lime-600">Member Platform</span>
                 </div>
                 <h1 class="font-heading text-4xl md:text-5xl text-slate-900 dark:text-white leading-tight">
                     SELAMAT DATANG <br> <span class="text-lime-600 dark:text-lime-400 uppercase">{{ Auth::user()->name }}!</span>
                 </h1>
                 <p class="text-sm font-bold text-slate-600 dark:text-lime-100/60 max-w-md leading-relaxed">
-                    Siap untuk melanjutkan petualangan hari ini? Kamu hanya butuh <span class="text-slate-900 dark:text-white font-black">250 XP</span> lagi untuk naik ke Level 2!
+                    Siap untuk meningkatkan wawasan dan skill Anda hari ini? Mulai eksplorasi seminar, kelas singkat, dan artikel terbaru.
                 </p>
                 <div class="pt-4 flex flex-wrap justify-center lg:justify-start gap-4">
                     <button class="btn-lemon px-8 py-3 rounded-2xl font-heading text-xs uppercase tracking-widest">
                         Lanjut Belajar
                     </button>
                     <button class="bg-white/50 dark:bg-slate-800/50 backdrop-blur-md px-8 py-3 rounded-2xl font-bold text-xs text-slate-900 dark:text-white border border-white dark:border-slate-700 transition hover:bg-white dark:bg-slate-800 dark:hover:bg-slate-800">
-                        Lihat Roadmap
+                        Jelajahi Modul
                     </button>
                 </div>
             </div>
@@ -34,10 +34,10 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         @php
         $dashboardStats = [
-        ['label' => 'Total XP', 'value' => number_format($stats['innovation_points']), 'icon' => '⚡', 'color' => 'lime'],
-        ['label' => 'Quests Selesai', 'value' => $stats['courses_completed'], 'icon' => '🏆', 'color' => 'orange'],
-        ['label' => 'Yota Coins', 'value' => '0', 'icon' => '🪙', 'color' => 'yellow'],
-        ['label' => 'Ranking', 'value' => '#-', 'icon' => '📈', 'color' => 'blue'],
+        ['label' => 'Total Modul Selesai', 'value' => $stats['courses_completed'], 'icon' => '📚', 'color' => 'lime'],
+        ['label' => 'Seminar Diikuti', 'value' => count($joinedSeminars), 'icon' => '🎯', 'color' => 'orange'],
+        ['label' => 'Artikel Dibaca', 'value' => $stats['articles_read'], 'icon' => '📖', 'color' => 'blue'],
+        ['label' => 'Aktivitas', 'value' => 'Aktif', 'icon' => '⚡', 'color' => 'emerald'],
         ];
         @endphp
 
@@ -81,10 +81,6 @@
                         <div>
                             <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Quiz</p>
                             <p class="text-xs font-bold">{{ $seminar->pivot->quiz_status ? 'DONE ✅' : 'PENDING ⏳' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Poin Didapat</p>
-                            <p class="text-xs font-black text-lime-600">{{ $seminar->pivot->point_earned }} PTS</p>
                         </div>
                     </div>
                 </div>
@@ -169,11 +165,7 @@
                     <p class="text-4xl font-heading text-slate-900 dark:text-white">{{ $stats['articles_read'] }}</p>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 dark:border-slate-700/50">
-                    <div>
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Poin Literasi</p>
-                        <p class="text-lg font-bold text-lime-600 dark:text-lime-400">{{ $stats['literacy_points'] }} PTS</p>
-                    </div>
+                <div class="grid grid-cols-1 gap-4 pt-4 border-t border-slate-100 dark:border-slate-700/50">
                     <div>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Topik Favorit</p>
                         <p class="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2">{{ $stats['favorite_topic'] }}</p>

@@ -43,9 +43,8 @@ class KnowledgeHubController extends Controller
 
         $user = Auth::user();
         $totalRead = ArticleRead::where('user_id', $user->id)->count();
-        $totalPoints = ArticleRead::where('user_id', $user->id)->sum('point_earned');
 
-        return view('member_basic.bayu.knowledge.index', compact('articles', 'categories', 'popularArticles', 'totalRead', 'totalPoints'));
+        return view('member_basic.bayu.knowledge.index', compact('articles', 'categories', 'popularArticles', 'totalRead'));
     }
 
     public function show($slug)
@@ -93,13 +92,12 @@ class KnowledgeHubController extends Controller
         ArticleRead::create([
             'user_id' => $user->id,
             'article_id' => $article->id,
-            'read_duration' => $readDuration,
-            'point_earned' => 5
+            'read_duration' => $readDuration
         ]);
 
         return response()->json([
             'success' => true, 
-            'message' => 'Berhasil klaim +5 Poin Gamifikasi!',
+            'message' => 'Berhasil klaim baca!',
             'points' => 5
         ]);
     }

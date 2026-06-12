@@ -31,7 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'email_verified_at', // 3/31/2026 Edit Bayu - Tambahkan agar dapat diisi saat Google Login
         'password',
-        'level',                // Layer 1-4
         'member_type',          // basic / verified
         'agreed_to_terms',      // Compliance Hukum
         'terms_agreed_at',      // Audit Trail
@@ -63,21 +62,12 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'terms_agreed_at' => 'datetime',
             'agreed_to_terms' => 'boolean',
-            'level' => 'integer',
 
             // AUTOMATIC ENCRYPTION
             // Laravel akan mengenkripsi data ini saat disimpan ke DB
             // dan mendekripsinya saat dipanggil di aplikasi.
             'encrypted_phone' => 'encrypted',
         ];
-    }
-
-    /**
-     * Helper untuk cek apakah user sudah di Layer tertentu
-     */
-    public function isAtLeastLevel(int $requiredLevel): bool
-    {
-        return $this->level >= $requiredLevel;
     }
 
     /**
@@ -108,10 +98,8 @@ public function seminars()
                     'attendance_status', 
                     'feedback_status', 
                     'quiz_status', 
-                    'point_earned',
                     'payment_status',
                     'quiz_score', 
-                    'total_points', 
                     'submission_link', 
                     'submission_note', 
                     'certificate_code', 
