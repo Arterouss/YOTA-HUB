@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Verifikasi Peserta - ' . $module->title)
+@section('title', 'Verifikasi Tugas E-Learning - ' . $course->title)
 
 @section('content')
 <div class="min-h-screen bg-slate-50 dark:bg-slate-900 p-8">
@@ -12,9 +12,9 @@
         </a>
 
         <div class="mb-6">
-            <h1 class="text-2xl font-black text-slate-900 dark:text-white">Peserta Modul: {{ $module->title }}</h1>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white">Peserta E-Learning: {{ $course->title }}</h1>
             <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                Tipe: <strong class="{{ $module->grading_type === 'manual' ? 'text-amber-600' : 'text-blue-600' }}">{{ $module->grading_type === 'manual' ? '📝 Manual (Bukti Keikutsertaan)' : '⚡ Otomatis' }}</strong>
+                Tipe: <strong class="{{ $course->grading_type === 'manual' ? 'text-amber-600' : 'text-blue-600' }}">{{ $course->grading_type === 'manual' ? '📝 Manual (Submit Tugas Akhir)' : '⚡ Otomatis' }}</strong>
             </p>
         </div>
 
@@ -27,59 +27,56 @@
                 <thead class="bg-slate-900 text-white">
                     <tr>
                         <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest">Mahasiswa</th>
-                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest">Bukti Kehadiran</th>
-                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest">Status</th>
+                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest">Tugas Akhir</th>
+                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest">Status Belajar</th>
                         <th class="text-right px-6 py-4 text-xs font-bold uppercase tracking-widest">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
-                    @forelse($students as $student)
+                    @forelse($enrollments as $enrollment)
                     @php
-                        $hasCert = !empty($student->pivot->certificate_code);
+                        $submission = $taskSubmissions[$enrollment->user->id] ?? null;
+                        $hasCert = $enrollment->status === 'completed';
                     @endphp
                     <tr class="hover:bg-slate-50 dark:bg-slate-900 transition">
                         <td class="px-6 py-4">
-                            <p class="font-bold text-slate-900 dark:text-white">{{ $student->name }}</p>
-                            <p class="text-xs text-slate-400">{{ $student->email }}</p>
+                            <p class="font-bold text-slate-900 dark:text-white">{{ $enrollment->user->name }}</p>
+                            <p class="text-xs text-slate-400">{{ $enrollment->user->email }}</p>
                         </td>
                         <td class="px-6 py-4">
-                            @if($student->pivot->submission_link)
-                                <a href="{{ $student->pivot->submission_link }}" target="_blank"
+                            @if($submission)
+                                <a href="{{ $submission->submission_link }}" target="_blank"
                                    class="text-xs font-bold text-blue-600 underline hover:text-blue-800 break-all">
-                                    🔗 {{ Str::limit($student->pivot->submission_link, 40) }}
+                                    🔗 Cek Tugas
                                 </a>
-                                @if($student->pivot->submission_note)
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">{{ $student->pivot->submission_note }}</p>
-                                @endif
                             @else
-                                <span class="text-xs text-slate-400 italic">Belum mengirim bukti kehadiran</span>
+                                <span class="text-xs text-slate-400 italic">Belum mengumpulkan tugas</span>
                             @endif
                         </td>
                         <td class="px-6 py-4">
                             @if($hasCert)
-                                <div>
-                                    <span class="px-3 py-1 bg-lime-100 text-lime-700 text-xs font-black rounded-full">✅ Piagam Diterbitkan</span>
-                                </div>
-                            @elseif($student->pivot->attendance_status)
-                                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-black rounded-full">Selesai (Belum Diverifikasi)</span>
+                                <span class="px-3 py-1 bg-lime-100 text-lime-700 text-xs font-black rounded-full">✅ Lulus & Piagam Terbit</span>
+                            @elseif($submission && $submission->status === 'submitted')
+                                <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-black rounded-full">Tugas Menunggu Verifikasi</span>
+                            @elseif($enrollment->payment_status === 'paid')
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-black rounded-full">Sedang Belajar</span>
                             @else
-                                <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-black rounded-full">Menunggu Verifikasi</span>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-500 text-xs font-black rounded-full">Menunggu Pembayaran</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            @if(!$hasCert)
-                            <form action="{{ route('admin.certificates.publish', [$module->id, $student->id]) }}" method="POST" class="inline-flex items-center gap-2">
+                            @if($submission && $submission->status === 'submitted')
+                            <form action="{{ route('admin.certificates.approveTask', [$course->id, $enrollment->user->id]) }}" method="POST" class="inline-flex items-center gap-2">
                                 @csrf
                                 <button type="submit"
                                         class="px-4 py-2 bg-lime-500 text-slate-900 dark:text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-lime-400 transition whitespace-nowrap">
                                     🏆 Verifikasi & Terbitkan Piagam
                                 </button>
                             </form>
-                            @else
-                            <a href="{{ route('member.certificate.download', $student->pivot->certificate_code) }}" target="_blank"
-                               class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200 transition">
-                                👁️ Lihat Piagam
-                            </a>
+                            @elseif($hasCert)
+                            <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-400 text-xs font-bold rounded-xl cursor-default">
+                                Lulus
+                            </span>
                             @endif
                         </td>
                     </tr>

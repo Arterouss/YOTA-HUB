@@ -78,10 +78,7 @@
                             <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Feedback</p>
                             <p class="text-xs font-bold">{{ $seminar->pivot->feedback_status ? 'DONE ✅' : 'PENDING ⏳' }}</p>
                         </div>
-                        <div>
-                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Quiz</p>
-                            <p class="text-xs font-bold">{{ $seminar->pivot->quiz_status ? 'DONE ✅' : 'PENDING ⏳' }}</p>
-                        </div>
+
                     </div>
                 </div>
                 <a href="{{ route('member.seminars.show', $seminar->slug) }}" class="px-6 py-3 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all">

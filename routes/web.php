@@ -76,7 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Route Baru untuk Register
         Route::post('/seminars/{id}/register', [SeminarController::class, 'register'])->name('member.seminars.register');
-        Route::post('/seminars/{id}/claim', [SeminarController::class, 'claimAttendance'])->name('member.seminars.claimAttendance');
+        Route::post('/seminars/{id}/claim', [SeminarController::class, 'claimAttendance'])->name('member.seminars.claim');
 
         // --- FITUR MODULE BAYU ---
         // Fungsi: Menampilkan open module tugas fitur baru dari Bayu
@@ -121,7 +121,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('/{id}/participants', [\App\Http\Controllers\Admin\LearningAdminController::class, 'participants'])->name('admin.learning.participants');
         Route::post('/{course_id}/verify/{user_id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'verifyPayment'])->name('admin.learning.verify');
-        Route::post('/{course_id}/approve-task/{user_id}', [\App\Http\Controllers\Admin\LearningAdminController::class, 'approveTask'])->name('admin.learning.approveTask');
 
         // Sub-Modul Video Management
         Route::get('/{course_id}/modules', [\App\Http\Controllers\Admin\LearningModuleAdminController::class, 'index'])->name('admin.learning.modules.index');
@@ -157,8 +156,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 4/5/2026 Edit Bayu - Admin Program: Publish Nilai & Piagam
     Route::middleware(['role:super_admin|admin_layer1'])->prefix('admin/certificates')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'index'])->name('admin.certificates.index');
-        Route::get('/{id}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'show'])->name('admin.certificates.show');
-        Route::post('/{moduleId}/publish/{userId}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'publishCertificate'])->name('admin.certificates.publish');
+        Route::get('/seminar/{id}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'show'])->name('admin.certificates.show');
+        Route::post('/seminar/{moduleId}/publish/{userId}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'publishCertificate'])->name('admin.certificates.publish');
+        
+        // Verifikasi tugas E-Learning (Short Course)
+        Route::get('/course/{id}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'showCourse'])->name('admin.certificates.showCourse');
+        Route::post('/course/{courseId}/approve-task/{userId}', [\App\Http\Controllers\Admin\CertificateAdminController::class, 'approveTask'])->name('admin.certificates.approveTask');
     });
 });
 

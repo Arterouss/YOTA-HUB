@@ -65,8 +65,7 @@ class SeminarController extends Controller
             auth()->id() => [
                 'payment_status' => $paymentStatus,
                 'attendance_status' => false,
-                'feedback_status' => false,
-                'quiz_status' => false
+                'feedback_status' => false
             ]
         ]);
 
@@ -85,7 +84,7 @@ class SeminarController extends Controller
         return back()->with('success', 'Selamat! Anda berhasil terdaftar. Akses fitur seminar kini terbuka.');
     }
 
-    public function claimPoint(Request $request, $id)
+    public function claimAttendance(Request $request, $id)
     {
         $request->validate([
             'rating' => 'nullable|integer|min:1|max:5',
@@ -115,7 +114,11 @@ class SeminarController extends Controller
                 'rating' => $request->rating,
                 'message' => $request->message ?? '-',
             ]);
-        }        // 4. Update data gamifikasi ke Pivot
+        }
+
+        $attendanceStatus = true; // Otomatis dianggap hadir jika berhasil submit form evaluasi
+
+        // 4. Update data ke Pivot
         $updateData = [
             'attendance_status' => $attendanceStatus,
             'feedback_status' => $feedbackStatus

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 // 4/5/2026 Edit Bayu - Controller untuk Admin Program: nilai & publish piagam
 use App\Http\Controllers\Controller;
 use App\Models\Seminar;
+use App\Models\ShortCourse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -22,7 +23,9 @@ class CertificateAdminController extends Controller
             }])
             ->get();
 
-        return view('admin.certificates.index', compact('modules'));
+        $courses = ShortCourse::all();
+
+        return view('admin.certificates.index', compact('modules', 'courses'));
     }
 
     /**
@@ -41,8 +44,6 @@ class CertificateAdminController extends Controller
      */
     public function publishCertificate(Request $request, $moduleId, $userId)
     {
-        $request->validate(['grade' => 'required|integer|min:0|max:100']);
-
         $module = Seminar::findOrFail($moduleId);
         $user = User::findOrFail($userId);
 
@@ -65,6 +66,47 @@ class CertificateAdminController extends Controller
             ]);
         }
 
-        return back()->with('success', "✅ Nilai {$request->grade} berhasil dipublish & piagam untuk {$user->name} sudah diterbitkan!");
+        return back()->with('success', "✅ Verifikasi berhasil! Piagam untuk {$user->name} sudah diterbitkan!");
+    }
+
+    /**
+     * Tampilan detail: daftar peserta E-Learning (Short Course)
+     */
+    public function showCourse($id)
+    {
+        $course = ShortCourse::findOrFail($id);
+        $enrollments = \App\Models\CourseEnrollment::with('user')->where('course_id', $id)->get();
+        
+        $courseTask = \App\Models\CourseTask::where('course_id', $id)->first();
+        $taskSubmissions = collect();
+        if ($courseTask) {
+            $taskSubmissions = \App\Models\TaskSubmission::where('task_id', $courseTask->id)
+                ->get()
+                ->keyBy('user_id');
+        }
+
+        return view('admin.certificates.show_course', compact('course', 'enrollments', 'courseTask', 'taskSubmissions'));
+    }
+
+    /**
+     * Approve Tugas E-Learning
+     */
+    public function approveTask($course_id, $user_id)
+    {
+        $courseTask = \App\Models\CourseTask::where('course_id', $course_id)->firstOrFail();
+        $submission = \App\Models\TaskSubmission::where('task_id', $courseTask->id)
+                                                ->where('user_id', $user_id)
+                                                ->firstOrFail();
+        
+        $submission->update(['status' => 'approved']);
+
+        // Set status enrollment menjadi completed agar mereka bisa mengunduh piagam
+        $enrollment = \App\Models\CourseEnrollment::where('course_id', $course_id)
+                                                  ->where('user_id', $user_id)
+                                                  ->firstOrFail();
+        
+        $enrollment->update(['status' => 'completed']);
+
+        return back()->with('success', 'Tugas akhir berhasil disetujui (Approved). User sekarang bisa mengklaim piagam!');
     }
 }

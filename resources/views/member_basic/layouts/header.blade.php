@@ -24,26 +24,20 @@
 
         <div class="flex items-center gap-3">
 
-            <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-lime-100 dark:bg-lime-900/30 rounded-xl border border-lime-200 dark:border-lime-800">
-                <span class="text-sm">🪙</span>
-                <span class="font-heading text-xs text-slate-900 dark:text-white leading-none">1,250</span>
-            </div>
-
             <div class="relative">
                 <button @click="notifOpen = !notifOpen" @click.away="notifOpen = false"
                         class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-lime-600 transition-all active:scale-90 relative">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
                 </button>
 
                 <div x-show="notifOpen" x-transition class="absolute right-0 mt-3 w-72 glass-card rounded-2xl p-4 shadow-2xl border border-lime-100 dark:border-lime-900" style="display: none;">
-                    <h4 class="font-heading text-xs text-slate-900 dark:text-white mb-3">Quest Updates</h4>
+                    <h4 class="font-heading text-xs text-slate-900 dark:text-white mb-3">Notifikasi</h4>
                     <div class="space-y-3">
-                        <div class="flex gap-3 p-2 rounded-lg bg-lime-50 dark:bg-lime-900/20">
-                            <span class="text-xl">🏆</span>
+                        <div class="flex gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/20">
+                            <span class="text-xl">📢</span>
                             <div>
-                                <p class="text-[10px] font-bold text-slate-900 dark:text-white">Quest Selesai!</p>
-                                <p class="text-[9px] text-slate-500 dark:text-slate-400">Kamu mendapatkan 50 XP dari Dasar IoT.</p>
+                                <p class="text-[10px] font-bold text-slate-900 dark:text-white">Selamat Datang!</p>
+                                <p class="text-[9px] text-slate-500 dark:text-slate-400">Eksplorasi seminar dan modul terbaru.</p>
                             </div>
                         </div>
                     </div>

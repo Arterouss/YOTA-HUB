@@ -148,16 +148,4 @@ class LearningAdminController extends Controller
 
         return back()->with('success', 'Pembayaran user berhasil diverifikasi! Akses belajar telah dibuka.');
     }
-
-    public function approveTask($course_id, $user_id)
-    {
-        $courseTask = \App\Models\CourseTask::where('course_id', $course_id)->firstOrFail();
-        $submission = \App\Models\TaskSubmission::where('task_id', $courseTask->id)
-                                                ->where('user_id', $user_id)
-                                                ->firstOrFail();
-        
-        $submission->update(['status' => 'approved']);
-
-        return back()->with('success', 'Tugas akhir berhasil disetujui (Approved). User sekarang bisa mengklaim sertifikat!');
-    }
 }

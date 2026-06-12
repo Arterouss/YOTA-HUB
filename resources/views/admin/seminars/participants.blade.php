@@ -27,7 +27,7 @@
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama Peserta</th>
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Pembayaran</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Poin & Kuis</th>
+                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Kehadiran</th>
                 <th class="px-6 py-4 text-right text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi Verifikasi</th>
             </tr>
         </thead>
@@ -52,8 +52,7 @@
                     @endif
                 </td>
                 <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
-                    <div class="font-bold text-lime-600">{{ $user->pivot->point_earned }} XP</div>
-                    <div class="text-xs">Kehadiran: {{ $user->pivot->attendance_status ? '✅' : '❌' }}</div>
+                    <div class="text-xs font-bold">{{ $user->pivot->attendance_status ? 'HADIR ✅' : 'BELUM HADIR ❌' }}</div>
                 </td>
                 <td class="px-6 py-4 text-right text-sm font-medium">
                     @if($user->pivot->payment_status == 'pending')

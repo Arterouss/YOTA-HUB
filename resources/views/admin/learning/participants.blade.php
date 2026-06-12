@@ -28,7 +28,6 @@
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status Pembayaran</th>
                 <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Progress Belajar</th>
-                <th class="px-6 py-4 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tugas Akhir</th>
                 <th class="px-6 py-4 text-right text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Aksi Verifikasi</th>
             </tr>
         </thead>
@@ -56,25 +55,6 @@
                     <div class="font-bold text-blue-600">{{ $enrollment->progress_percentage }}%</div>
                     <div class="text-xs">Status: {{ $enrollment->status == 'completed' ? 'LULUS 🎓' : 'Belajar 📖' }}</div>
                 </td>
-                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
-                    @if(isset($courseTask))
-                        @php
-                            $submission = $taskSubmissions[$enrollment->user->id] ?? null;
-                        @endphp
-                        @if($submission)
-                            <a href="{{ $submission->submission_link }}" target="_blank" class="text-blue-500 hover:underline font-bold text-xs block mb-1">Cek Tugas ↗</a>
-                            @if($submission->status == 'approved')
-                                <span class="px-2 inline-flex text-[10px] leading-4 font-bold rounded-md bg-emerald-100 text-emerald-800">Approved</span>
-                            @else
-                                <span class="px-2 inline-flex text-[10px] leading-4 font-bold rounded-md bg-orange-100 text-orange-800">Menunggu</span>
-                            @endif
-                        @else
-                            <span class="text-xs italic text-slate-400">Belum Kumpul</span>
-                        @endif
-                    @else
-                        <span class="text-xs text-slate-400">-</span>
-                    @endif
-                </td>
                 <td class="px-6 py-4 text-right text-sm font-medium">
                     <div class="flex flex-col items-end gap-2">
                         @if($enrollment->payment_status == 'pending')
@@ -82,15 +62,6 @@
                                 @csrf
                                 <button type="submit" class="px-3 py-1 bg-lime-400 text-slate-900 dark:text-white hover:bg-lime-500 rounded-lg text-[10px] font-bold transition-colors" onclick="return confirm('Apakah Anda yakin dana dari peserta ini sudah masuk dan ingin diverifikasi LUNAS?');">
                                     Verifikasi Pembayaran
-                                </button>
-                            </form>
-                        @endif
-
-                        @if(isset($courseTask) && isset($taskSubmissions[$enrollment->user->id]) && $taskSubmissions[$enrollment->user->id]->status == 'submitted')
-                            <form action="{{ route('admin.learning.approveTask', [$course->id, $enrollment->user->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="px-3 py-1 bg-blue-500 text-white hover:bg-blue-600 rounded-lg text-[10px] font-bold transition-colors" onclick="return confirm('Apakah Anda yakin ingin MELULUSKAN tugas akhir peserta ini?');">
-                                    Luluskan Tugas
                                 </button>
                             </form>
                         @endif

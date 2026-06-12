@@ -146,10 +146,10 @@
             } else {
                 clearInterval(countdown);
                 timerText.innerText = '';
-                statusMsg.innerText = 'Mengirim poin...';
+                statusMsg.innerText = 'Menyimpan riwayat baca...';
                 
                 // Klaim Endpoint AJAX
-                fetch("{{ route('member.knowledge.claimPoint', $article->id) }}", {
+                fetch("{{ route('member.knowledge.markRead', $article->id) }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -160,7 +160,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.success) {
-                        statusMsg.innerHTML = `🎉 <span class="text-lime-400">+5 Poin Kuis</span> berhasil ditambahkan!`;
+                        statusMsg.innerHTML = `🎉 <span class="text-lime-400">Selesai Dibaca</span> Riwayat terekam!`;
                         setTimeout(() => {
                             widget.classList.add('translate-y-24'); // Hilang otomatis
                         }, 4000);

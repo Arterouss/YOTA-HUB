@@ -155,7 +155,7 @@
                 @if($isDone)
                     <div class="inline-flex items-center gap-3 px-8 py-4 bg-lime-400 text-slate-900 dark:text-white font-bold uppercase tracking-widest rounded-2xl cursor-default">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Selesai (+{{ $module->quota ?? 100 }} XP Diklaim)
+                        Selesai
                     </div>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mt-4">Admin akan segera menerbitkan piagam untuk modul ini.</p>
                 @else
@@ -163,7 +163,7 @@
                         @csrf
                         <button type="submit" class="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-lime-500 hover:text-slate-900 dark:text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            Tandai Modul Selesai & Klaim +{{ $module->quota ?? 100 }} XP
+                            Tandai Modul Selesai
                         </button>
                     </form>
                     <p class="text-xs text-slate-400 mt-4">*Pastikan kamu sudah selesai memahami seluruh materi sebelum mengeklik tombol ini.</p>
