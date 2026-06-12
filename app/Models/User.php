@@ -70,6 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+
     /**
      * Helper untuk cek status verifikasi
      */

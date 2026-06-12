@@ -72,7 +72,7 @@ class KnowledgeHubController extends Controller
         return view('member_basic.bayu.knowledge.show', compact('article', 'comments', 'recommended', 'hasRead'));
     }
 
-    public function claimReadingPoint(Request $request, $article_id)
+    public function markArticleRead(Request $request, $article_id)
     {
         $user = Auth::user();
         $article = KnowledgeArticle::findOrFail($article_id);
@@ -86,7 +86,7 @@ class KnowledgeHubController extends Controller
         $alreadyClaimed = ArticleRead::where('user_id', $user->id)->where('article_id', $article->id)->exists();
         
         if ($alreadyClaimed) {
-            return response()->json(['success' => true, 'message' => 'Points already claimed', 'points' => 0]);
+            return response()->json(['success' => true, 'message' => 'History already recorded']);
         }
 
         ArticleRead::create([

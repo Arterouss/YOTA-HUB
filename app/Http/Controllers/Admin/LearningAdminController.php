@@ -53,7 +53,6 @@ class LearningAdminController extends Controller
                 'course_id' => $course->id,
                 'task_title' => 'Tugas Akhir',
                 'task_description' => 'Silakan kumpulkan link tugas akhir Anda untuk dinilai oleh instruktur.',
-                'task_point' => 100,
                 'submission_type' => 'link_submission'
             ]);
         }
@@ -103,7 +102,6 @@ class LearningAdminController extends Controller
                 [
                     'task_title' => 'Tugas Akhir',
                     'task_description' => 'Silakan kumpulkan link tugas akhir Anda untuk dinilai oleh instruktur.',
-                    'task_point' => 100,
                     'submission_type' => 'link_submission'
                 ]
             );

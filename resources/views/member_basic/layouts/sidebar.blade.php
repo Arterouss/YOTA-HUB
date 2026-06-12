@@ -67,7 +67,12 @@
         </div>
         @endhasanyrole
 
-        <div class="pt-6">
+        <div class="pt-6 border-t border-lime-100 dark:border-lime-900/30">
+            <a href="{{ route('profile.edit') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-slate-500 dark:text-slate-400 hover:bg-lime-50 dark:hover:bg-lime-900/20 hover:text-lime-600 dark:hover:text-lime-400 transition-all group mb-2">
+                <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <span x-show="sidebarOpen" class="font-bold text-sm tracking-tight">Edit Profile</span>
+            </a>
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all group">

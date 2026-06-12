@@ -66,7 +66,7 @@ class UserController extends Controller
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
-        $user->delete();
+        $user->forceDelete();
 
         return back()->with('success', 'Pengguna berhasil dihapus permanen.');
     }

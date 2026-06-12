@@ -225,7 +225,7 @@
             <div class="header">
                 <div class="company-name">YOTA HUB Innovation Platform</div>
                 <div class="cert-title">PIAGAM</div>
-                <div class="cert-subtitle">Certificate of Completion · Layer 1 Knowledge</div>
+                <div class="cert-subtitle">Certificate of Attendance · Seminar & Webinar</div>
             </div>
 
             <div class="divider">
@@ -241,15 +241,15 @@
 
             {{-- Isi Piagam --}}
             <div class="body-text">
-                Telah berhasil menyelesaikan program pembelajaran<br>
+                Telah berpartisipasi dan menghadiri secara penuh kegiatan<br>
                 <span class="program-name">{{ $module->title }}</span><br>
-                dalam Platform E-Learning YOTA HUB Innovation — Layer 1: Knowledge Program<br>
-                dengan dedikasi dan komitmen yang luar biasa.
+                yang diselenggarakan oleh YOTA HUB Innovation Platform<br>
+                dengan antusiasme dan komitmen yang luar biasa.
             </div>
 
             <div style="text-align:center;">
                 <div class="grade-badge">
-                    🎯 Nilai Akhir: <strong>{{ $record->quiz_score }} / 100</strong>
+                    ✨ Status Kehadiran: <strong>HADIR (Tuntas)</strong>
                 </div>
             </div>
 

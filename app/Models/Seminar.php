@@ -83,8 +83,4 @@ class Seminar extends Model
             ->withTimestamps();
     }
 
-    public function quizzes()
-    {
-        return $this->hasMany(SeminarQuiz::class, 'seminar_id');
-    }
 }

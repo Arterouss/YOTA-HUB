@@ -12,20 +12,9 @@ class CourseModule extends Model
 
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'has_pretest' => 'boolean',
-        'has_quiz' => 'boolean',
-        'has_posttest' => 'boolean',
-    ];
-
     public function course()
     {
         return $this->belongsTo(ShortCourse::class, 'course_id');
-    }
-
-    public function quizzes()
-    {
-        return $this->hasMany(CourseQuiz::class, 'module_id');
     }
 
     public function progressions()

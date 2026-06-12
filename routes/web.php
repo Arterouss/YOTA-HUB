@@ -76,7 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Route Baru untuk Register
         Route::post('/seminars/{id}/register', [SeminarController::class, 'register'])->name('member.seminars.register');
-        Route::post('/seminars/{id}/claim', [SeminarController::class, 'claimPoint'])->name('member.seminars.claim');
+        Route::post('/seminars/{id}/claim', [SeminarController::class, 'claimAttendance'])->name('member.seminars.claimAttendance');
 
         // --- FITUR MODULE BAYU ---
         // Fungsi: Menampilkan open module tugas fitur baru dari Bayu
@@ -94,7 +94,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // --- FITUR OPEN MODULE (KNOWLEDGE HUB) ---
         Route::get('/knowledge', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'index'])->name('member.knowledge.index');
         Route::get('/knowledge/{slug}', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'show'])->name('member.knowledge.show');
-        Route::post('/knowledge/{id}/claim-point', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'claimReadingPoint'])->name('member.knowledge.claimPoint');
+        Route::post('/knowledge/{id}/mark-read', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'markArticleRead'])->name('member.knowledge.markRead');
         Route::post('/knowledge/{id}/comment', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'postComment'])->name('member.knowledge.postComment');
         Route::post('/knowledge/comment/{id}/toggle-like', [\App\Http\Controllers\MemberBasic\Bayu\KnowledgeHubController::class, 'toggleLikeComment'])->name('member.knowledge.toggleLike');
 
